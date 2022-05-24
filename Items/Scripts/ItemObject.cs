@@ -21,6 +21,7 @@ public enum Attributes
     Stamina,
     Strength
 }
+
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory System/Items/item")]
 public class ItemObject : ScriptableObject
 {
@@ -67,6 +68,7 @@ public class Item
     public string Name;
     public int Id = -1;
     public ItemBuff[] buffs;
+    // public Weapons weapon; 
     public Item()
     {
         Name = "";

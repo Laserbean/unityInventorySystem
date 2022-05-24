@@ -173,10 +173,12 @@ public class InventorySlot
     {
         UpdateSlot(new Item(), 0);
     }
+    
     public InventorySlot(Item _item, int _amount)
     {
         UpdateSlot(_item, _amount);
     }
+
     public void UpdateSlot(Item _item, int _amount)
     {
         if (OnBeforeUpdate != null)
@@ -186,14 +188,18 @@ public class InventorySlot
         if (OnAfterUpdate != null)
             OnAfterUpdate.Invoke(this);
     }
+
+
     public void RemoveItem()
     {
         UpdateSlot(new Item(), 0);
     }
+
     public void AddAmount(int value)
     {
         UpdateSlot(item, amount += value);
     }
+
     public bool CanPlaceInSlot(ItemObject _itemObject)
     {
         if (AllowedItems.Length <= 0 || _itemObject == null || _itemObject.data.Id < 0)
