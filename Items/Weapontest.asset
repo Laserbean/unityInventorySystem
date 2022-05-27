@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e24e6376edd0894499235853813a862, type: 3}
+  m_Name: Weapontest
+  m_EditorClassIdentifier: 
+  uiDisplay: {fileID: -1299688068531442217, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
+  characterDisplay: {fileID: 0}
+  stackable: 1
+  type: 2
+  description: 
+  data:
+    Name: 
+    Id: 15
+    buffs: []
+  boneNames: []
+  weapon:
+    origin: {x: 0, y: 0, z: 0}
+    attack_type: 2
+    rarity: 4
+    angle: 90
+    range: 1
+    min_range: 1
+    prep_time: 0
+    attack_time: 0
+    cooldown_time: 0
+    reload_time: 0
+    charges: 0
+    total_charges: -1
+    reload_amount: 0
+    max_charges: -1
+    tier: 0

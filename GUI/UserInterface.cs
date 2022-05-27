@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using System;
 
+using unityInventorySystem; 
 public abstract class UserInterface : MonoBehaviour
 {
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+namespace unityInventorySystem {
 public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
 {
     public ItemObject item;
@@ -18,4 +19,5 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
         EditorUtility.SetDirty(GetComponentInChildren<SpriteRenderer>());
 #endif
     }
+}
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+using unityInventorySystem; 
+
 public class DynamicInterface : UserInterface
 {
     public GameObject inventoryPrefab;

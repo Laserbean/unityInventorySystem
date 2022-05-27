@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using unityInventorySystem;
 public class PlayerItem : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -25,7 +26,7 @@ public class PlayerItem : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        var item = other.GetComponent<GroundItem>();
+        var item = other.GetComponent<unityInventorySystem.GroundItem>();
         if (item) {
             Item _item = new Item(item.item);
             Debug.Log(_item.Id);

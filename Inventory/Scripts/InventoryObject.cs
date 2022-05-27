@@ -6,6 +6,8 @@ using System.IO;
 using UnityEditor;
 using System.Runtime.Serialization;
 
+namespace unityInventorySystem {
+
 public enum InterfaceType
 {
     Inventory,
@@ -13,7 +15,7 @@ public enum InterfaceType
     Chest
 }
 
-[CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
+[CreateAssetMenu(fileName = "New Inventory", menuName = "unity Inventory System/Inventory")]
 public class InventoryObject : ScriptableObject
 {
     public string savePath;
@@ -211,4 +213,5 @@ public class InventorySlot
         }
         return false;
     }
+}
 }

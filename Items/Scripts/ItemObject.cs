@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace unityInventorySystem {
+
 public enum ItemType 
 {
     Food,
@@ -22,7 +24,7 @@ public enum Attributes
     Strength
 }
 
-[CreateAssetMenu(fileName = "New Item", menuName = "Inventory System/Items/item")]
+[CreateAssetMenu(fileName = "New Item", menuName = "unity Inventory System/Items/item")]
 public class ItemObject : ScriptableObject
 {
 
@@ -112,4 +114,5 @@ public class ItemBuff : IModifier
     {
         value = UnityEngine.Random.Range(min, max);
     }
+}
 }
