@@ -5,25 +5,6 @@ using UnityEngine;
 
 namespace unityInventorySystem {
 
-public enum ItemType 
-{
-    Food,
-    Helmet,
-    Weapon,
-    Shield,
-    Boots,
-    Chest,
-    Default
-}
-
-public enum Attributes
-{
-    Agility,
-    Intellect,
-    Stamina,
-    Strength
-}
-
 [CreateAssetMenu(fileName = "New Item", menuName = "unity Inventory System/Items/item")]
 public class ItemObject : ScriptableObject
 {
