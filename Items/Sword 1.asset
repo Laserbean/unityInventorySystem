@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Sword 1
   m_EditorClassIdentifier: 
   uiDisplay: {fileID: -6447425667752118579, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
-  characterDisplay: {fileID: -927199367670048503, guid: c9aacc175fa79924b9356d5252824517, type: 3}
+  characterDisplay: {fileID: 0}
+  characterDisplay2D: {fileID: -6447425667752118579, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
   stackable: 0
   type: 2
   description: 
@@ -33,16 +34,3 @@ MonoBehaviour:
       value: 0
       min: 1
       max: 12
-    weapon:
-      angle: 90
-      range: 1
-      min_range: 1
-      prep_time: 0
-      attack_time: 0
-      cooldown_time: 0
-      reload_time: 0
-      charges: 0
-      total_charges: -1
-      reload_amount: 0
-      max_charges: -1
-  boneNames: []

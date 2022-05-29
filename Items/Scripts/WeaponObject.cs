@@ -13,5 +13,9 @@ public class WeaponObject : ItemObject
         type = ItemType.Weapon;
     }
 
+    private void OnValidate() {
+        weapon.sprite = this.characterDisplay2D; 
+    }
+
 }
 }

@@ -11,9 +11,10 @@ public enum ItemType
     Food,
     Helmet,
     Weapon,
-    Shield,
+    Shield, //should be only for inventory equipping
     Boots,
     Chest,
+    Attachment, 
     Default
 }
 

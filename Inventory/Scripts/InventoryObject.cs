@@ -159,13 +159,23 @@ public class InventorySlot
     public Item item = new Item();
     public int amount;
 
-    public ItemObject ItemObject
-    {
+    public ItemObject ItemObject {
         get
         {
             if(item.Id >= 0)
             {
                 return parent.inventory.database.ItemObjects[item.Id];
+            }
+            return null;
+        }
+    }
+
+    public WeaponObject WeaponObject {
+        get
+        {
+            if(item.Id >= 0)
+            {
+                return (WeaponObject) parent.inventory.database.ItemObjects[item.Id];
             }
             return null;
         }
