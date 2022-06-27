@@ -28,6 +28,9 @@ public class ItemObject : ScriptableObject
         return newItem;
     }
 
+    private void OnValidate() {
+        data.Name = this.name; 
+    }
 
     // private void OnValidate()
     // {

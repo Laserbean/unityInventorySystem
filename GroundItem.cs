@@ -15,8 +15,13 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
     public void OnBeforeSerialize()
     {
 #if UNITY_EDITOR
-        GetComponentInChildren<SpriteRenderer>().sprite = item.uiDisplay;
-        EditorUtility.SetDirty(GetComponentInChildren<SpriteRenderer>());
+        // GetComponentInChildren<SpriteRenderer>().sprite = item.uiDisplay;
+        // EditorUtility.SetDirty(GetComponentInChildren<SpriteRenderer>());
+        if (item != null) {
+            this.gameObject.GetComponent<SpriteRenderer>().sprite = item.uiDisplay; 
+        }
+                
+
 #endif
     }
 
@@ -29,6 +34,12 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
     private void Update() {
         time += Time.deltaTime; 
         this.transform.localScale =  Vector3.one+ (Vector3.one * Mathf.Sin(time *animation_speed) * sin_ratio); 
+    }
+
+    public void SetItem(ItemObject item) {
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = item.uiDisplay; 
+
+        this.item = item; 
     }
 }
 }

@@ -25,5 +25,19 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     public void OnBeforeSerialize()
     {
     }
+
+    // [System.NonSerialized]
+    // public static Dictionary<string, int> name_index_dict; 
+
+    // public ItemObject GetItemObject(string name) {
+    //     if (name_index_dict == null) {
+    //         name_index_dict = new Dictionary<string, int>(); 
+    //         for (int i = 0; i < ItemObjects.Length; i++)
+    //         {
+    //             name_index_dict.Add(ItemObjects[i].data.Name, i); 
+    //         }  
+    //     }
+    //     return ItemObjects[name_index_dict[name]]; 
+    // }
 }
 }
