@@ -8,6 +8,8 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
 {
     public ItemObject item;
 
+    public int ammount = 1; 
+
     public void OnAfterDeserialize()
     {
     }

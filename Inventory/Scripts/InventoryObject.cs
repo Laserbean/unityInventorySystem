@@ -90,7 +90,7 @@ public class InventoryObject : ScriptableObject
     
 
     [ContextMenu("Save")]
-    public void Save()
+    public void Save(string path = "")
     {
         //string saveData = JsonUtility.ToJson(this, true);
         //BinaryFormatter bf = new BinaryFormatter();
@@ -99,14 +99,22 @@ public class InventoryObject : ScriptableObject
         //file.Close();
 
         IFormatter formatter = new BinaryFormatter();
-        Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Create, FileAccess.Write);
+        Stream stream;
+        if (path == "") {
+            stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Create, FileAccess.Write);
+        } else {
+            stream = new FileStream(path, FileMode.Create, FileAccess.Write);
+        }
+
         formatter.Serialize(stream, Container);
         stream.Close();
     }
     [ContextMenu("Load")]
-    public void Load()
+    public void Load(string path = "")
     {
-        if (File.Exists(string.Concat(Application.persistentDataPath, savePath)))
+
+        // if (File.Exists(string.Concat(Application.persistentDataPath, savePath)))
+        if (File.Exists(path))
         {
             //BinaryFormatter bf = new BinaryFormatter();
             //FileStream file = File.Open(string.Concat(Application.persistentDataPath, savePath), FileMode.Open);
@@ -114,7 +122,15 @@ public class InventoryObject : ScriptableObject
             //file.Close();
 
             IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Open, FileAccess.Read);
+            Stream stream;
+
+            if (path == "") {
+                stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Open, FileAccess.Read);
+            } else {
+                stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            }
+
+            
             Inventory newContainer = (Inventory)formatter.Deserialize(stream);
             for (int i = 0; i < GetSlots.Length; i++)
             {
@@ -123,6 +139,9 @@ public class InventoryObject : ScriptableObject
             stream.Close();
         }
     }
+
+    
+
     [ContextMenu("Clear")]
     public void Clear()
     {

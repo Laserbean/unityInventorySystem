@@ -4,19 +4,30 @@ using UnityEngine;
 
 using unityInventorySystem;
 
+using UnityEngine.Events; 
+
 
 [System.Serializable]
-public class EquipmentSprite {
+public class EquipmentStuff {
     public ItemType type;
     public SpriteRenderer spriteRenderer; 
+    public EquipmentEvents events; 
 }
 
+[System.Serializable]
+public class EquipmentEvents {
+    public MyItemObjectEvent onAdd, onRemove; 
+}
+
+[System.Serializable]
+public class MyItemObjectEvent : UnityEvent<ItemObject> {}
+
 // [System.Serializable]
-// public class EquipmentSprites {
-//     public List<EquipmentSprite> equipmentSprite = new List<EquipmentSprite>(); 
+// public class EquipmentStuffs {
+//     public List<EquipmentStuff> EquipmentStuff = new List<EquipmentStuff>(); 
 
 //     public SpriteRenderer GetSprite(ItemType type) {
-//         foreach(EquipmentSprite cur in equipmentSprite) {
+//         foreach(EquipmentStuff cur in EquipmentStuff) {
 //             if (type == cur.type) {
 //                 return cur.spriteRenderer; 
 //             }
@@ -33,16 +44,16 @@ public class PlayerItem2D : MonoBehaviour
     public InventoryObject inventory; 
     public InventoryObject equipment;
 
-    public List<EquipmentSprite> equipmentSprite = new List<EquipmentSprite>(); 
+    public List<EquipmentStuff> equipmentStuff = new List<EquipmentStuff>();
 
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        var item = other.GetComponent<unityInventorySystem.GroundItem>();
-        if (item) {
-            Item _item = new Item(item.item);
+        var gitem = other.GetComponent<unityInventorySystem.GroundItem>();
+        if (gitem) {
+            Item _item = new Item(gitem.item);
             Debug.Log(_item.Id);
-            inventory.AddItem(_item, 1);
+            inventory.AddItem(_item, gitem.ammount);
             Destroy(other.gameObject);
         }
     }
@@ -71,9 +82,12 @@ public class PlayerItem2D : MonoBehaviour
 
                 if (_slot.ItemObject.characterDisplay2D != null) {
                     if (_slot.ItemObject.characterDisplay2D != null) {
-                        foreach(EquipmentSprite cur in equipmentSprite) {
+                        foreach(EquipmentStuff cur in equipmentStuff) {
                             if (_slot.AllowedItems[0] == cur.type) {
-                                cur.spriteRenderer.sprite = null; 
+                                if (cur.spriteRenderer != null) {
+                                    cur.spriteRenderer.sprite = null; 
+                                    cur.events.onRemove.Invoke(_slot.ItemObject);
+                                }
                                 break; 
                             }
                         }
@@ -81,9 +95,10 @@ public class PlayerItem2D : MonoBehaviour
                     }
                 }
 
-                if (_slot.ItemObject.GetType() == typeof(WeaponObject)) {
-                    this.gameObject.GetComponent<PlayerWeapon>().SetDefaultWeapon(); 
-                }
+
+                // if (_slot.ItemObject.GetType() == typeof(WeaponObject)) {
+                //     this.gameObject.GetComponent<PlayerWeapon>().SetDefaultWeapon(); 
+                // }
 
                 break;
             case InterfaceType.Chest:
@@ -117,18 +132,23 @@ public class PlayerItem2D : MonoBehaviour
                 }
 
                 if (_slot.ItemObject.characterDisplay2D != null) {
-                    foreach(EquipmentSprite cur in equipmentSprite) {
+                    foreach(EquipmentStuff cur in equipmentStuff) {
                         if (_slot.AllowedItems[0] == cur.type) {
-                            cur.spriteRenderer.sprite = _slot.ItemObject.characterDisplay2D; 
+                            if (cur.spriteRenderer != null) {
+                                cur.spriteRenderer.sprite = _slot.ItemObject.characterDisplay2D; 
+                                cur.events.onAdd.Invoke(_slot.ItemObject);
+                            }
                             break; 
                         }
                     }
 
                 }
 
-                if (_slot.ItemObject.GetType() == typeof(WeaponObject)) {
-                    this.gameObject.GetComponent<PlayerWeapon>().SetWeapon(_slot.WeaponObject.weapon); 
-                }
+                // OnItemEquiped.Invoke(_slot.ItemObject); 
+
+                // if (_slot.ItemObject.GetType() == typeof(WeaponObject)) {
+                //     this.gameObject.GetComponent<PlayerWeapon>().SetWeapon(_slot.WeaponObject.weapon); 
+                // }
                 break;
             case InterfaceType.Chest:
                 break;
@@ -138,12 +158,6 @@ public class PlayerItem2D : MonoBehaviour
 
     }
 
-                        // switch (_slot.AllowedItems[0])
-                    // {
-                        // case ItemType.Shield:
-                            // switch (_slot.ItemObject.type
-
-                    // }
 
 
     public void AttributeModified(Attribute attribute)
@@ -170,22 +184,6 @@ public class PlayerItem2D : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    // void Update()
-    // {
-    //     if (Input.GetMouseButtonDown(0)) {
-    //         Vector3 playerpos = Camera.main.WorldToScreenPoint(this.transform.position);
-    //         GameObject bullet = ObjectPooler.SharedInstance.GetPooledObject(1); 
-    //         bullet.SetActive(true); 
-
-    //         bullet.GetComponent<Bullet>().Init(Input.mousePosition - playerpos);
-    //         bullet.transform.position = this.transform.position + currentItemPos.Rotate(this.transform.rotation.eulerAngles.z); 
-    //         bullet.transform.rotation = this.transform.rotation; 
-    //         // bullet.transform.localPosition = currentItemPos; 
-
-            
-    //     }
-    // }
 
     private void OnApplicationQuit() {
         inventory.Clear();
