@@ -47,15 +47,24 @@ public class PlayerItem2D : MonoBehaviour
     public List<EquipmentStuff> equipmentStuff = new List<EquipmentStuff>();
 
 
-    public void OnTriggerEnter2D(Collider2D other)
-    {
-        var gitem = other.GetComponent<unityInventorySystem.GroundItem>();
+    // public void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     var gitem = other.GetComponent<unityInventorySystem.GroundItem>();
+    //     if (gitem) {
+    //         Item _item = new Item(gitem.item);
+    //         Debug.Log(_item.Id);
+    //         inventory.AddItem(_item, gitem.ammount);
+    //         Destroy(other.gameObject);
+    //     }
+    // }
+
+    public void AddItemToInventory(unityInventorySystem.GroundItem gitem) {
         if (gitem) {
             Item _item = new Item(gitem.item);
-            Debug.Log(_item.Id);
+            // Debug.Log(_item.Id);
             inventory.AddItem(_item, gitem.ammount);
-            Destroy(other.gameObject);
         }
+
     }
 
     public Attribute[] attributes;
@@ -84,6 +93,8 @@ public class PlayerItem2D : MonoBehaviour
                     if (_slot.ItemObject.characterDisplay2D != null) {
                         foreach(EquipmentStuff cur in equipmentStuff) {
                             if (_slot.AllowedItems[0] == cur.type) {
+
+                                // TODO: Remove the sprite renderers or something
                                 if (cur.spriteRenderer != null) {
                                     cur.spriteRenderer.sprite = null; 
                                     cur.events.onRemove.Invoke(_slot.ItemObject);
