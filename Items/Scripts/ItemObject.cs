@@ -15,6 +15,8 @@ public class ItemObject : ScriptableObject
 
 
     public bool stackable;
+    public int stackSize; //idk how to use this now
+    
     public ItemType type;
     [TextArea(15, 20)]
     public string description;
@@ -32,23 +34,13 @@ public class ItemObject : ScriptableObject
         data.Name = this.name; 
     }
 
-    // private void OnValidate()
-    // {
-    //     // boneNames.Clear();
-    //     // if(characterDisplay == null)
-    //     //     return;
-    //     // if(!characterDisplay.GetComponent<SkinnedMeshRenderer>())
-    //     //     return;
+    public virtual Weapon GetWeapon() {
+        return null; 
+    }
 
-    //     // var renderer = characterDisplay.GetComponent<SkinnedMeshRenderer>();
-    //     // var bones = renderer.bones;
-
-    //     // foreach (var t in bones)
-    //     // {
-    //     //     boneNames.Add(t.name);
-    //     // }
-
-    // }
+    public virtual bool IsWeapon() {
+        return false; 
+    }
 }
 
 [System.Serializable]

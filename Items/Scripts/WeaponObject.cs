@@ -17,5 +17,12 @@ public class WeaponObject : ItemObject
         weapon.sprite = this.characterDisplay2D; 
     }
 
+    public override Weapon GetWeapon() {
+        return weapon; 
+    }
+
+    public override bool IsWeapon() {
+        return true; 
+    }
 }
 }

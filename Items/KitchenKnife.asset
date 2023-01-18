@@ -10,34 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e24e6376edd0894499235853813a862, type: 3}
-  m_Name: Weapontest
+  m_Name: KitchenKnife
   m_EditorClassIdentifier: 
-  uiDisplay: {fileID: -1299688068531442217, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
+  uiDisplay: {fileID: -854157385759928050, guid: b293cb9b20cbdf043ac86c00c383f06e, type: 3}
   characterDisplay: {fileID: 0}
-  characterDisplay2D: {fileID: 21300020, guid: a0e7f1167efba544bb8d6e3198ae44f9, type: 3}
-  stackable: 1
+  characterDisplay2D: {fileID: 21300000, guid: c9952ecd7498aa74d803b89c04f9375c, type: 3}
+  stackable: 0
+  stackSize: 0
   type: 2
   description: 
   data:
     Name: 
-    Id: 15
+    Id: 2
     buffs: []
   weapon:
     origin: {x: 0, y: 0, z: 0}
-    attack_type: 2
-    rarity: 4
-    sprite: {fileID: 21300020, guid: a0e7f1167efba544bb8d6e3198ae44f9, type: 3}
-    _angle: 20
-    _range: 1
-    _min_range: 1
+    attack_type: 1
+    rarity: 0
+    sprite: {fileID: 21300000, guid: c9952ecd7498aa74d803b89c04f9375c, type: 3}
+    _angle: 0
+    _range: 0.2
+    _min_range: 0
     _prep_time: 0
-    _attack_time: 0
+    _attack_time: 0.2
     _cooldown_time: 0.2
     _reload_time: 0
-    _damage: 10
+    _damage: 5
     charges: 0
-    total_charges: 500
-    reload_amount: 0
     mag_size: -1
     tier: 0
     bullets: 1

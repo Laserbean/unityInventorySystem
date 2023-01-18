@@ -10,18 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36c92f6916f51c84180ccd6986ebd922, type: 3}
-  m_Name: Chest 2
+  m_Name: Ammo
   m_EditorClassIdentifier: 
-  uiDisplay: {fileID: 625480778395568090, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c,
-    type: 3}
-  stackable: 0
-  type: 5
+  uiDisplay: {fileID: 21300000, guid: 61f1ea0354dcb6b478b4e36c6e19e6e4, type: 3}
+  characterDisplay: {fileID: 0}
+  characterDisplay2D: {fileID: 0}
+  stackable: 1
+  stackSize: 0
+  type: 7
   description: 
   data:
-    Name: 
-    Id: 4
-    buffs:
-    - attribute: 1
-      value: 0
-      min: 1
-      max: 10
+    Name: Ammo
+    Id: 8
+    buffs: []
