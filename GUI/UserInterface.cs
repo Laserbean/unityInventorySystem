@@ -121,10 +121,10 @@ public abstract class UserInterface : MonoBehaviour
         }
     }
 
-    Vector2 mousepos; 
-    public void OnPoint(InputValue value) {
-        mousepos = value.Get<Vector2>();
-    }
+    // Vector2 mousepos; 
+    // public void OnPoint(InputValue value) {
+    //     mousepos = value.Get<Vector2>();
+    // }
 
 
 
