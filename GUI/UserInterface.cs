@@ -7,6 +7,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using System;
 
+using UnityEngine.InputSystem; 
+
+
 using unityInventorySystem; 
 public abstract class UserInterface : MonoBehaviour
 {
@@ -109,9 +112,20 @@ public abstract class UserInterface : MonoBehaviour
     }
     public void OnDrag(GameObject obj)
     {
-        if (MouseData.tempItemBeingDragged != null)
-            MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = Input.mousePosition;
+        if (MouseData.tempItemBeingDragged != null){
+            #if ENABLE_INPUT_SYSTEM
+                MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = Mouse.current.position.ReadValue();
+            #else
+                MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = Input.mousePosition;
+            #endif
+        }
     }
+
+    Vector2 mousepos; 
+    public void OnPoint(InputValue value) {
+        mousepos = value.Get<Vector2>();
+    }
+
 
 
 }
