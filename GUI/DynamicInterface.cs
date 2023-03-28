@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
+using UnityEngine.UI;
+
 using unityInventorySystem; 
 
 public class DynamicInterface : UserInterface
@@ -27,6 +30,8 @@ public class DynamicInterface : UserInterface
             AddEvent(obj, EventTriggerType.BeginDrag, delegate { OnDragStart(obj); });
             AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
             AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
+            AddEvent(obj, EventTriggerType.PointerClick, delegate { SelectSlot(obj); });
+
 
             inventory.GetSlots[i].slotDisplay = obj;
 
@@ -37,4 +42,27 @@ public class DynamicInterface : UserInterface
     {
         return new Vector3(X_START + (X_SPACE_BETWEEN_ITEM * (i % NUMBER_OF_COLUMN)), Y_START + (-Y_SPACE_BETWEEN_ITEMS * (i / NUMBER_OF_COLUMN)), 0f);
     }
+
+    public override void SelectSlot(GameObject obj)
+    {
+        Debug.Log("slot sellected");
+
+        GameObject tempItem = null;
+        if(slotsOnInterface[obj].item.Id >= 0)
+        {
+            tempItem = new GameObject();
+            var rt = tempItem.AddComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(50, 50);
+            tempItem.transform.SetParent(transform.parent);
+            var img = tempItem.AddComponent<Image>();
+            // img.sprite = slotsOnInterface[obj].ItemObject.uiDisplay;
+            img.sprite = selectedSlot; 
+
+
+            img.raycastTarget = false;
+        }
+        // throw new System.NotImplementedException();
+    }
+
+    public Sprite selectedSlot;
 }

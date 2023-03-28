@@ -27,4 +27,9 @@ public class StaticInterface : UserInterface
 
         }
     }
+
+    public override void SelectSlot(GameObject obj)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -44,7 +44,7 @@ MonoBehaviour:
     _melee_prep_time: 1
     _melee_attack_time: 0.7
     _melee_cooldown_time: 0.1
-    _damage: 0
+    _damage: 10
     charges: 0
     mag_size: 0
     tier: 0

@@ -96,6 +96,7 @@ public abstract class UserInterface : MonoBehaviour
         }
         return tempItem;
     }
+
     public void OnDragEnd(GameObject obj)
     {
         Destroy(MouseData.tempItemBeingDragged);
@@ -110,6 +111,7 @@ public abstract class UserInterface : MonoBehaviour
             inventory.SwapItems(slotsOnInterface[obj], mouseHoverSlotData);
         }
     }
+
     public void OnDrag(GameObject obj)
     {
         if (MouseData.tempItemBeingDragged != null){
@@ -120,6 +122,12 @@ public abstract class UserInterface : MonoBehaviour
             #endif
         }
     }
+
+    public void OnPointerClick(GameObject obj) {
+        SelectSlot(obj); 
+    }
+
+    public abstract void SelectSlot(GameObject obj);
 
     // Vector2 mousepos; 
     // public void OnPoint(InputValue value) {
