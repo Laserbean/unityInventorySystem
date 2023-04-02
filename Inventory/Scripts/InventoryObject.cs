@@ -175,8 +175,19 @@ public class InventorySlot
     public SlotUpdated OnAfterUpdate;
     [System.NonSerialized]
     public SlotUpdated OnBeforeUpdate;
+
+        [System.NonSerialized] //I added this
+        public bool isSelected = false; 
+        public int slotNumber; 
+
+
+        public void SetSlotNumber(int num) {
+            slotNumber = num; 
+        }
+
     public Item item = new Item();
     public int amount;
+
 
     public ItemObject ItemObject {
         get

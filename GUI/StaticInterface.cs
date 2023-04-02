@@ -16,20 +16,19 @@ public class StaticInterface : UserInterface
         {
             var obj = slots[i];
 
+            SetEventTriggers(obj); 
 
-            AddEvent(obj, EventTriggerType.PointerEnter, delegate { OnEnter(obj); });
-            AddEvent(obj, EventTriggerType.PointerExit, delegate { OnExit(obj); });
-            AddEvent(obj, EventTriggerType.BeginDrag, delegate { OnDragStart(obj); });
-            AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
-            AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
             inventory.GetSlots[i].slotDisplay = obj;
+
+            // inventory.GetSlots[i].SetSlotNumber(i); 
             slotsOnInterface.Add(obj, inventory.GetSlots[i]);
 
+                
         }
     }
 
-    public override void SelectSlot(GameObject obj)
-    {
-        throw new System.NotImplementedException();
-    }
+    // public override void SelectSlot(GameObject obj)
+    // {
+    //     throw new System.NotImplementedException();
+    // }
 }

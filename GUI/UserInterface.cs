@@ -45,6 +45,16 @@ public abstract class UserInterface : MonoBehaviour
         }
     }
 
+
+    protected void SetEventTriggers(GameObject obj) {
+        AddEvent(obj, EventTriggerType.PointerEnter, delegate { OnEnter(obj); });
+        AddEvent(obj, EventTriggerType.PointerExit, delegate { OnExit(obj); });
+        AddEvent(obj, EventTriggerType.BeginDrag, delegate { OnDragStart(obj); });
+        AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
+        AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
+        AddEvent(obj, EventTriggerType.PointerClick, delegate { SelectSlot(obj); });
+    }
+
     //// Update is called once per frame
     //void Update()
     //{
@@ -70,7 +80,7 @@ public abstract class UserInterface : MonoBehaviour
     }
 
     public void OnEnterInterface(GameObject obj) {
-        MouseData.interfaceMouseIsOver = obj.GetComponent<UserInterface>();
+        MouseData.interfaceMouseIsOver = obj.GetComponent<UserInterface>();        
     }
 
     public void OnExitInterface(GameObject obj) {
@@ -97,19 +107,34 @@ public abstract class UserInterface : MonoBehaviour
         return tempItem;
     }
 
+
     public void OnDragEnd(GameObject obj)
     {
         Destroy(MouseData.tempItemBeingDragged);
+        EndDragOrSecondClick(slotsOnInterface[obj]);
+    }
+
+    void EndDragOrSecondClick(InventorySlot islot) {
         if (MouseData.interfaceMouseIsOver == null)
         {
-            slotsOnInterface[obj].RemoveItem();
+            islot.RemoveItem();
             return;
         }
         if (MouseData.slotHoveredOver)
         {
             InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
-            inventory.SwapItems(slotsOnInterface[obj], mouseHoverSlotData);
+            // InventorySlot mouseHoverSlotData = SelectedSlot.userinterface.slotsOnInterface[MouseData.slotHoveredOver];
+            inventory.SwapItems(islot, mouseHoverSlotData);
         }
+
+        Debug.Log("slot EDED");
+
+
+
+
+        SlotSelection.Instance.image.enabled = false; 
+        SelectedSlot.obj = null; 
+        SlotSelection.Instance.isSelecting = false; 
     }
 
     public void OnDrag(GameObject obj)
@@ -127,7 +152,39 @@ public abstract class UserInterface : MonoBehaviour
         SelectSlot(obj); 
     }
 
-    public abstract void SelectSlot(GameObject obj);
+    public void SelectSlot(GameObject obj) {
+        Debug.Log("CLICKED SLOT");
+
+        int slotselected = slotsOnInterface[obj].slotNumber;
+
+        if (!SlotSelection.Instance.isSelecting) {    
+            SlotSelection.Instance.image.enabled = true; 
+            SlotSelection.Instance.GetComponent<RectTransform>().position = obj.GetComponent<RectTransform>().position; 
+            // SlotSelection.Instance.inventorySlot = slotsOnInterface[obj];
+            SelectedSlot.obj = obj; 
+            SelectedSlot.slot = slotsOnInterface[obj]; 
+
+            Debug.Log("slot sellected" + slotselected);
+
+            SlotSelection.Instance.isSelecting = true; 
+
+        } else {
+            if (SelectedSlot.obj != null) {
+                EndDragOrSecondClick(SelectedSlot.slot);
+
+                
+            }
+
+
+        }
+
+
+
+
+
+    }
+
+    public static GameObject selectslotGO; 
 
     // Vector2 mousepos; 
     // public void OnPoint(InputValue value) {
@@ -144,6 +201,11 @@ public static class MouseData
     public static GameObject slotHoveredOver;
 }
 
+public static class SelectedSlot {
+    public static GameObject obj;
+    public static int slotnumber;
+    public static InventorySlot slot; 
+}
 
 public static class ExtensionMethods
 {

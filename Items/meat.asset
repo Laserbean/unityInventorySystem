@@ -20,6 +20,6 @@ MonoBehaviour:
   type: 0
   description: 
   data:
-    Name: a food
-    Id: -1
+    Name: meat
+    Id: 5
     buffs: []
