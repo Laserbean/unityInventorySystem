@@ -18,8 +18,12 @@ MonoBehaviour:
   stackable: 1
   stackSize: 0
   type: 0
-  description: 
+  description: A nice piece of meat. For hungy.
   data:
     Name: meat
-    Id: 5
-    buffs: []
+    Id: 4
+    buffs:
+    - attribute: 0
+      value: 0
+      min: 0
+      max: 0

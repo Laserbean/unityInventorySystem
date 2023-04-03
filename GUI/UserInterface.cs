@@ -52,7 +52,9 @@ public abstract class UserInterface : MonoBehaviour
         AddEvent(obj, EventTriggerType.BeginDrag, delegate { OnDragStart(obj); });
         AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
         AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
-        AddEvent(obj, EventTriggerType.PointerClick, delegate { SelectSlot(obj); });
+        AddEvent(obj, EventTriggerType.PointerClick, delegate { OnCLickedSlot(obj); });
+        AddEvent(obj, EventTriggerType.Select, delegate { OnSelect(obj); });
+        AddEvent(obj, EventTriggerType.Submit, delegate { OnSubmit(obj); });
     }
 
     //// Update is called once per frame
@@ -149,10 +151,10 @@ public abstract class UserInterface : MonoBehaviour
     }
 
     public void OnPointerClick(GameObject obj) {
-        SelectSlot(obj); 
+        OnCLickedSlot(obj); 
     }
 
-    public void SelectSlot(GameObject obj) {
+    public void OnCLickedSlot(GameObject obj) {
         Debug.Log("CLICKED SLOT");
 
         int slotselected = slotsOnInterface[obj].slotNumber;
@@ -175,16 +177,34 @@ public abstract class UserInterface : MonoBehaviour
                 
             }
 
-
         }
-
-
-
-
 
     }
 
-    public static GameObject selectslotGO; 
+    public void OnSelect(GameObject obj) {
+        ButtonSelectedData.sinterface = obj.GetComponentInParent<UserInterface>(); 
+        ButtonSelectedData.slotGO = obj; 
+    }
+
+    public void OnSubmit(GameObject obj) {
+        if (!SlotSelection.Instance.isSelecting) {
+            SlotSelection.Instance.image.enabled = true; 
+            SlotSelection.Instance.GetComponent<RectTransform>().position = obj.GetComponent<RectTransform>().position; 
+            SlotSelection.Instance.isSelecting = true; 
+
+            SelectedSlot.obj = ButtonSelectedData.slotGO; 
+            SelectedSlot.slot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO]; 
+        } else {
+            InventorySlot curIslot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
+            inventory.SwapItems(curIslot, SelectedSlot.slot);
+
+            SlotSelection.Instance.image.enabled = false; 
+            SelectedSlot.obj = null; 
+            SlotSelection.Instance.isSelecting = false; 
+        }
+    }
+
+    public static GameObject OnCLickedSlotGO; 
 
     // Vector2 mousepos; 
     // public void OnPoint(InputValue value) {
@@ -205,6 +225,12 @@ public static class SelectedSlot {
     public static GameObject obj;
     public static int slotnumber;
     public static InventorySlot slot; 
+}
+
+public static class ButtonSelectedData {
+    public static UserInterface sinterface;
+    public static GameObject slotGO;
+
 }
 
 public static class ExtensionMethods
