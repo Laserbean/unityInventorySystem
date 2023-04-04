@@ -8,10 +8,10 @@ namespace unityInventorySystem {
 
 public enum ItemType 
 {
-    Food,
+    Consumable,
     Helmet,
     Weapon,
-    Shield, //should be only for inventory equipping
+    Shield,
     Boots,
     Chest,
     Attachment, 
@@ -22,9 +22,9 @@ public enum ItemType
 public enum Attributes
 {
     Agility,
-    Intellect,
+    Defence,
     Stamina,
-    Strength
+    Strength,
 }
 
 }

@@ -41,6 +41,14 @@ public class ItemObject : ScriptableObject
     public virtual bool IsWeapon() {
         return false; 
     }
+
+    public virtual Consumable GetConsumable() {
+        return null; 
+    }
+
+    public virtual bool IsConsumable() {
+        return false; 
+    }
 }
 
 [System.Serializable]

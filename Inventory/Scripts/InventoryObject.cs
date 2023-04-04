@@ -38,6 +38,22 @@ public class InventoryObject : ScriptableObject
         slot.AddAmount(_amount);
         return true;
     }
+
+    public bool RemoveItem(Item _item)
+    {
+        if (EmptySlotCount <= 0)
+            return false;
+        InventorySlot slot = FindItemOnInventory(_item);
+        if(!database.ItemObjects[_item.Id].stackable || slot == null)
+        {
+            slot = new InventorySlot();
+            return true;
+        }
+        slot.RemoveAmount(1); 
+        return true;
+    }
+
+
     public int EmptySlotCount
     {
         get
@@ -77,6 +93,7 @@ public class InventoryObject : ScriptableObject
         //set up functionality for full inventory
         return null;
     }
+    
 
     public void SwapItems(InventorySlot item1, InventorySlot item2)
     {
@@ -176,14 +193,11 @@ public class InventorySlot
     [System.NonSerialized]
     public SlotUpdated OnBeforeUpdate;
 
-        [System.NonSerialized] //I added this
-        public bool isSelected = false; 
-        public int slotNumber; 
+
+        public string tag;
 
 
-        public void SetSlotNumber(int num) {
-            slotNumber = num; 
-        }
+
 
     public Item item = new Item();
     public int amount;
@@ -240,6 +254,14 @@ public class InventorySlot
     public void AddAmount(int value)
     {
         UpdateSlot(item, amount += value);
+    }
+
+    public void RemoveAmount(int value)
+    {
+        UpdateSlot(item, amount -= value);
+        if (amount <= 0) { 
+            RemoveItem(); 
+        }
     }
 
     public bool CanPlaceInSlot(ItemObject _itemObject)

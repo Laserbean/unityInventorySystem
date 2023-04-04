@@ -129,9 +129,7 @@ public abstract class UserInterface : MonoBehaviour
             inventory.SwapItems(islot, mouseHoverSlotData);
         }
 
-        Debug.Log("slot EDED");
-
-
+        // Debug.Log("slot EDED");
 
 
         SlotSelection.Instance.image.enabled = false; 
@@ -155,30 +153,33 @@ public abstract class UserInterface : MonoBehaviour
     }
 
     public void OnCLickedSlot(GameObject obj) {
-        Debug.Log("CLICKED SLOT");
-
-        int slotselected = slotsOnInterface[obj].slotNumber;
+        // Debug.Log("CLICKED SLOT");
 
         if (!SlotSelection.Instance.isSelecting) {    
-            SlotSelection.Instance.image.enabled = true; 
-            SlotSelection.Instance.GetComponent<RectTransform>().position = obj.GetComponent<RectTransform>().position; 
             // SlotSelection.Instance.inventorySlot = slotsOnInterface[obj];
             SelectedSlot.obj = obj; 
             SelectedSlot.slot = slotsOnInterface[obj]; 
 
-            Debug.Log("slot sellected" + slotselected);
+            SelectSlot(obj); 
+            EventManager.TriggerEvent(new SlotSelectedEvent(SelectedSlot.slot));
 
-            SlotSelection.Instance.isSelecting = true; 
+
 
         } else {
             if (SelectedSlot.obj != null) {
-                EndDragOrSecondClick(SelectedSlot.slot);
-
-                
+                EndDragOrSecondClick(SelectedSlot.slot);                
             }
+
+            EventManager.TriggerEvent(new SlotSelectedEvent(new InventorySlot()));
 
         }
 
+    }
+
+    void SelectSlot(GameObject obj) {
+            SlotSelection.Instance.image.enabled = true; 
+            SlotSelection.Instance.GetComponent<RectTransform>().position = obj.GetComponent<RectTransform>().position; 
+            SlotSelection.Instance.isSelecting = true; 
     }
 
     public void OnSelect(GameObject obj) {
@@ -188,12 +189,14 @@ public abstract class UserInterface : MonoBehaviour
 
     public void OnSubmit(GameObject obj) {
         if (!SlotSelection.Instance.isSelecting) {
-            SlotSelection.Instance.image.enabled = true; 
-            SlotSelection.Instance.GetComponent<RectTransform>().position = obj.GetComponent<RectTransform>().position; 
-            SlotSelection.Instance.isSelecting = true; 
 
             SelectedSlot.obj = ButtonSelectedData.slotGO; 
             SelectedSlot.slot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO]; 
+
+            SelectSlot(obj); 
+            EventManager.TriggerEvent(new SlotSelectedEvent(SelectedSlot.slot));
+
+
         } else {
             InventorySlot curIslot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
             inventory.SwapItems(curIslot, SelectedSlot.slot);
@@ -201,6 +204,9 @@ public abstract class UserInterface : MonoBehaviour
             SlotSelection.Instance.image.enabled = false; 
             SelectedSlot.obj = null; 
             SlotSelection.Instance.isSelecting = false; 
+
+            EventManager.TriggerEvent(new SlotSelectedEvent(new InventorySlot()));
+
         }
     }
 
@@ -252,5 +258,13 @@ public static class ExtensionMethods
                 _slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = "";
             }
         }
+    }
+}
+
+public class SlotSelectedEvent {
+    public InventorySlot slot; 
+
+    public SlotSelectedEvent(InventorySlot _slot) {
+        slot = _slot; 
     }
 }

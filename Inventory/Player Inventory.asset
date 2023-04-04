@@ -14,171 +14,200 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   savePath: /inventory.Save
   database: {fileID: 11400000, guid: 12cdf3138109dd946b96d9d82a9ddda2, type: 2}
+  type: 0
   Container:
-    Items:
+    Slots:
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 
+      tag: 
       item:
         Name: 
         Id: -1
