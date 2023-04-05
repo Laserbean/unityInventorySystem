@@ -19,7 +19,7 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
 #if UNITY_EDITOR
         // GetComponentInChildren<SpriteRenderer>().sprite = item.uiDisplay;
         // EditorUtility.SetDirty(GetComponentInChildren<SpriteRenderer>());
-        if (item != null) {
+        if (item != null && isAnimated) {
             this.gameObject.GetComponent<SpriteRenderer>().sprite = item.uiDisplay; 
         }
                 
@@ -33,9 +33,13 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
     [Range(0f, 1f)]
     [SerializeField] float sin_ratio = 0.7f; 
 
+
+    [SerializeField] bool isAnimated = true; 
     private void Update() {
-        time += Time.deltaTime; 
-        this.transform.localScale =  Vector3.one+ (Vector3.one * Mathf.Sin(time *animation_speed) * sin_ratio); 
+        if (isAnimated) {
+            time += Time.deltaTime; 
+            this.transform.localScale =  Vector3.one+ (Vector3.one * Mathf.Sin(time *animation_speed) * sin_ratio); 
+        }
     }
 
     public void SetItem(ItemObject item) {
