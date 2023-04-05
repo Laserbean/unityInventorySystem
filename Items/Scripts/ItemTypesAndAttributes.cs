@@ -15,7 +15,10 @@ public enum ItemType
     Boots,
     Chest,
     Attachment, 
-    Ammo,
+    SmallAmmo,
+    LargeAmmo,
+    ShotgunAmmo, 
+    ArrowAmmo, 
     Default
 }
 

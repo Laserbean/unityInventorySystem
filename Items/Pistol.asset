@@ -10,39 +10,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e24e6376edd0894499235853813a862, type: 3}
-  m_Name: Shotgun
+  m_Name: Pistol
   m_EditorClassIdentifier: 
-  uiDisplay: {fileID: 4885409087899809280, guid: b293cb9b20cbdf043ac86c00c383f06e, type: 3}
+  uiDisplay: {fileID: 1996786882652153956, guid: b293cb9b20cbdf043ac86c00c383f06e, type: 3}
   characterDisplay: {fileID: 0}
-  characterDisplay2D: {fileID: 21300000, guid: 45e3d96f2e1253d47b3befa892cb4f8c, type: 3}
-  stackable: 1
+  characterDisplay2D: {fileID: 21300000, guid: 53c31219edd850142a16f659c12fa9c2, type: 3}
+  stackable: 0
   stackSize: 0
   type: 2
   description: 
   data:
     Name: 
-    Id: 4
+    Id: 8
     buffs: []
   weapon:
     origin: {x: 0, y: 0, z: 0}
     attack_type: 1
-    bullet_type: 9
+    bullet_type: 7
     rarity: 0
-    sprite: {fileID: 21300000, guid: 45e3d96f2e1253d47b3befa892cb4f8c, type: 3}
-    _angle: 20
-    _range: 1.4
+    sprite: {fileID: 21300000, guid: 53c31219edd850142a16f659c12fa9c2, type: 3}
+    _angle: 10
+    _range: 1
     _min_range: 0
-    _prep_time: 0.04
-    _attack_time: 0.001
-    _cooldown_time: 0.3
+    _prep_time: 0
+    _attack_time: 0.25
+    _cooldown_time: 0.25
     _reload_time: 1
-    _centre: 0.2
-    _weight: 1
-    _melee_prep_time: 0.4
+    _centre: 0
+    _weight: 0.4
+    _melee_prep_time: 0.1
     _melee_attack_time: 0.1
-    _melee_cooldown_time: 0.2
-    _damage: 5
-    b_in_mag: 2
-    mag_size: 2
+    _melee_cooldown_time: 0.3
+    _damage: 7
+    b_in_mag: 8
+    mag_size: 8
     tier: 0
-    bullets: 5
+    bullets: 1

@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+using unityInventorySystem; 
 
 [System.Serializable]
 public class Weapon
 {
     public Vector3 origin;
     public AttackType attack_type; 
-    public BulletType bullet_type; 
+    public ItemType bullet_type = ItemType.SmallAmmo; 
     public Rarity rarity; 
 
     public Sprite sprite;
@@ -107,8 +107,10 @@ public enum Rarity {
     Common, Uncommon, Rare,  Limited, Unique
 };
 
-public enum BulletType {
-    Small,
-    Shotgun,
-    Large
-}
+
+
+// public class OnBulletUseEvent {
+//     BulletType type;
+//     int amount; 
+
+// }

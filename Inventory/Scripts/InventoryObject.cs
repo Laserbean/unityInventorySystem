@@ -80,6 +80,39 @@ public class InventoryObject : ScriptableObject
         }
         return null;
     }
+
+    public List<InventorySlot> FindSlotsWithType(ItemType itype) {
+        List<InventorySlot> list = new List<InventorySlot>(); 
+
+        for (int i = 0; i < GetSlots.Length; i++)
+        {
+            if(GetSlots[i].ItemObject.type == itype)
+            {
+                list.Add(GetSlots[i]); 
+            }
+        }
+        return list;
+    }
+
+    public InventorySlot FindFirstSlotWithType(ItemType itype) { //make sure type is unique, example, bullets. 
+
+
+
+        for (int i = 0; i < GetSlots.Length; i++)
+        {
+            try {
+            if(GetSlots[i].ItemObject != null && GetSlots[i].ItemObject.type == itype)
+            {
+                return GetSlots[i];
+            }
+            } catch {
+                Debug.LogError("idk what's the rerroror"); 
+            }
+        }
+        return null;
+    }
+
+
     public InventorySlot SetEmptySlot(Item _item, int _amount)
     {
         for (int i = 0; i < GetSlots.Length; i++)
