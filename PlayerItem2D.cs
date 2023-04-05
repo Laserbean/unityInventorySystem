@@ -10,6 +10,7 @@ using UnityEngine.Events;
 [System.Serializable]
 public class EquipmentStuff {
     public ItemType type;
+    public EquipmentTag tag; 
     public SpriteRenderer spriteRenderer; 
     public EquipmentEvents events; 
 }
@@ -92,7 +93,7 @@ public class PlayerItem2D : MonoBehaviour
                 if (_slot.ItemObject.characterDisplay2D != null) {
                     if (_slot.ItemObject.characterDisplay2D != null) {
                         foreach(EquipmentStuff cur in equipmentStuff) {
-                            if (_slot.AllowedItems[0] == cur.type) {
+                            if (_slot.AllowedItems[0] == cur.type && _slot.tag == cur.tag) {
 
                                 // TODO: Remove the sprite renderers or something
                                 if (cur.spriteRenderer != null) {
@@ -130,8 +131,7 @@ public class PlayerItem2D : MonoBehaviour
             case InterfaceType.Inventory:
                 break;
             case InterfaceType.Equipment:
-                print(
-                    $"Placed {_slot.ItemObject}  on {_slot.parent.inventory.type}, Allowed Items: {string.Join(", ", _slot.AllowedItems)}");
+                print($"Placed {_slot.ItemObject}  on {_slot.parent.inventory.type}, Allowed Items: {string.Join(", ", _slot.AllowedItems)}");
 
                 for (int i = 0; i < _slot.item.buffs.Length; i++)
                 {
@@ -144,7 +144,7 @@ public class PlayerItem2D : MonoBehaviour
 
                 if (_slot.ItemObject.characterDisplay2D != null) {
                     foreach(EquipmentStuff cur in equipmentStuff) {
-                        if (_slot.AllowedItems[0] == cur.type) {
+                        if (_slot.AllowedItems[0] == cur.type && _slot.tag == cur.tag) {
                             if (cur.spriteRenderer != null) {
                                 cur.spriteRenderer.sprite = _slot.ItemObject.characterDisplay2D; 
                                 cur.events.onAdd.Invoke(_slot.ItemObject);

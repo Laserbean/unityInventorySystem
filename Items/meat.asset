@@ -20,15 +20,11 @@ MonoBehaviour:
   type: 0
   description: A nice piece of meat. For hungy.
   data:
-    Name: New Item
-    Id: -1
+    Name: Meat
+    Id: 4
     buffs: []
   consumable:
     _satiety: 0
-    _health: 5
+    _health: 30
     _duration: 0
-    _attribute:
-      type: 0
-      value:
-        baseValue: 0
-        modifiedValue: 0
+    attributes: []

@@ -15,10 +15,14 @@ public class SelectedItemInterface : MonoBehaviour
     void OnEnable()
     {
         EventManager.AddListener<SlotSelectedEvent>(OnSlotSelected);       
+        EventManager.AddListener<SlotUpdatedEvent>(OnSlotUpdated);
+
     }
 
     void OnDisable() {
         EventManager.RemoveListener<SlotSelectedEvent>(OnSlotSelected);
+        EventManager.RemoveListener<SlotUpdatedEvent>(OnSlotUpdated);
+
     }
 
     [SerializeField] TMPro.TextMeshProUGUI itemName;
@@ -39,7 +43,7 @@ public class SelectedItemInterface : MonoBehaviour
             if (itemDatabase.ItemObjects[slot.item.Id].type == ItemType.Consumable) {
                 usebutton.gameObject.SetActive(true); 
             }
-
+            //TODO show stats for food i guess.
 
         } else {
             description.text = ""; 
@@ -49,9 +53,22 @@ public class SelectedItemInterface : MonoBehaviour
         }
     }
 
+    void OnSlotUpdated(SlotUpdatedEvent evnt) {
+        if (slot == evnt.slot) {
+            if (evnt.slot.amount <= 0) {
+                usebutton.gameObject.SetActive(false); 
+            }
+        }
+
+    }
+
     public void OnButton() {
         // inventory.RemoveItem(slot.item);
-        slot.RemoveAmount(1);  
+        if (slot.ItemObject.IsConsumable()) {
+            slot.RemoveAmount(1);  
+            EventManager.TriggerEvent(new ConsumeItemEvent(slot.ItemObject.GetConsumable()));
+        }
+ 
 
     }
 

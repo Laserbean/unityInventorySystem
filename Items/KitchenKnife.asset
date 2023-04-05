@@ -25,11 +25,12 @@ MonoBehaviour:
     buffs: []
   weapon:
     origin: {x: 0, y: 0, z: 0}
-    attack_type: 1
+    attack_type: 0
+    bullet_type: 0
     rarity: 0
     sprite: {fileID: 21300000, guid: c9952ecd7498aa74d803b89c04f9375c, type: 3}
     _angle: 0
-    _range: 1
+    _range: 1.2
     _min_range: 0.1
     _prep_time: 0
     _attack_time: 0.2
@@ -37,11 +38,11 @@ MonoBehaviour:
     _reload_time: 0
     _centre: 0
     _weight: 0
-    _melee_prep_time: 0
+    _melee_prep_time: 0.1
     _melee_attack_time: 0.1
     _melee_cooldown_time: 0.3
     _damage: 10
-    charges: 0
+    b_in_mag: 0
     mag_size: -1
     tier: 0
     bullets: 1

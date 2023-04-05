@@ -31,6 +31,7 @@ public abstract class UserInterface : MonoBehaviour
 
     private void OnSlotUpdate(InventorySlot _slot)
     {
+        EventManager.TriggerEvent(new SlotUpdatedEvent(_slot));
         if (_slot.item.Id >= 0)
         {
             _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = _slot.ItemObject.uiDisplay;
@@ -265,6 +266,14 @@ public class SlotSelectedEvent {
     public InventorySlot slot; 
 
     public SlotSelectedEvent(InventorySlot _slot) {
+        slot = _slot; 
+    }
+}
+
+public class SlotUpdatedEvent {
+    public InventorySlot slot; 
+
+    public SlotUpdatedEvent(InventorySlot _slot) {
         slot = _slot; 
     }
 }

@@ -27,4 +27,10 @@ public enum Attributes
     Strength,
 }
 
+public enum EquipmentTag 
+{
+    Head, lefthand, righthand, body, feet, equipment
+
+}
+
 }

@@ -194,7 +194,7 @@ public class InventorySlot
     public SlotUpdated OnBeforeUpdate;
 
 
-        public string tag;
+        public EquipmentTag tag;
 
 
 
@@ -276,4 +276,17 @@ public class InventorySlot
         return false;
     }
 }
+
+
+public class ConsumeItemEvent {
+    public Consumable item; 
+
+    public ConsumeItemEvent(Consumable _item) {
+        item = _item; 
+    }
+
+}
+
+
+
 }

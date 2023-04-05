@@ -18,35 +18,35 @@ MonoBehaviour:
   Container:
     Slots:
     - AllowedItems: 01000000
-      tag: head
+      tag: 0
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
-    - AllowedItems: 02000000
-      tag: righthand
+    - AllowedItems: 0200000002000000
+      tag: 2
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
-    - AllowedItems: 0000000002000000
-      tag: lefthand
+    - AllowedItems: 0200000006000000
+      tag: 1
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 05000000
-      tag: chest
+      tag: 3
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 04000000
-      tag: shoes
+      tag: 4
       item:
         Name: 
         Id: -1
