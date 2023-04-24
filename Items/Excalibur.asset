@@ -20,8 +20,8 @@ MonoBehaviour:
   type: 2
   description: 
   data:
-    Name: 
-    Id: 3
+    Name: Excalibur
+    Id: 1
     buffs:
     - attribute: 3
       value: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
     rarity: 3
     sprite: {fileID: 21300000, guid: b178ace1fa49f3d4188082ddd43ae5f6, type: 3}
     _angle: 50
-    _range: 2.5
+    _range: 2.3
     _min_range: 0.4
     _prep_time: 0.1
     _attack_time: 0.25

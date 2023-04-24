@@ -19,6 +19,7 @@ public enum ItemType
     LargeAmmo,
     ShotgunAmmo, 
     ArrowAmmo, 
+    Placeable, 
     Default
 }
 

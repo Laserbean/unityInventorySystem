@@ -20,7 +20,7 @@ MonoBehaviour:
   type: 2
   description: 
   data:
-    Name: 
+    Name: KitchenKnife
     Id: 2
     buffs: []
   weapon:
@@ -43,6 +43,6 @@ MonoBehaviour:
     _melee_cooldown_time: 0.3
     _damage: 10
     b_in_mag: 0
-    mag_size: -1
+    mag_size: 0
     tier: 0
     bullets: 1

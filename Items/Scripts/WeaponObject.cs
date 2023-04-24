@@ -13,8 +13,13 @@ public class WeaponObject : ItemObject
         type = ItemType.Weapon;
     }
 
-    private void OnValidate() {
+
+    protected override void OnValidatee()
+    {
+        base.OnValidatee(); // call the base implementation to ensure the ItemObject OnValidate is also called
+        // add any additional validation specific to the weapon here
         weapon.sprite = this.characterDisplay2D; 
+
     }
 
     public override Weapon GetWeapon() {

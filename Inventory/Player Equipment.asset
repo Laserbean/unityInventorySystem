@@ -24,14 +24,14 @@ MonoBehaviour:
         Id: -1
         buffs: []
       amount: 0
-    - AllowedItems: 0200000002000000
+    - AllowedItems: 020000000b000000
       tag: 2
       item:
         Name: 
         Id: -1
         buffs: []
       amount: 0
-    - AllowedItems: 0200000006000000
+    - AllowedItems: 02000000060000000b000000
       tag: 1
       item:
         Name: 

@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR 
+using UnityEditor; 
+#endif
+
 namespace unityInventorySystem {
 
 [CreateAssetMenu(fileName = "New Item", menuName = "unity Inventory System/Items/item")]
@@ -30,8 +34,29 @@ public class ItemObject : ScriptableObject
         return newItem;
     }
 
-    private void OnValidate() {
+    void OnValidate() {
+        OnValidatee(); 
+    }
+
+    protected virtual void OnValidatee(){
         data.Name = this.name; 
+
+        #if UNITY_EDITOR 
+        // Debug.Log("Validate item object: "+ name); 
+           
+            // Notify any attached components of changes to this item object's fields
+            WeaponObjectHelper[] components = Resources.FindObjectsOfTypeAll<WeaponObjectHelper>();
+            foreach (WeaponObjectHelper component in components)
+            {
+                if (component.itemObject == this)
+                {
+                    component.OnValidatee();
+                }
+            }
+        // EditorUtility.SetDirty(this); 
+
+
+        #endif
     }
 
     public virtual Weapon GetWeapon() {
@@ -49,6 +74,8 @@ public class ItemObject : ScriptableObject
     public virtual bool IsConsumable() {
         return false; 
     }
+
+
 }
 
 [System.Serializable]

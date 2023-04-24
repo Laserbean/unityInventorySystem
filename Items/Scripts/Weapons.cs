@@ -76,6 +76,10 @@ public class Weapon
         this.mag_size = 0; 
     }
 
+    public Vector2Int GetMagInfo() {
+        return new Vector2Int(b_in_mag, mag_size);
+    }
+
     public bool HaveAmmo() {
         return b_in_mag > 0 || mag_size == -1;
     }
@@ -92,6 +96,10 @@ public class Weapon
         
         b_in_mag += difference; 
         return difference; 
+    }
+
+    public bool isMagFull() {
+        return b_in_mag == mag_size; 
     }
 
 
