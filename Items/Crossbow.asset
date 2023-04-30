@@ -38,6 +38,8 @@ MonoBehaviour:
     _reload_time: 1
     _centre: 0
     _weight: 0.6
+    _knockback: 3
+    _stun: 0
     _melee_prep_time: 0.2
     _melee_attack_time: 0.2
     _melee_cooldown_time: 0.4

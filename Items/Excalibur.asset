@@ -41,7 +41,9 @@ MonoBehaviour:
     _cooldown_time: 0.6
     _reload_time: 0
     _centre: 1
-    _weight: 4
+    _weight: 5
+    _knockback: 0
+    _stun: 0.8
     _melee_prep_time: 0.4
     _melee_attack_time: 0.7
     _melee_cooldown_time: 0.1

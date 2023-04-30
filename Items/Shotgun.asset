@@ -37,12 +37,12 @@ MonoBehaviour:
     _cooldown_time: 0.3
     _reload_time: 1
     _centre: 0.2
-    _weight: 1
+    _weight: 3
     _melee_prep_time: 0.4
     _melee_attack_time: 0.1
     _melee_cooldown_time: 0.2
     _damage: 5
-    b_in_mag: 2
+    b_in_mag: 1
     mag_size: 2
     tier: 0
     bullets: 5

@@ -11,28 +11,35 @@ public class Weapon
     public AttackType attack_type; 
     public ItemType bullet_type = ItemType.SmallAmmo; 
     public Rarity rarity; 
+    public int tier; 
 
     public Sprite sprite;
 
+    [Header("Weapon Range and shape")]
     [SerializeField] float _angle;
     [SerializeField] float _range; 
     [SerializeField] float _min_range; 
+    [SerializeField] float _centre; 
+
+    [Header("Attack Time")]
     [SerializeField] float _prep_time;
     [SerializeField] float _attack_time;
     [SerializeField] float _cooldown_time; 
     [SerializeField] float _reload_time; 
 
-    [SerializeField] float _centre; 
+    
+    [Header("Damage and stuff")]
+    [SerializeField] int _damage; 
     [SerializeField] float _weight; 
+    [SerializeField] float _knockback; 
+    [SerializeField] float _stun; 
     [SerializeField] float _melee_prep_time;
     [SerializeField] float _melee_attack_time;
     [SerializeField] float _melee_cooldown_time;
+    public DebuffInfo debuff; 
 
-
-
-    [SerializeField] int _damage; 
+    
     public int damage {get {return _damage;}}
-
 
     public float angle {get {return _angle;}}
     public float range {get {return _range;}}
@@ -43,19 +50,18 @@ public class Weapon
     public float reloadTime {get {return _reload_time;}}
     public float centre {get {return _centre;}}
     public float weight {get {return _weight;}}
+    public float knockback {get {return _knockback;}}
+    public float stun {get {return _stun;}}
 
     public float melee_prep_time {get {return _melee_prep_time;}}
     public float melee_attack_time {get {return _melee_attack_time;}}
     public float melee_cooldown_time {get {return _melee_cooldown_time;}}
 
-
-
- 
+    
+    [Header("Bullets")]
     public int b_in_mag; //in mag
     public int mag_size; 
-
-    public int tier; 
-
+    [Tooltip("Number of bullets fired per shot")]
     public int bullets = 1; 
 
     public Weapon() {
