@@ -29,7 +29,7 @@ public class InventoryObject : ScriptableObject
     {
         if (EmptySlotCount <= 0)
             return false;
-        InventorySlot slot = FindItemOnInventory(_item);
+        InventorySlot slot = FindItemSlonOnInventory(_item);
         if(!database.ItemObjects[_item.Id].stackable || slot == null)
         {
             SetEmptySlot(_item, _amount);
@@ -43,7 +43,7 @@ public class InventoryObject : ScriptableObject
     {
         if (EmptySlotCount <= 0)
             return false;
-        InventorySlot slot = FindItemOnInventory(_item);
+        InventorySlot slot = FindItemSlonOnInventory(_item);
         if(!database.ItemObjects[_item.Id].stackable || slot == null)
         {
             slot = new InventorySlot();
@@ -51,6 +51,19 @@ public class InventoryObject : ScriptableObject
         }
         slot.RemoveAmount(1); 
         return true;
+    }
+
+    public bool AddEquipment(Item _item, EquipmentTag eq_tag, ItemType type) {
+        if (EmptySlotCount <= 0)
+            return false;
+        InventorySlot slot = FindFirstSlotWithType(type);
+        
+        if (slot == null) {
+            return false; 
+        }
+        slot.UpdateSlot(_item, 1); 
+
+        return true; 
     }
 
 
@@ -69,7 +82,12 @@ public class InventoryObject : ScriptableObject
             return counter;
         }
     }
-    public InventorySlot FindItemOnInventory(Item _item)
+
+
+    ///<summary>
+    /// Looks for the slot in the inventory that already contains the item. 
+    ///</summary>
+    public InventorySlot FindItemSlonOnInventory(Item _item)
     {
         for (int i = 0; i < GetSlots.Length; i++)
         {
@@ -80,6 +98,7 @@ public class InventoryObject : ScriptableObject
         }
         return null;
     }
+    
 
     public List<InventorySlot> FindSlotsWithType(ItemType itype) {
         List<InventorySlot> list = new List<InventorySlot>(); 
@@ -95,9 +114,6 @@ public class InventoryObject : ScriptableObject
     }
 
     public InventorySlot FindFirstSlotWithType(ItemType itype) { //make sure type is unique, example, bullets. 
-
-
-
         for (int i = 0; i < GetSlots.Length; i++)
         {
             try {
@@ -112,7 +128,7 @@ public class InventoryObject : ScriptableObject
         return null;
     }
 
-
+    
     public InventorySlot SetEmptySlot(Item _item, int _amount)
     {
         for (int i = 0; i < GetSlots.Length; i++)
@@ -159,10 +175,11 @@ public class InventoryObject : ScriptableObject
         formatter.Serialize(stream, Container);
         stream.Close();
     }
+
+
     [ContextMenu("Load")]
     public void Load(string path = "")
     {
-
         // if (File.Exists(string.Concat(Application.persistentDataPath, savePath)))
         if (File.Exists(path))
         {

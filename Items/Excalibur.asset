@@ -30,25 +30,29 @@ MonoBehaviour:
   weapon:
     origin: {x: 0, y: 0, z: 0}
     attack_type: 0
-    bullet_type: 0
+    bullet_type: 12
     rarity: 3
+    tier: 0
     sprite: {fileID: 21300000, guid: b178ace1fa49f3d4188082ddd43ae5f6, type: 3}
     _angle: 50
     _range: 2.3
     _min_range: 0.4
+    _centre: 1
     _prep_time: 0.1
     _attack_time: 0.25
     _cooldown_time: 0.6
     _reload_time: 0
-    _centre: 1
+    _damage: 10
     _weight: 5
     _knockback: 0
     _stun: 0.8
     _melee_prep_time: 0.4
     _melee_attack_time: 0.7
     _melee_cooldown_time: 0.1
-    _damage: 10
+    debuff:
+      type: 0
+      duration: 0
+      rate: 0
     b_in_mag: 0
     mag_size: 0
-    tier: 0
     bullets: 1

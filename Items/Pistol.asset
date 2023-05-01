@@ -28,21 +28,27 @@ MonoBehaviour:
     attack_type: 1
     bullet_type: 7
     rarity: 0
+    tier: 0
     sprite: {fileID: 21300000, guid: 53c31219edd850142a16f659c12fa9c2, type: 3}
     _angle: 10
     _range: 1
     _min_range: 0
+    _centre: 0
     _prep_time: 0
     _attack_time: 0.25
     _cooldown_time: 0.25
     _reload_time: 1
-    _centre: 0
+    _damage: 7
     _weight: 0.4
+    _knockback: 0
+    _stun: 0.01
     _melee_prep_time: 0.1
     _melee_attack_time: 0.1
     _melee_cooldown_time: 0.3
-    _damage: 7
-    b_in_mag: 8
+    debuff:
+      type: 0
+      duration: 0
+      rate: 0
+    b_in_mag: 1
     mag_size: 8
-    tier: 0
     bullets: 1

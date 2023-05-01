@@ -36,6 +36,7 @@ public class ItemDrop {
     public ItemObject item;
     [Range(0f, 1f)]
     public float droprate; 
+    public Vector2Int ammount; 
 }
 
 }
