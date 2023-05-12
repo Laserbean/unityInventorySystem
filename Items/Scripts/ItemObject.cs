@@ -108,7 +108,7 @@ public class Item
 [System.Serializable]
 public class ItemBuff : IModifier
 {
-    public Attributes attribute;
+    public AttributeType attribute;
     public int value;
     public int min;
     public int max;

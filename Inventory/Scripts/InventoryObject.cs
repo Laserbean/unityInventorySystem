@@ -327,15 +327,20 @@ public class InventorySlot
     }
 }
 
-
-public class ConsumeItemEvent {
-    public Consumable item; 
-
-    public ConsumeItemEvent(Consumable _item) {
-        item = _item; 
-    }
-
+public class ConsumeItemEvent : SingleItemEvent
+{
+    public ConsumeItemEvent(Consumable value) : base(value) {}
 }
+
+
+// public class ConsumeItemEvent {
+//     public Consumable item; 
+
+//     public ConsumeItemEvent(Consumable _item) {
+//         item = _item; 
+//     }
+
+// }
 
 
 

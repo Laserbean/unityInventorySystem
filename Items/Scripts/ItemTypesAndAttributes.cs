@@ -23,7 +23,7 @@ public enum ItemType
     Default
 }
 
-public enum Attributes
+public enum AttributeType
 {
     Agility,
     Defence,
@@ -38,3 +38,13 @@ public enum EquipmentTag
 }
 
 }
+
+
+
+/*
+
+Player properties? ATtributes???
+Dexterity should increase aim accuracy of weapons i guess. 
+
+
+*/
