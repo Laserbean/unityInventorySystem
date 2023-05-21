@@ -36,7 +36,7 @@ public class Weapon
     [SerializeField] float _melee_prep_time;
     [SerializeField] float _melee_attack_time;
     [SerializeField] float _melee_cooldown_time;
-    public DebuffInfo debuff; 
+    public StatusEffectObject debuff; 
 
     
     public int damage {get {return _damage;}}

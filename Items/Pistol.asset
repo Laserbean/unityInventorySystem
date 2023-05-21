@@ -49,6 +49,6 @@ MonoBehaviour:
       type: 0
       duration: 0
       rate: 0
-    b_in_mag: 1
+    b_in_mag: 4
     mag_size: 8
     bullets: 1

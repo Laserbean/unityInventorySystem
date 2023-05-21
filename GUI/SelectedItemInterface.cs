@@ -7,8 +7,8 @@ using unityInventorySystem;
 public class SelectedItemInterface : MonoBehaviour
 {
     private void Start() {
-        itemName.text = "";
-        description.text = ""; 
+        itemNameTMP.text = "";
+        descriptionTMP.text = ""; 
         usebutton.gameObject.SetActive(false); 
         
     }
@@ -25,8 +25,8 @@ public class SelectedItemInterface : MonoBehaviour
 
     }
 
-    [SerializeField] TMPro.TextMeshProUGUI itemName;
-    [SerializeField] TMPro.TextMeshProUGUI description;
+    [SerializeField] TMPro.TextMeshProUGUI itemNameTMP;
+    [SerializeField] TMPro.TextMeshProUGUI descriptionTMP;
     [SerializeField] ItemDatabaseObject itemDatabase; 
     [SerializeField] Button usebutton; 
 
@@ -36,17 +36,25 @@ public class SelectedItemInterface : MonoBehaviour
     void OnSlotSelected(SlotSelectedEvent slotSelectedEvent) {
         slot = slotSelectedEvent.slot; 
 
-        itemName.text = slot.item.Name;
+        itemNameTMP.text = slot.item.Name;
         if (slot.item.Name != "") {
-            description.text = itemDatabase.ItemObjects[slot.item.Id].description;
+
+            string description = itemDatabase.ItemObjects[slot.item.Id].description;
+
+            foreach(var itembuff in slot.item.buffs) {
+                description += "\n" + itembuff.attribute + " " + itembuff.value;  
+            }
 
             if (itemDatabase.ItemObjects[slot.item.Id].type == ItemType.Consumable) {
                 usebutton.gameObject.SetActive(true); 
             }
-            //TODO show stats for food i guess.
+
+
+            descriptionTMP.text = description; 
+            //TODO show stats for stuff.
 
         } else {
-            description.text = ""; 
+            descriptionTMP.text = ""; 
 
             usebutton.gameObject.SetActive(false); 
 
