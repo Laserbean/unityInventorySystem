@@ -25,18 +25,21 @@ public class MyItemObjectEvent : UnityEvent<ItemObject> {}
 
 
 
-public class AttributeAddEvent : SingleItemEvent {
-    public AttributeAddEvent(ItemBuff _buff) : base(_buff) {}
-}
+// public class AttributeAddEvent : SingleItemEvent {
+//     public AttributeAddEvent(ItemBuff _buff) : base(_buff) {}
+// }
 
-public class AttributeRemoveEvent : SingleItemEvent {
-    public AttributeRemoveEvent(ItemBuff _buff) : base(_buff) {}
-}
+// public class AttributeRemoveEvent : SingleItemEvent {
+//     public AttributeRemoveEvent(ItemBuff _buff) : base(_buff) {}
+// }
 
 
-public class PlayerItem2D : MonoBehaviour, IAttributeModifiable
+public class PlayerItem2D : MonoBehaviour, IAttributeModified
 {
     // Start is called before the first frame update
+
+
+    private AttributesController attributesController;
 
     public InventoryObject inventory; 
     public InventoryObject equipment;
@@ -75,7 +78,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModifiable
                     // }
                     // removeAttribute.Invoke(_slot.item.buffs[i].attributes); 
 
-                    EventManager.TriggerEvent<AttributeRemoveEvent>(new AttributeRemoveEvent(_slot.item.buffs[i]));
+                    attributesController.RemoveAttributeModifier(_slot.item.buffs[i].attribute, _slot.item.buffs[i]);
                 }
 
                 
@@ -132,7 +135,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModifiable
                     //     if (attributes[j].type == _slot.item.buffs[i].attribute)
                     //         attributes[j].value.AddModifier(_slot.item.buffs[i]);
                     // }
-                    EventManager.TriggerEvent<AttributeAddEvent>(new AttributeAddEvent(_slot.item.buffs[i]));
+                    attributesController.AddAttributeModifier(_slot.item.buffs[i].attribute, _slot.item.buffs[i]);
 
                 }
 
@@ -169,8 +172,11 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModifiable
     }
 
     Vector3 currentItemPos;
+
+
     void Start()
     {
+        attributesController = this.GetComponent<AttributesController>(); 
         currentItemPos = new Vector3(0.55f,2.15f,0);
 
         // boneCombiner = new BoneCombiner(gameObject);

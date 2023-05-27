@@ -23,13 +23,7 @@ public enum ItemType
     Default
 }
 
-public enum AttributeType
-{
-    Agility,
-    Defence,
-    Stamina,
-    Strength,
-}
+
 
 public enum EquipmentTag 
 {
