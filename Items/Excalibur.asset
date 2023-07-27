@@ -34,25 +34,78 @@ MonoBehaviour:
     rarity: 3
     tier: 0
     sprite: {fileID: 21300000, guid: b178ace1fa49f3d4188082ddd43ae5f6, type: 3}
-    _angle: 50
     _range: 2.3
     _min_range: 0.4
     _centre: 1
-    _prep_time: 0.1
-    _attack_time: 0.25
-    _cooldown_time: 0.6
-    _reload_time: 0
-    _damage: 10
-    _weight: 5
-    _knockback: 0
-    _stun: 0.8
-    _melee_prep_time: 0.4
-    _melee_attack_time: 0.7
-    _melee_cooldown_time: 0.1
-    debuff:
-      type: 0
+    GunAttack:
+      hitbox:
+        size: {x: 0, y: 0}
+        offset: {x: 0, y: 0}
+        shape: 0
+        sprites: []
+        local_position: {x: 0, y: 0}
+      sprite: {fileID: 0}
+      move: {x: 0, y: 0}
+      isBody: 0
+      angle: 3.26
+      range: {x: 0, y: 0, z: 0}
+      prep_time: 0
       duration: 0
-      rate: 0
+      cooldown_time: 0
+      reload_time: 0
+      repeat: 1
+      damageinfo:
+        damage: 0
+        knockback: 0
+        stun: 0
+        critical: 0
+        allStatusEffects: []
+    SwingAttack:
+      hitbox:
+        size: {x: 133.71, y: 4.37}
+        offset: {x: 0, y: -1.7}
+        shape: 2
+        sprites: []
+        local_position: {x: 0, y: 1.98}
+      sprite: {fileID: -6739525477993420851, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
+      move: {x: 0, y: 0}
+      isBody: 0
+      angle: 0
+      range: {x: 0, y: 0, z: 0}
+      prep_time: 0.21
+      duration: 0.15
+      cooldown_time: 1.15
+      reload_time: 0
+      repeat: 1
+      damageinfo:
+        damage: 0
+        knockback: 0
+        stun: 0
+        critical: 0
+        allStatusEffects: []
+    PierceAttack:
+      hitbox:
+        size: {x: 0.79, y: 4.68}
+        offset: {x: 0, y: 2.6}
+        shape: 1
+        sprites: []
+        local_position: {x: 0, y: 0}
+      sprite: {fileID: 0}
+      move: {x: 0, y: 0}
+      isBody: 0
+      angle: 0
+      range: {x: 0, y: 0, z: 0}
+      prep_time: 0
+      duration: 0
+      cooldown_time: 0
+      reload_time: 0
+      repeat: 1
+      damageinfo:
+        damage: 0
+        knockback: 0
+        stun: 0
+        critical: 0
+        allStatusEffects: []
     b_in_mag: 0
     mag_size: 0
     bullets: 1

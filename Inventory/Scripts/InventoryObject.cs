@@ -215,6 +215,9 @@ public class InventoryObject : ScriptableObject
         Container.Clear();
     }
 }
+
+
+
 [System.Serializable]
 public class Inventory
 {
@@ -227,6 +230,8 @@ public class Inventory
         }
     }
 }
+
+
 
 public delegate void SlotUpdated(InventorySlot _slot);
 
