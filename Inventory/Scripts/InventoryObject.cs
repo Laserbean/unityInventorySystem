@@ -53,10 +53,10 @@ public class InventoryObject : ScriptableObject
         return true;
     }
 
-    public bool AddEquipment(Item _item, EquipmentTag eq_tag, ItemType type) {
+    public bool AddEquipment(Item _item, string eq_tag, string tag) {
         if (EmptySlotCount <= 0)
             return false;
-        InventorySlot slot = FindFirstSlotWithType(type);
+        InventorySlot slot = FindFirstSlotWithType(tag);
         
         if (slot == null) {
             return false; 
@@ -100,25 +100,23 @@ public class InventoryObject : ScriptableObject
     }
     
 
-    public List<InventorySlot> FindSlotsWithType(ItemType itype) {
+    public List<InventorySlot> FindSlotsWithType(string itype) {
         List<InventorySlot> list = new List<InventorySlot>(); 
 
         for (int i = 0; i < GetSlots.Length; i++)
         {
-            if(GetSlots[i].ItemObject.type == itype)
-            {
+            if(GetSlots[i].ItemObject.itemTags.list.Contains(itype)) {
                 list.Add(GetSlots[i]); 
             }
         }
         return list;
     }
 
-    public InventorySlot FindFirstSlotWithType(ItemType itype) { //make sure type is unique, example, bullets. 
+    public InventorySlot FindFirstSlotWithType(string itype) { //make sure type is unique, example, bullets. 
         for (int i = 0; i < GetSlots.Length; i++)
         {
             try {
-            if(GetSlots[i].ItemObject != null && GetSlots[i].ItemObject.type == itype)
-            {
+            if(GetSlots[i].ItemObject != null && GetSlots[i].ItemObject.itemTags.list.Contains(itype)) {
                 return GetSlots[i];
             }
             } catch {
@@ -238,7 +236,11 @@ public delegate void SlotUpdated(InventorySlot _slot);
 [System.Serializable]
 public class InventorySlot
 {
-    public ItemType[] AllowedItems = new ItemType[0];
+    // public ItemType[] AllowedItems = new ItemType[0];
+
+    public RestrictedList tags; 
+
+
     [System.NonSerialized]
     public UserInterface parent;
     [System.NonSerialized]
@@ -247,10 +249,6 @@ public class InventorySlot
     public SlotUpdated OnAfterUpdate;
     [System.NonSerialized]
     public SlotUpdated OnBeforeUpdate;
-
-
-        public EquipmentTag tag;
-
 
 
 
@@ -321,13 +319,11 @@ public class InventorySlot
 
     public bool CanPlaceInSlot(ItemObject _itemObject)
     {
-        if (AllowedItems.Length <= 0 || _itemObject == null || _itemObject.data.Id < 0)
+        if (tags.list.Count <= 0 || _itemObject == null || _itemObject.data.Id < 0)
             return true;
-        for (int i = 0; i < AllowedItems.Length; i++)
-        {
-            if (_itemObject.type == AllowedItems[i])
-                return true;
-        }
+
+        if (tags.list.Overlap<string>(_itemObject.itemTags.list).Count > 0) return true;
+
         return false;
     }
 }

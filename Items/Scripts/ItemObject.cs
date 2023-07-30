@@ -21,7 +21,8 @@ public class ItemObject : ScriptableObject
     public bool stackable;
     public int stackSize; //idk how to use this now
     
-    public ItemType type;
+    public RestrictedList itemTags;
+
     [TextArea(15, 20)]
     public string description;
     public Item data = new Item();

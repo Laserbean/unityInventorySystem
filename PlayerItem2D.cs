@@ -9,8 +9,7 @@ using UnityEngine.Events;
 
 [System.Serializable]
 public class EquipmentStuff {
-    public ItemType type;
-    public EquipmentTag tag; 
+    public RestrictedList tags; 
     public SpriteRenderer spriteRenderer; 
     public EquipmentEvents events; 
 }
@@ -86,18 +85,14 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
 
                 if (_slot.ItemObject.characterDisplay2D != null) {
                     foreach(EquipmentStuff cur in equipmentStuff) {
-                        if (_slot.tag == cur.tag) {
-                            for (int i = 0; i < _slot.AllowedItems.Length; i++) {
-                                if (_slot.AllowedItems[i] == cur.type) {
-                                    // TODO: Remove the sprite renderers or something
-                                    if (cur.spriteRenderer != null) {
-                                        cur.spriteRenderer.sprite = null; 
-                                    }
-                                    cur.events.onRemove.Invoke(_slot.ItemObject);
+                        if (_slot.tags.list.Overlap(cur.tags.list).Count > 0) {
 
-                                    break; 
-                                }
+                            // TODO: Remove the sprite renderers or something
+                            if (cur.spriteRenderer != null) {
+                                cur.spriteRenderer.sprite = null; 
                             }
+                            cur.events.onRemove.Invoke(_slot.ItemObject);
+
                         }
                     }
                 }
@@ -141,16 +136,13 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
 
                 if (_slot.ItemObject.characterDisplay2D != null) {
                     foreach(EquipmentStuff cur in equipmentStuff) {
-                        if (_slot.tag == cur.tag) {
-                            for (int i = 0; i < _slot.AllowedItems.Length; i++) {
-                                if (_slot.AllowedItems[i] == cur.type) {
-                                    if (cur.spriteRenderer != null) {
-                                        cur.spriteRenderer.sprite = _slot.ItemObject.characterDisplay2D; 
-                                    }
-                                    cur.events.onAdd.Invoke(_slot.ItemObject);
-                                    break; 
-                                }
+                        if (_slot.tags.list.Overlap(cur.tags.list).Count > 0) {
+
+                            if (cur.spriteRenderer != null) {
+                                cur.spriteRenderer.sprite = _slot.ItemObject.characterDisplay2D; 
                             }
+                            cur.events.onAdd.Invoke(_slot.ItemObject);
+
                         }
                     }
 

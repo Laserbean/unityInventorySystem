@@ -45,7 +45,7 @@ public class SelectedItemInterface : MonoBehaviour
                 description += "\n" + itembuff.attribute + " " + itembuff.value;  
             }
 
-            if (itemDatabase.ItemObjects[slot.item.Id].type == ItemType.Consumable) {
+            if (itemDatabase.ItemObjects[slot.item.Id].itemTags.list.Contains("Consumeable")) { //FIXME
                 usebutton.gameObject.SetActive(true); 
             }
 

@@ -10,7 +10,7 @@ public class ConsumableObject : ItemObject
     public Consumable consumable; 
 
     public ConsumableObject() {
-        type = ItemType.Consumable;
+        // itemTags = ItemType.Consumable;
     }
 
     // private void OnValidate() {
