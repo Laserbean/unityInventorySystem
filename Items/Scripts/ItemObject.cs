@@ -24,7 +24,7 @@ public class ItemObject : ScriptableObject
     public ItemType type;
     [TextArea(15, 20)]
     public string description;
-    public Item data = new Item();
+    public Item item = new Item();
     
     // public List<string> boneNames = new List<string>();
 
@@ -39,7 +39,7 @@ public class ItemObject : ScriptableObject
     }
 
     protected virtual void OnValidatee(){
-        data.Name = this.name; 
+        item.Name = this.name; 
 
         #if UNITY_EDITOR 
         // Debug.Log("Validate item object: "+ name); 
@@ -59,22 +59,6 @@ public class ItemObject : ScriptableObject
         #endif
     }
 
-    public virtual Weapon GetWeapon() {
-        return null; 
-    }
-
-    public virtual bool IsWeapon() {
-        return false; 
-    }
-
-    public virtual Consumable GetConsumable() {
-        return null; 
-    }
-
-    public virtual bool IsConsumable() {
-        return false; 
-    }
-
 
 }
 
@@ -84,22 +68,23 @@ public class Item
     public string Name;
     public int Id = -1;
     public ItemBuff[] buffs;
-    // public Weapons weapon; 
+    
     public Item()
     {
         Name = "";
         Id = -1;
     }
+
     public Item(ItemObject item)
     {
         Name = item.name;
-        Id = item.data.Id;
-        buffs = new ItemBuff[item.data.buffs.Length];
+        Id = item.item.Id;
+        buffs = new ItemBuff[item.item.buffs.Length];
         for (int i = 0; i < buffs.Length; i++)
         {
-            buffs[i] = new ItemBuff(item.data.buffs[i].min, item.data.buffs[i].max)
+            buffs[i] = new ItemBuff(item.item.buffs[i].min, item.item.buffs[i].max)
             {
-                attribute = item.data.buffs[i].attribute
+                attribute = item.item.buffs[i].attribute
             };
         }
     }

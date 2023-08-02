@@ -25,9 +25,7 @@ public class DynamicInterface : UserInterface
             var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
 
-
             SetEventTriggers(obj); 
-
 
             inventory.GetSlots[i].slotDisplay = obj;
 

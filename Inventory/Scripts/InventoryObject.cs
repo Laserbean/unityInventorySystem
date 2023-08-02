@@ -321,7 +321,7 @@ public class InventorySlot
 
     public bool CanPlaceInSlot(ItemObject _itemObject)
     {
-        if (AllowedItems.Length <= 0 || _itemObject == null || _itemObject.data.Id < 0)
+        if (AllowedItems.Length <= 0 || _itemObject == null || _itemObject.item.Id < 0)
             return true;
         for (int i = 0; i < AllowedItems.Length; i++)
         {

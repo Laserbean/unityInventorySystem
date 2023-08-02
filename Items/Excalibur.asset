@@ -12,31 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e24e6376edd0894499235853813a862, type: 3}
   m_Name: Excalibur
   m_EditorClassIdentifier: 
-  uiDisplay: {fileID: 6795706252642178477, guid: b293cb9b20cbdf043ac86c00c383f06e, type: 3}
+  uiDisplay: {fileID: 0}
   characterDisplay: {fileID: 0}
-  characterDisplay2D: {fileID: 21300000, guid: b178ace1fa49f3d4188082ddd43ae5f6, type: 3}
+  characterDisplay2D: {fileID: 0}
   stackable: 0
   stackSize: 0
   type: 2
   description: 
-  data:
-    Name: Excalibur
-    Id: 1
-    buffs:
-    - attribute: 3
-      value: 0
-      min: 1
-      max: 10
+  item:
+    Name: 
+    Id: -1
+    buffs: []
   weapon:
     origin: {x: 0, y: 0, z: 0}
     attack_type: 0
-    bullet_type: 12
-    rarity: 3
+    bullet_type: 7
+    rarity: 4
     tier: 0
-    sprite: {fileID: 21300000, guid: b178ace1fa49f3d4188082ddd43ae5f6, type: 3}
-    _range: 2.3
-    _min_range: 0.4
-    _centre: 1
+    sprite: {fileID: 0}
+    _range: 0
+    _min_range: 0
+    _centre: 0
     GunAttack:
       hitbox:
         size: {x: 0, y: 0}
@@ -47,7 +43,7 @@ MonoBehaviour:
       sprite: {fileID: 0}
       move: {x: 0, y: 0}
       isBody: 0
-      angle: 3.26
+      angle: 0
       range: {x: 0, y: 0, z: 0}
       prep_time: 0
       duration: 0
@@ -62,19 +58,19 @@ MonoBehaviour:
         allStatusEffects: []
     SwingAttack:
       hitbox:
-        size: {x: 133.71, y: 4.37}
-        offset: {x: 0, y: -1.7}
-        shape: 2
+        size: {x: 0, y: 0}
+        offset: {x: 0, y: 0}
+        shape: 0
         sprites: []
-        local_position: {x: 0, y: 1.98}
-      sprite: {fileID: -6739525477993420851, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
+        local_position: {x: 0, y: 0}
+      sprite: {fileID: 0}
       move: {x: 0, y: 0}
       isBody: 0
       angle: 0
       range: {x: 0, y: 0, z: 0}
-      prep_time: 0.21
-      duration: 0.15
-      cooldown_time: 1.15
+      prep_time: 0
+      duration: 0
+      cooldown_time: 0
       reload_time: 0
       repeat: 1
       damageinfo:
@@ -85,9 +81,9 @@ MonoBehaviour:
         allStatusEffects: []
     PierceAttack:
       hitbox:
-        size: {x: 0.79, y: 4.68}
-        offset: {x: 0, y: 2.6}
-        shape: 1
+        size: {x: 0, y: 0}
+        offset: {x: 0, y: 0}
+        shape: 0
         sprites: []
         local_position: {x: 0, y: 0}
       sprite: {fileID: 0}

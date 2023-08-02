@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using System.Linq; 
+
 using unityInventorySystem;
 
 using UnityEngine.Events; 
@@ -11,7 +13,6 @@ using UnityEngine.Events;
 public class EquipmentStuff {
     public ItemType type;
     public EquipmentTag tag; 
-    public SpriteRenderer spriteRenderer; 
     public EquipmentEvents events; 
 }
 
@@ -25,27 +26,14 @@ public class MyItemObjectEvent : UnityEvent<ItemObject> {}
 
 
 
-// public class AttributeAddEvent : SingleItemEvent {
-//     public AttributeAddEvent(ItemBuff _buff) : base(_buff) {}
-// }
-
-// public class AttributeRemoveEvent : SingleItemEvent {
-//     public AttributeRemoveEvent(ItemBuff _buff) : base(_buff) {}
-// }
-
-
 public class PlayerItem2D : MonoBehaviour, IAttributeModified
 {
-    // Start is called before the first frame update
 
+    [SerializeField] InventoryObject inventory; 
+    [SerializeField] InventoryObject equipment;
+    [SerializeField] List<EquipmentStuff> equipmentStuff = new List<EquipmentStuff>();
 
-    private AttributesController attributesController;
-
-    public InventoryObject inventory; 
-    public InventoryObject equipment;
-
-    public List<EquipmentStuff> equipmentStuff = new List<EquipmentStuff>();
-
+    AttributesController attributesController;
 
 
 
@@ -55,7 +43,6 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
             // Debug.Log(_item.Id);
             inventory.AddItem(_item, gitem.ammount);
         }
-
     }
 
     // public Attribute[] attributes;
@@ -72,40 +59,14 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
                 // print(string.Concat("Removed ", _slot.ItemObject, " on ", _slot.parent.inventory.type, ", Allowed Items: ", string.Join(", ", _slot.AllowedItems)));
 
                 for (int i = 0; i < _slot.item.buffs.Length; i++) {
-                    // for (int j = 0; j < attributes.Length; j++) {
-                    //     if (attributes[j].type == _slot.item.buffs[i].attribute)
-                    //         attributes[j].value.RemoveModifier(_slot.item.buffs[i]);
-                    // }
-                    // removeAttribute.Invoke(_slot.item.buffs[i].attributes); 
-
                     attributesController.RemoveAttributeModifier(_slot.item.buffs[i].attribute, _slot.item.buffs[i]);
                 }
 
-                
-
-
-                if (_slot.ItemObject.characterDisplay2D != null) {
-                    foreach(EquipmentStuff cur in equipmentStuff) {
-                        if (_slot.tag == cur.tag) {
-                            for (int i = 0; i < _slot.AllowedItems.Length; i++) {
-                                if (_slot.AllowedItems[i] == cur.type) {
-                                    // TODO: Remove the sprite renderers or something
-                                    if (cur.spriteRenderer != null) {
-                                        cur.spriteRenderer.sprite = null; 
-                                    }
-                                    cur.events.onRemove.Invoke(_slot.ItemObject);
-
-                                    break; 
-                                }
-                            }
-                        }
-                    }
+                if (_slot.ItemObject.characterDisplay2D == null) break;
+                foreach(EquipmentStuff cur in equipmentStuff) {
+                    if (_slot.tag != cur.tag || !_slot.AllowedItems.ToList().Contains(cur.type)) continue;
+                    cur.events.onRemove.Invoke(_slot.ItemObject);
                 }
-
-
-                // if (_slot.ItemObject.GetType() == typeof(WeaponObject)) {
-                //     this.gameObject.GetComponent<PlayerWeapon>().SetDefaultWeapon(); 
-                // }
 
                 break;
             case InterfaceType.Chest:
@@ -114,8 +75,6 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
                 break;
         }
     }
-
-
 
     public void OnAddItem(InventorySlot _slot)
     {
@@ -128,33 +87,16 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
             case InterfaceType.Equipment:
                 // print($"Placed {_slot.ItemObject}  on {_slot.parent.inventory.type}, Allowed Items: {string.Join(", ", _slot.AllowedItems)}");
 
-                for (int i = 0; i < _slot.item.buffs.Length; i++)
-                {
-                    // for (int j = 0; j < attributes.Length; j++)
-                    // {
-                    //     if (attributes[j].type == _slot.item.buffs[i].attribute)
-                    //         attributes[j].value.AddModifier(_slot.item.buffs[i]);
-                    // }
+                for (int i = 0; i < _slot.item.buffs.Length; i++) {
                     attributesController.AddAttributeModifier(_slot.item.buffs[i].attribute, _slot.item.buffs[i]);
-
                 }
 
-                if (_slot.ItemObject.characterDisplay2D != null) {
-                    foreach(EquipmentStuff cur in equipmentStuff) {
-                        if (_slot.tag == cur.tag) {
-                            for (int i = 0; i < _slot.AllowedItems.Length; i++) {
-                                if (_slot.AllowedItems[i] == cur.type) {
-                                    if (cur.spriteRenderer != null) {
-                                        cur.spriteRenderer.sprite = _slot.ItemObject.characterDisplay2D; 
-                                    }
-                                    cur.events.onAdd.Invoke(_slot.ItemObject);
-                                    break; 
-                                }
-                            }
-                        }
-                    }
-
+                if (_slot.ItemObject.characterDisplay2D == null) break;
+                foreach(EquipmentStuff cur in equipmentStuff) {
+                    if (_slot.tag != cur.tag || !_slot.AllowedItems.ToList().Contains(cur.type)) continue;
+                    cur.events.onAdd.Invoke(_slot.ItemObject);
                 }
+
                 break;
             case InterfaceType.Chest:
                 break;
@@ -179,12 +121,14 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         attributesController = this.GetComponent<AttributesController>(); 
         currentItemPos = new Vector3(0.55f,2.15f,0);
 
+        #region 3dstuff
         // boneCombiner = new BoneCombiner(gameObject);
 
         // for (int i = 0; i < attributes.Length; i++)
         // {
         //     attributes[i].SetParent(this.gameObject);
         // }
+        #endregion
 
         for (int i = 0; i < equipment.GetSlots.Length; i++)
         {

@@ -72,9 +72,9 @@ public class SelectedItemInterface : MonoBehaviour
 
     public void OnButton() {
         // inventory.RemoveItem(slot.item);
-        if (slot.ItemObject.IsConsumable()) {
+        if (slot.ItemObject is ConsumableObject) {
             slot.RemoveAmount(1);  
-            EventManager.TriggerEvent(new ConsumeItemEvent(slot.ItemObject.GetConsumable()));
+            EventManager.TriggerEvent(new ConsumeItemEvent(((ConsumableObject)slot.ItemObject).consumable));
         }
  
 

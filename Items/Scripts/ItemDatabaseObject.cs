@@ -13,8 +13,8 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     {
         for (int i = 0; i < ItemObjects.Length; i++)
         {
-            if (ItemObjects[i].data.Id != i)
-                ItemObjects[i].data.Id = i;
+            if (ItemObjects[i].item.Id != i)
+                ItemObjects[i].item.Id = i;
         }
     }
     public void OnAfterDeserialize()
