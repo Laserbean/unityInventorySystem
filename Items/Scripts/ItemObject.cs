@@ -40,23 +40,6 @@ public class ItemObject : ScriptableObject
 
     protected virtual void OnValidatee(){
         item.Name = this.name; 
-
-        #if UNITY_EDITOR 
-        // Debug.Log("Validate item object: "+ name); 
-           
-            // Notify any attached components of changes to this item object's fields
-            WeaponObjectHelper[] components = Resources.FindObjectsOfTypeAll<WeaponObjectHelper>();
-            foreach (WeaponObjectHelper component in components)
-            {
-                if (component.itemObject == this)
-                {
-                    component.OnValidatee();
-                }
-            }
-        // EditorUtility.SetDirty(this); 
-
-
-        #endif
     }
 
 
