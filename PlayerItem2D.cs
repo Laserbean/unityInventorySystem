@@ -45,6 +45,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         }
     }
 
+
     // public Attribute[] attributes;
     
     public void OnRemoveItem(InventorySlot _slot)
@@ -62,7 +63,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
                     attributesController.RemoveAttributeModifier(_slot.item.buffs[i].attribute, _slot.item.buffs[i]);
                 }
 
-                if (_slot.ItemObject.characterDisplay2D == null) break;
+                // if (_slot.ItemObject.characterDisplay2D == null) break;
                 foreach(EquipmentStuff cur in equipmentStuff) {
                     if (_slot.tag != cur.tag || !_slot.AllowedItems.ToList().Contains(cur.type)) continue;
                     cur.events.onRemove.Invoke(_slot.ItemObject);
@@ -91,7 +92,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
                     attributesController.AddAttributeModifier(_slot.item.buffs[i].attribute, _slot.item.buffs[i]);
                 }
 
-                if (_slot.ItemObject.characterDisplay2D == null) break;
+                // if (_slot.ItemObject.characterDisplay2D == null) break;
                 foreach(EquipmentStuff cur in equipmentStuff) {
                     if (_slot.tag != cur.tag || !_slot.AllowedItems.ToList().Contains(cur.type)) continue;
                     cur.events.onAdd.Invoke(_slot.ItemObject);
@@ -134,6 +135,22 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         {
             equipment.GetSlots[i].OnBeforeUpdate += OnRemoveItem;
             equipment.GetSlots[i].OnAfterUpdate += OnAddItem;
+        }
+    }
+
+    private void OnDisable() {
+        for (int i = 0; i < equipment.GetSlots.Length; i++)
+        {
+            equipment.GetSlots[i].OnBeforeUpdate = null;
+            equipment.GetSlots[i].OnAfterUpdate  = null;
+        }
+    }
+
+    public void AddListeners(SlotUpdated beforeUpdate, SlotUpdated afterUpdate) {
+        for (int i = 0; i < equipment.GetSlots.Length; i++)
+        {
+            equipment.GetSlots[i].OnBeforeUpdate += beforeUpdate;
+            equipment.GetSlots[i].OnAfterUpdate += afterUpdate;
         }
     }
 
