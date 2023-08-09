@@ -21,8 +21,8 @@ public class InventoryObject : ScriptableObject
     public string savePath;
     public ItemDatabaseObject database;
     public InterfaceType type;
-    public Inventory Container;
-    public InventorySlot[] GetSlots { get { return Container.Slots; } }
+    public Inventory inventory;
+    public InventorySlot[] GetSlots { get { return inventory.Slots; } }
 
 
     public bool AddItem(Item _item, int _amount)
@@ -172,7 +172,7 @@ public class InventoryObject : ScriptableObject
             stream = new FileStream(path, FileMode.Create, FileAccess.Write);
         }
 
-        formatter.Serialize(stream, Container);
+        formatter.Serialize(stream, inventory);
         stream.Close();
     }
 
@@ -212,7 +212,7 @@ public class InventoryObject : ScriptableObject
     [ContextMenu("Clear")]
     public void Clear()
     {
-        Container.Clear();
+        inventory.Clear();
     }
 }
 
@@ -263,7 +263,7 @@ public class InventorySlot
         {
             if(item.Id >= 0)
             {
-                return parent.inventory.database.ItemObjects[item.Id];
+                return parent.inventoryObject.database.ItemObjects[item.Id];
             }
             return null;
         }
@@ -274,7 +274,7 @@ public class InventorySlot
         {
             if(item.Id >= 0)
             {
-                return (WeaponObject) parent.inventory.database.ItemObjects[item.Id];
+                return (WeaponObject) parent.inventoryObject.database.ItemObjects[item.Id];
             }
             return null;
         }

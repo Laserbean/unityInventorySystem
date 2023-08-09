@@ -14,14 +14,14 @@ using unityInventorySystem;
 public abstract class UserInterface : MonoBehaviour
 {
 
-    public InventoryObject inventory;
+    public InventoryObject inventoryObject;
     public Dictionary<GameObject, InventorySlot> slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
     void Start()
     {
-        for (int i = 0; i < inventory.GetSlots.Length; i++)
+        for (int i = 0; i < inventoryObject.GetSlots.Length; i++)
         {
-            inventory.GetSlots[i].parent = this;
-            inventory.GetSlots[i].OnAfterUpdate += OnSlotUpdate;
+            inventoryObject.GetSlots[i].parent = this;
+            inventoryObject.GetSlots[i].OnAfterUpdate += OnSlotUpdate;
 
         }
         CreateSlots();
@@ -127,7 +127,7 @@ public abstract class UserInterface : MonoBehaviour
         {
             InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
             // InventorySlot mouseHoverSlotData = SelectedSlot.userinterface.slotsOnInterface[MouseData.slotHoveredOver];
-            inventory.SwapItems(islot, mouseHoverSlotData);
+            inventoryObject.SwapItems(islot, mouseHoverSlotData);
         }
 
         // Debug.Log("slot EDED");
@@ -200,7 +200,7 @@ public abstract class UserInterface : MonoBehaviour
 
         } else {
             InventorySlot curIslot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
-            inventory.SwapItems(curIslot, SelectedSlot.slot);
+            inventoryObject.SwapItems(curIslot, SelectedSlot.slot);
 
             SlotSelection.Instance.image.enabled = false; 
             SelectedSlot.obj = null; 

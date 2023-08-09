@@ -29,8 +29,8 @@ public class MyItemObjectEvent : UnityEvent<ItemObject> {}
 public class PlayerItem2D : MonoBehaviour, IAttributeModified
 {
 
-    [SerializeField] InventoryObject inventory; 
-    [SerializeField] InventoryObject equipment;
+    [SerializeField] InventoryObject inventoryObject; 
+    [SerializeField] InventoryObject equipmentObject;
     [SerializeField] List<EquipmentStuff> equipmentStuff = new List<EquipmentStuff>();
 
     AttributesController attributesController;
@@ -41,7 +41,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         if (gitem) {
             Item _item = new Item(gitem.item);
             // Debug.Log(_item.Id);
-            inventory.AddItem(_item, gitem.ammount);
+            inventoryObject.AddItem(_item, gitem.ammount);
         }
     }
 
@@ -52,12 +52,12 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
     {
         if (_slot.ItemObject == null)
             return;
-        switch (_slot.parent.inventory.type)
+        switch (_slot.parent.inventoryObject.type)
         {
             case InterfaceType.Inventory:
                 break;
             case InterfaceType.Equipment:
-                // print(string.Concat("Removed ", _slot.ItemObject, " on ", _slot.parent.inventory.type, ", Allowed Items: ", string.Join(", ", _slot.AllowedItems)));
+                // print(string.Concat("Removed ", _slot.ItemObject, " on ", _slot.parent.inventoryObject.type, ", Allowed Items: ", string.Join(", ", _slot.AllowedItems)));
 
                 for (int i = 0; i < _slot.item.buffs.Length; i++) {
                     attributesController.RemoveAttributeModifier(_slot.item.buffs[i].attribute, _slot.item.buffs[i]);
@@ -81,12 +81,12 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
     {
         if (_slot.ItemObject == null)
             return;
-        switch (_slot.parent.inventory.type)
+        switch (_slot.parent.inventoryObject.type)
         {
             case InterfaceType.Inventory:
                 break;
             case InterfaceType.Equipment:
-                // print($"Placed {_slot.ItemObject}  on {_slot.parent.inventory.type}, Allowed Items: {string.Join(", ", _slot.AllowedItems)}");
+                // print($"Placed {_slot.ItemObject}  on {_slot.parent.inventoryObject.type}, Allowed Items: {string.Join(", ", _slot.AllowedItems)}");
 
                 for (int i = 0; i < _slot.item.buffs.Length; i++) {
                     attributesController.AddAttributeModifier(_slot.item.buffs[i].attribute, _slot.item.buffs[i]);
@@ -131,35 +131,35 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         // }
         #endregion
 
-        for (int i = 0; i < equipment.GetSlots.Length; i++)
+        for (int i = 0; i < equipmentObject.GetSlots.Length; i++)
         {
-            equipment.GetSlots[i].OnBeforeUpdate += OnRemoveItem;
-            equipment.GetSlots[i].OnAfterUpdate += OnAddItem;
+            equipmentObject.GetSlots[i].OnBeforeUpdate += OnRemoveItem;
+            equipmentObject.GetSlots[i].OnAfterUpdate += OnAddItem;
         }
     }
 
     private void OnDisable() {
-        for (int i = 0; i < equipment.GetSlots.Length; i++)
+        for (int i = 0; i < equipmentObject.GetSlots.Length; i++)
         {
-            equipment.GetSlots[i].OnBeforeUpdate = null;
-            equipment.GetSlots[i].OnAfterUpdate  = null;
+            equipmentObject.GetSlots[i].OnBeforeUpdate = null;
+            equipmentObject.GetSlots[i].OnAfterUpdate  = null;
         }
     }
 
     public void AddListeners(SlotUpdated beforeUpdate, SlotUpdated afterUpdate) {
-        for (int i = 0; i < equipment.GetSlots.Length; i++)
+        for (int i = 0; i < equipmentObject.GetSlots.Length; i++)
         {
-            equipment.GetSlots[i].OnBeforeUpdate += beforeUpdate;
-            equipment.GetSlots[i].OnAfterUpdate += afterUpdate;
+            equipmentObject.GetSlots[i].OnBeforeUpdate += beforeUpdate;
+            equipmentObject.GetSlots[i].OnAfterUpdate += afterUpdate;
         }
     }
 
 
     private void OnApplicationQuit() {
-        inventory.Clear();
-        equipment.Clear();
-        // inventory.Container.Clear(); 
-        // inventory.Container.Items = new InventorySlot[28];
+        inventoryObject.Clear();
+        equipmentObject.Clear();
+        // inventoryObject.Container.Clear(); 
+        // inventoryObject.Container.Items = new InventorySlot[28];
 
     }
 }

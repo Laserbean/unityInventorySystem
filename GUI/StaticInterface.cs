@@ -12,16 +12,16 @@ public class StaticInterface : UserInterface
     public override void CreateSlots()
     {
         slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
-        for (int i = 0; i < inventory.GetSlots.Length; i++)
+        for (int i = 0; i < inventoryObject.GetSlots.Length; i++)
         {
             var obj = slots[i];
 
             SetEventTriggers(obj); 
 
-            inventory.GetSlots[i].slotDisplay = obj;
+            inventoryObject.GetSlots[i].slotDisplay = obj;
 
-            // inventory.GetSlots[i].SetSlotNumber(i); 
-            slotsOnInterface.Add(obj, inventory.GetSlots[i]);
+            // inventoryObject.GetSlots[i].SetSlotNumber(i); 
+            slotsOnInterface.Add(obj, inventoryObject.GetSlots[i]);
 
                 
         }
