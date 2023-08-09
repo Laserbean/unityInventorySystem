@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using unityInventorySystem; 
+
 [CreateAssetMenu(fileName = "IncreasingSE", menuName = "Status Effects/Increasing", order = 3)]
 public class IncreasingStatusEffectObject : StatusEffectObject
 {

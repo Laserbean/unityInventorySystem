@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using unityInventorySystem; 
 [CreateAssetMenu(fileName = "StatusEffect", menuName = "Status Effects/Default", order = 0)]
 public class StatusEffectObject : ScriptableObject, IStatusDoable
 {

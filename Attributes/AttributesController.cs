@@ -7,8 +7,9 @@ using System.Linq;
 
 using Laserbean.General;
 
+namespace unityInventorySystem {
 
-using unityInventorySystem; 
+
 public class AttributesController : MonoBehaviour, IAttributeUsage
 {
 
@@ -123,5 +124,7 @@ public static class AttributeCalculations {
     public static int CalculateDefense(int val) {
         return val; 
     }
+
+}
 
 }

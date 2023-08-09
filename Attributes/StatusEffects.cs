@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+namespace unityInventorySystem {
+
 
 public interface IStatusDoable {
     public bool DoUpdate(StatusEffectD statusEffectD, float dtime);
@@ -204,6 +206,9 @@ public class StatusEffectD : IModifier
 
 
 // }
+
+}
+
 
 [System.Serializable]
 public enum DebuffType {

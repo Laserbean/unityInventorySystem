@@ -269,16 +269,16 @@ public class InventorySlot
         }
     }
 
-    public WeaponObject WeaponObject {
-        get
-        {
-            if(item.Id >= 0)
-            {
-                return (WeaponObject) parent.inventoryObject.database.ItemObjects[item.Id];
-            }
-            return null;
-        }
-    }
+    // public WeaponObject WeaponObject {
+    //     get
+    //     {
+    //         if(item.Id >= 0)
+    //         {
+    //             return (WeaponObject) parent.inventoryObject.database.ItemObjects[item.Id];
+    //         }
+    //         return null;
+    //     }
+    // }
 
     public InventorySlot()
     {
@@ -332,10 +332,10 @@ public class InventorySlot
     }
 }
 
-public class ConsumeItemEvent : SingleItemEvent
-{
-    public ConsumeItemEvent(Consumable value) : base(value) {}
-}
+// public class ConsumeItemEvent : SingleItemEvent
+// {
+//     public ConsumeItemEvent(Consumable value) : base(value) {}
+// }
 
 
 // public class ConsumeItemEvent {
