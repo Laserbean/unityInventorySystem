@@ -24,6 +24,12 @@ public class SlotSelection : Singleton<SlotSelection>
         // inventorySlot = null; 
     }
 
+    public void DisenableImage(bool fish) {
+        if (image == null) image = this.GetComponent<Image>(); 
+        if (image == null) image = this.gameObject.AddComponent<Image>(); 
+        image.enabled = fish; 
+    }
+
 
 }
 

@@ -6,25 +6,34 @@ namespace unityInventorySystem {
 [CreateAssetMenu(fileName = "New Item Database", menuName = "unity Inventory System/Items/Database")]
 public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiver
 {
+    [SerializeField] string SavePath = "D:/unity_projects";
     public ItemObject[] ItemObjects;
+
 
     [ContextMenu("Update ID's")]
     public void UpdateID()
     {
         for (int i = 0; i < ItemObjects.Length; i++)
         {
+            if (ItemObjects[i] == null) {
+                Debug.LogWarning("Warning: ItemObject is null"); 
+                continue;
+            }
             if (ItemObjects[i].item.Id != i)
                 ItemObjects[i].item.Id = i;
         }
     }
     public void OnAfterDeserialize()
     {
-        UpdateID();
     }
 
     public void OnBeforeSerialize()
     {
+        if(!string.IsNullOrEmpty(SavePath)) ItemClassManager.SetSavePath(SavePath); 
+        UpdateID();
+
     }
+
 
     // [System.NonSerialized]
     // public static Dictionary<string, int> name_index_dict; 
@@ -40,4 +49,28 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     //     return ItemObjects[name_index_dict[name]]; 
     // }
 }
+
+public static class ItemClassManager
+{
+    static string _save_path; 
+
+    public static string save_path {
+        get => _save_path; 
+    }
+
+
+    static ItemDatabaseObject database; 
+
+    const string DatabasePath = "UnityInventory/";
+
+    public static ItemDatabaseObject GetDatabase(string name) {
+        return Resources.Load<ItemDatabaseObject>(DatabasePath + name);
+    }
+
+    public static void SetSavePath(string path) {
+        _save_path = path; 
+    }
+}
+
+
 }

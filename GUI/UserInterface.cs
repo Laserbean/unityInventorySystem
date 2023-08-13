@@ -18,12 +18,9 @@ public abstract class UserInterface : MonoBehaviour
     public Dictionary<GameObject, InventorySlot> slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
     void Start()
     {
-        for (int i = 0; i < inventoryObject.GetSlots.Length; i++)
-        {
-            inventoryObject.GetSlots[i].parent = this;
-            inventoryObject.GetSlots[i].OnAfterUpdate += OnSlotUpdate;
+        inventoryObject.inventory.SetSlotsAfterUpdate(OnSlotUpdate);
+        inventoryObject.inventory.SetUserinterface(this);
 
-        }
         CreateSlots();
         AddEvent(gameObject, EventTriggerType.PointerEnter, delegate { OnEnterInterface(gameObject); });
         AddEvent(gameObject, EventTriggerType.PointerExit, delegate { OnExitInterface(gameObject); });
@@ -127,13 +124,13 @@ public abstract class UserInterface : MonoBehaviour
         {
             InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
             // InventorySlot mouseHoverSlotData = SelectedSlot.userinterface.slotsOnInterface[MouseData.slotHoveredOver];
-            inventoryObject.SwapItems(islot, mouseHoverSlotData);
+            inventoryObject.inventory.SwapItems(islot, mouseHoverSlotData);
         }
 
         // Debug.Log("slot EDED");
 
 
-        SlotSelection.Instance.image.enabled = false; 
+        SlotSelection.Instance.DisenableImage(false); 
         SelectedSlot.obj = null; 
         SlotSelection.Instance.isSelecting = false; 
     }
@@ -178,7 +175,7 @@ public abstract class UserInterface : MonoBehaviour
     }
 
     void SelectSlot(GameObject obj) {
-            SlotSelection.Instance.image.enabled = true; 
+            SlotSelection.Instance.DisenableImage(true); 
             SlotSelection.Instance.GetComponent<RectTransform>().position = obj.GetComponent<RectTransform>().position; 
             SlotSelection.Instance.isSelecting = true; 
     }
@@ -200,9 +197,9 @@ public abstract class UserInterface : MonoBehaviour
 
         } else {
             InventorySlot curIslot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
-            inventoryObject.SwapItems(curIslot, SelectedSlot.slot);
+            inventoryObject.inventory.SwapItems(curIslot, SelectedSlot.slot);
 
-            SlotSelection.Instance.image.enabled = false; 
+            SlotSelection.Instance.DisenableImage(false); 
             SelectedSlot.obj = null; 
             SlotSelection.Instance.isSelecting = false; 
 

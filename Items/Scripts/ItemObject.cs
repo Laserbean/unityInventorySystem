@@ -71,6 +71,9 @@ public class Item
             };
         }
     }
+
+    // public string MetaData = ""; 
+    public SpecialDict specialDict = new SpecialDict(); 
 }
 
 [System.Serializable]

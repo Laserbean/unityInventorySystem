@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEditor;
 using System.Runtime.Serialization;
+using System;
 
 namespace unityInventorySystem {
 
@@ -25,135 +26,6 @@ public class InventoryObject : ScriptableObject
     public InventorySlot[] GetSlots { get { return inventory.Slots; } }
 
 
-    public bool AddItem(Item _item, int _amount)
-    {
-        if (EmptySlotCount <= 0)
-            return false;
-        InventorySlot slot = FindItemSlonOnInventory(_item);
-        if(!database.ItemObjects[_item.Id].stackable || slot == null)
-        {
-            SetEmptySlot(_item, _amount);
-            return true;
-        }
-        slot.AddAmount(_amount);
-        return true;
-    }
-
-    public bool RemoveItem(Item _item)
-    {
-        if (EmptySlotCount <= 0)
-            return false;
-        InventorySlot slot = FindItemSlonOnInventory(_item);
-        if(!database.ItemObjects[_item.Id].stackable || slot == null)
-        {
-            slot = new InventorySlot();
-            return true;
-        }
-        slot.RemoveAmount(1); 
-        return true;
-    }
-
-    public bool AddEquipment(Item _item, EquipmentTag eq_tag, ItemType type) {
-        if (EmptySlotCount <= 0)
-            return false;
-        InventorySlot slot = FindFirstSlotWithType(type);
-        
-        if (slot == null) {
-            return false; 
-        }
-        slot.UpdateSlot(_item, 1); 
-
-        return true; 
-    }
-
-
-    public int EmptySlotCount
-    {
-        get
-        {
-            int counter = 0;
-            for (int i = 0; i < GetSlots.Length; i++)
-            {
-                if (GetSlots[i].item.Id <= -1)
-                {
-                    counter++;
-                }
-            }
-            return counter;
-        }
-    }
-
-
-    ///<summary>
-    /// Looks for the slot in the inventory that already contains the item. 
-    ///</summary>
-    public InventorySlot FindItemSlonOnInventory(Item _item)
-    {
-        for (int i = 0; i < GetSlots.Length; i++)
-        {
-            if(GetSlots[i].item.Id == _item.Id)
-            {
-                return GetSlots[i];
-            }
-        }
-        return null;
-    }
-    
-
-    public List<InventorySlot> FindSlotsWithType(ItemType itype) {
-        List<InventorySlot> list = new List<InventorySlot>(); 
-
-        for (int i = 0; i < GetSlots.Length; i++)
-        {
-            if(GetSlots[i].ItemObject.type == itype)
-            {
-                list.Add(GetSlots[i]); 
-            }
-        }
-        return list;
-    }
-
-    public InventorySlot FindFirstSlotWithType(ItemType itype) { //make sure type is unique, example, bullets. 
-        for (int i = 0; i < GetSlots.Length; i++)
-        {
-            try {
-            if(GetSlots[i].ItemObject != null && GetSlots[i].ItemObject.type == itype)
-            {
-                return GetSlots[i];
-            }
-            } catch {
-                Debug.LogError("idk what's the rerroror"); 
-            }
-        }
-        return null;
-    }
-
-    
-    public InventorySlot SetEmptySlot(Item _item, int _amount)
-    {
-        for (int i = 0; i < GetSlots.Length; i++)
-        {
-            if (GetSlots[i].item.Id <= -1)
-            {
-                GetSlots[i].UpdateSlot(_item, _amount);
-                return GetSlots[i];
-            }
-        }
-        //set up functionality for full inventory
-        return null;
-    }
-    
-
-    public void SwapItems(InventorySlot item1, InventorySlot item2)
-    {
-        if(item2.CanPlaceInSlot(item1.ItemObject) && item1.CanPlaceInSlot(item2.ItemObject))
-        {
-            InventorySlot temp = new InventorySlot( item2.item, item2.amount);
-            item2.UpdateSlot(item1.item, item1.amount);
-            item1.UpdateSlot(temp.item, temp.amount);
-        }
-    }
-    
 
     [ContextMenu("Save")]
     public void Save(string path = "")
@@ -221,7 +93,61 @@ public class InventoryObject : ScriptableObject
 [System.Serializable]
 public class Inventory
 {
+    [SerializeField]
+    string DatabaseName = "ItemDB"; 
+
+    [SerializeField]
+    string Name = "Inventory"; 
+
+    [NonSerialized]
+    ItemDatabaseObject _database;
+
     public InventorySlot[] Slots = new InventorySlot[28];
+    
+    public Inventory Copy() {
+        Inventory inventory = new Inventory(); 
+        inventory.DatabaseName = DatabaseName;
+
+        inventory.Slots = new InventorySlot[Slots.Length];
+
+        for(int i = 0; i < Slots.Length; i++) {
+            inventory.Slots[i] = new InventorySlot(Slots[i]);
+        }
+
+        return inventory; 
+    }
+    
+    public void SetUserinterface(UserInterface userInterface) {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            Slots[i].parent = userInterface;
+        }
+    }
+
+    public void SetSlotsAfterUpdate(SlotUpdated OnSlotUpdate) {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            Slots[i].OnAfterUpdate += OnSlotUpdate;
+        }
+    }
+
+    public void SetSlotsBeforeUpdate(SlotUpdated OnSlotUpdate) {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            Slots[i].OnBeforeUpdate += OnSlotUpdate;
+        }
+    }
+    
+
+    public void ClearAllEvents() {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            Slots[i].OnBeforeUpdate = null;
+            Slots[i].OnAfterUpdate  = null;
+        }
+    }
+
+
     public void Clear()
     {
         for (int i = 0; i < Slots.Length; i++)
@@ -229,6 +155,146 @@ public class Inventory
             Slots[i].RemoveItem();
         }
     }
+
+    ItemDatabaseObject database {
+        get {
+            if (_database == null) _database = ItemClassManager.GetDatabase(DatabaseName);
+            return _database; 
+
+        }
+
+    }
+
+    
+    public int EmptySlotCount
+    {
+        get
+        {
+            int counter = 0;
+            for (int i = 0; i < Slots.Length; i++)
+            {
+                if (Slots[i].item.Id <= -1)
+                {
+                    counter++;
+                }
+            }
+            return counter;
+        }
+    }
+
+    
+    public bool AddItem(Item _item, int _amount)
+    {
+        if (EmptySlotCount <= 0)
+            return false;
+        InventorySlot slot = FindItemSlonOnInventory(_item);
+        if(!database.ItemObjects[_item.Id].stackable || slot == null)
+        {
+            SetEmptySlot(_item, _amount);
+            return true;
+        }
+        slot.AddAmount(_amount);
+        return true;
+    }
+
+    public bool RemoveItem(Item _item)
+    {
+        if (EmptySlotCount <= 0)
+            return false;
+        InventorySlot slot = FindItemSlonOnInventory(_item);
+        if(!database.ItemObjects[_item.Id].stackable || slot == null)
+        {
+            slot = new InventorySlot();
+            return true;
+        }
+        slot.RemoveAmount(1); 
+        return true;
+    }
+
+    ///<summary>
+    /// Looks for the slot in the inventory that already contains the item. 
+    ///</summary>
+    public InventorySlot FindItemSlonOnInventory(Item _item)
+    {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            if(Slots[i].item.Id == _item.Id)
+            {
+                return Slots[i];
+            }
+        }
+        return null;
+    }
+
+    public InventorySlot SetEmptySlot(Item _item, int _amount)
+    {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            if (Slots[i].item.Id <= -1)
+            {
+                Slots[i].UpdateSlot(_item, _amount);
+                return Slots[i];
+            }
+        }
+        //set up functionality for full inventory
+        return null;
+    }
+
+    public bool AddEquipment(Item _item, EquipmentTag eq_tag, ItemType type) {
+        if (EmptySlotCount <= 0)
+            return false;
+        InventorySlot slot = FindFirstSlotWithType(type);
+        
+        if (slot == null) {
+            return false; 
+        }
+        slot.UpdateSlot(_item, 1); 
+
+        return true; 
+    }
+    
+
+    public InventorySlot FindFirstSlotWithType(ItemType itype) { //make sure type is unique, example, bullets. 
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            try {
+            if(Slots[i].ItemObject != null && Slots[i].ItemObject.type == itype)
+            {
+                return Slots[i];
+            }
+            } catch {
+                Debug.LogError("idk what's the rerroror"); 
+            }
+        }
+        return null;
+    }
+
+
+    public List<InventorySlot> FindSlotsWithType(ItemType itype) {
+        List<InventorySlot> list = new List<InventorySlot>(); 
+
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            if(Slots[i].ItemObject.type == itype)
+            {
+                list.Add(Slots[i]); 
+            }
+        }
+        return list;
+    }
+
+    public void SwapItems(InventorySlot item1, InventorySlot item2)
+    {
+        if(item2.CanPlaceInSlot(item1.ItemObject) && item1.CanPlaceInSlot(item2.ItemObject))
+        {
+            InventorySlot temp = new InventorySlot( item2.item, item2.amount);
+            item2.UpdateSlot(item1.item, item1.amount);
+            item1.UpdateSlot(temp.item, temp.amount);
+        }
+    }
+    
+    
+
 }
 
 
@@ -269,16 +335,12 @@ public class InventorySlot
         }
     }
 
-    // public WeaponObject WeaponObject {
-    //     get
-    //     {
-    //         if(item.Id >= 0)
-    //         {
-    //             return (WeaponObject) parent.inventoryObject.database.ItemObjects[item.Id];
-    //         }
-    //         return null;
-    //     }
-    // }
+    public InventorySlot(InventorySlot other) {
+        this.AllowedItems = other.AllowedItems; 
+        this.tag = other.tag; 
+        this.item = other.item; 
+        this.amount = other.amount; 
+    }
 
     public InventorySlot()
     {

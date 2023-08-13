@@ -21,7 +21,7 @@ public class ItemPickup : MonoBehaviour {
         if (gitem) {
             Item _item = new Item(gitem.item);
             // Debug.Log(_item.ID);
-            inventory.AddItem(_item, gitem.ammount);
+            inventory.inventory.AddItem(_item, gitem.ammount);
             Destroy(other.gameObject);
         }
     }
