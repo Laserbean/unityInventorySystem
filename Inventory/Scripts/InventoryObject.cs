@@ -99,6 +99,51 @@ public class Inventory
     ItemDatabaseObject _database;
 
     public InventorySlot[] Slots = new InventorySlot[28];
+    
+    public Inventory Copy() {
+        Inventory inventory = new Inventory(); 
+        inventory.DatabaseName = DatabaseName;
+
+        inventory.Slots = new InventorySlot[Slots.Length];
+
+        for(int i = 0; i < Slots.Length; i++) {
+            inventory.Slots[i] = new InventorySlot(Slots[i]);
+        }
+
+        return inventory; 
+    }
+    
+    public void SetUserinterface(UserInterface userInterface) {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            Slots[i].parent = userInterface;
+        }
+    }
+
+    public void SetSlotsAfterUpdate(SlotUpdated OnSlotUpdate) {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            Slots[i].OnAfterUpdate += OnSlotUpdate;
+        }
+    }
+
+    public void SetSlotsBeforeUpdate(SlotUpdated OnSlotUpdate) {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            Slots[i].OnBeforeUpdate += OnSlotUpdate;
+        }
+    }
+    
+
+    public void ClearAllEvents() {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            Slots[i].OnBeforeUpdate = null;
+            Slots[i].OnAfterUpdate  = null;
+        }
+    }
+
+
     public void Clear()
     {
         for (int i = 0; i < Slots.Length; i++)
@@ -286,16 +331,12 @@ public class InventorySlot
         }
     }
 
-    // public WeaponObject WeaponObject {
-    //     get
-    //     {
-    //         if(item.Id >= 0)
-    //         {
-    //             return (WeaponObject) parent.inventoryObject.database.ItemObjects[item.Id];
-    //         }
-    //         return null;
-    //     }
-    // }
+    public InventorySlot(InventorySlot other) {
+        this.AllowedItems = other.AllowedItems; 
+        this.tag = other.tag; 
+        this.item = other.item; 
+        this.amount = other.amount; 
+    }
 
     public InventorySlot()
     {

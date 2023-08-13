@@ -18,12 +18,9 @@ public abstract class UserInterface : MonoBehaviour
     public Dictionary<GameObject, InventorySlot> slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
     void Start()
     {
-        for (int i = 0; i < inventoryObject.GetSlots.Length; i++)
-        {
-            inventoryObject.GetSlots[i].parent = this;
-            inventoryObject.GetSlots[i].OnAfterUpdate += OnSlotUpdate;
+        inventoryObject.inventory.SetSlotsAfterUpdate(OnSlotUpdate);
+        inventoryObject.inventory.SetUserinterface(this);
 
-        }
         CreateSlots();
         AddEvent(gameObject, EventTriggerType.PointerEnter, delegate { OnEnterInterface(gameObject); });
         AddEvent(gameObject, EventTriggerType.PointerExit, delegate { OnExitInterface(gameObject); });

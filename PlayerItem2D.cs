@@ -131,29 +131,13 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         // }
         #endregion
 
-        for (int i = 0; i < equipmentObject.GetSlots.Length; i++)
-        {
-            equipmentObject.GetSlots[i].OnBeforeUpdate += OnRemoveItem;
-            equipmentObject.GetSlots[i].OnAfterUpdate += OnAddItem;
-        }
+        equipmentObject.inventory.SetSlotsBeforeUpdate(OnRemoveItem);
+        equipmentObject.inventory.SetSlotsAfterUpdate(OnAddItem);
     }
 
     private void OnDisable() {
-        for (int i = 0; i < equipmentObject.GetSlots.Length; i++)
-        {
-            equipmentObject.GetSlots[i].OnBeforeUpdate = null;
-            equipmentObject.GetSlots[i].OnAfterUpdate  = null;
-        }
+        equipmentObject.inventory.ClearAllEvents();
     }
-
-    public void AddListeners(SlotUpdated beforeUpdate, SlotUpdated afterUpdate) {
-        for (int i = 0; i < equipmentObject.GetSlots.Length; i++)
-        {
-            equipmentObject.GetSlots[i].OnBeforeUpdate += beforeUpdate;
-            equipmentObject.GetSlots[i].OnAfterUpdate += afterUpdate;
-        }
-    }
-
 
     private void OnApplicationQuit() {
         inventoryObject.Clear();
