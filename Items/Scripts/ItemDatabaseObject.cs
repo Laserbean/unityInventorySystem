@@ -6,7 +6,9 @@ namespace unityInventorySystem {
 [CreateAssetMenu(fileName = "New Item Database", menuName = "unity Inventory System/Items/Database")]
 public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiver
 {
+    [SerializeField] string SavePath = "D:/unity_projects";
     public ItemObject[] ItemObjects;
+
 
     [ContextMenu("Update ID's")]
     public void UpdateID()
@@ -27,9 +29,11 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
     public void OnBeforeSerialize()
     {
+        if(!string.IsNullOrEmpty(SavePath)) ItemClassManager.SetSavePath(SavePath); 
         UpdateID();
 
     }
+
 
     // [System.NonSerialized]
     // public static Dictionary<string, int> name_index_dict; 
@@ -48,7 +52,13 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
 public static class ItemClassManager
 {
-    public static string save_path = "D:/unity_projects"; 
+    static string _save_path; 
+
+    public static string save_path {
+        get => _save_path; 
+    }
+
+
     static ItemDatabaseObject database; 
 
     const string DatabasePath = "UnityInventory/";
@@ -57,6 +67,9 @@ public static class ItemClassManager
         return Resources.Load<ItemDatabaseObject>(DatabasePath + name);
     }
 
+    public static void SetSavePath(string path) {
+        _save_path = path; 
+    }
 }
 
 

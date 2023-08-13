@@ -93,7 +93,11 @@ public class InventoryObject : ScriptableObject
 [System.Serializable]
 public class Inventory
 {
-    public string DatabaseName = ""; 
+    [SerializeField]
+    string DatabaseName = "ItemDB"; 
+
+    [SerializeField]
+    string Name = "Inventory"; 
 
     [NonSerialized]
     ItemDatabaseObject _database;
