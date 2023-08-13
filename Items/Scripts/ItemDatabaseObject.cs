@@ -40,4 +40,19 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     //     return ItemObjects[name_index_dict[name]]; 
     // }
 }
+
+public static class ItemClassManager
+{
+    public static string save_path = "D:/unity_projects"; 
+    static ItemDatabaseObject database; 
+
+    const string DatabasePath = "UnityInventory/";
+
+    public static ItemDatabaseObject GetDatabase(string name) {
+        return Resources.Load<ItemDatabaseObject>(DatabasePath + name);
+    }
+
+}
+
+
 }

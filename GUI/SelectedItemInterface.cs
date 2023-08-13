@@ -5,30 +5,33 @@ using UnityEngine.UI;
 using unityInventorySystem; 
 
 public class SelectedItemInterface : MonoBehaviour
-{
+{    
+    [SerializeField] TMPro.TextMeshProUGUI itemNameTMP;
+    [SerializeField] TMPro.TextMeshProUGUI descriptionTMP;
+
+    [SerializeField] string databaseName; 
+    [SerializeField] ItemDatabaseObject itemDatabase; 
+    [SerializeField] Button usebutton; 
+
     private void Start() {
         itemNameTMP.text = "";
         descriptionTMP.text = ""; 
         usebutton.gameObject.SetActive(false); 
-        
+
+        if (string.IsNullOrEmpty(databaseName))
+            itemDatabase = ItemClassManager.GetDatabase(databaseName);
     }
+
     void OnEnable()
     {
         EventManager.AddListener<SlotSelectedEvent>(OnSlotSelected);       
         EventManager.AddListener<SlotUpdatedEvent>(OnSlotUpdated);
-
     }
 
     void OnDisable() {
         EventManager.RemoveListener<SlotSelectedEvent>(OnSlotSelected);
         EventManager.RemoveListener<SlotUpdatedEvent>(OnSlotUpdated);
-
     }
-
-    [SerializeField] TMPro.TextMeshProUGUI itemNameTMP;
-    [SerializeField] TMPro.TextMeshProUGUI descriptionTMP;
-    [SerializeField] ItemDatabaseObject itemDatabase; 
-    [SerializeField] Button usebutton; 
 
 
     InventorySlot slot; 
