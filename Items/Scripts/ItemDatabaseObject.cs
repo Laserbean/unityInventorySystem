@@ -13,17 +13,22 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     {
         for (int i = 0; i < ItemObjects.Length; i++)
         {
+            if (ItemObjects[i] == null) {
+                Debug.LogWarning("Warning: ItemObject is null"); 
+                continue;
+            }
             if (ItemObjects[i].item.Id != i)
                 ItemObjects[i].item.Id = i;
         }
     }
     public void OnAfterDeserialize()
     {
-        UpdateID();
     }
 
     public void OnBeforeSerialize()
     {
+        UpdateID();
+
     }
 
     // [System.NonSerialized]
