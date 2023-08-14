@@ -362,6 +362,10 @@ public class InventorySlot
             OnAfterUpdate.Invoke(this);
     }
 
+    public bool IsEmpty() {
+        return item.Name == (new Item()).Name;
+    }
+
 
     public void RemoveItem()
     {

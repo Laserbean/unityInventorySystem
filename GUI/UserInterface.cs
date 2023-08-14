@@ -10,7 +10,10 @@ using System;
 using UnityEngine.InputSystem; 
 
 
-using unityInventorySystem; 
+using unityInventorySystem;
+using Laserbean.General;
+using UnityEditor.PackageManager;
+
 public abstract class UserInterface : MonoBehaviour
 {
 
@@ -49,7 +52,10 @@ public abstract class UserInterface : MonoBehaviour
         AddEvent(obj, EventTriggerType.PointerExit, delegate { OnExit(obj); });
         AddEvent(obj, EventTriggerType.BeginDrag, delegate { OnDragStart(obj); });
         AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
-        AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
+
+        // AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
+        AddEvent(obj, EventTriggerType.Drag, delegate (BaseEventData eventData){ OnDrag(obj, eventData); });
+
         AddEvent(obj, EventTriggerType.PointerClick, delegate { OnCLickedSlot(obj); });
         AddEvent(obj, EventTriggerType.Select, delegate { OnSelect(obj); });
         AddEvent(obj, EventTriggerType.Submit, delegate { OnSubmit(obj); });
@@ -91,21 +97,25 @@ public abstract class UserInterface : MonoBehaviour
         MouseData.tempItemBeingDragged = CreateTempItem(obj);
     }
 
-    public GameObject CreateTempItem(GameObject obj)
-    {
-        GameObject tempItem = null;
-        if(slotsOnInterface[obj].item.Id >= 0)
+        public GameObject CreateTempItem(GameObject obj)
         {
-            tempItem = new GameObject();
-            var rt = tempItem.AddComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(50, 50);
-            tempItem.transform.SetParent(transform.parent);
-            var img = tempItem.AddComponent<Image>();
-            img.sprite = slotsOnInterface[obj].ItemObject.uiDisplay;
-            img.raycastTarget = false;
+            GameObject tempItem = null;
+            if(slotsOnInterface[obj].item.Id >= 0)
+            {
+                tempItem = new GameObject("drag item");
+                tempItem.transform.SetParent(transform.parent);
+                // tempItem.transform.SetParent(null);
+                var rt = tempItem.AddComponent<RectTransform>();
+
+                rt.sizeDelta = new Vector2(50, 50);
+                rt.localScale = new Vector3(1, 1, 1);
+
+                var img = tempItem.AddComponent<Image>();
+                img.sprite = slotsOnInterface[obj].ItemObject.uiDisplay;
+                img.raycastTarget = false;
+            }
+            return tempItem;
         }
-        return tempItem;
-    }
 
 
     public void OnDragEnd(GameObject obj)
@@ -117,7 +127,8 @@ public abstract class UserInterface : MonoBehaviour
     void EndDragOrSecondClick(InventorySlot islot) {
         if (MouseData.interfaceMouseIsOver == null)
         {
-            islot.RemoveItem();
+            // islot.RemoveItem();
+            Debug.Log("Tried dragging out of inventory".DebugColor(Color.red));
             return;
         }
         if (MouseData.slotHoveredOver)
@@ -135,14 +146,24 @@ public abstract class UserInterface : MonoBehaviour
         SlotSelection.Instance.isSelecting = false; 
     }
 
-    public void OnDrag(GameObject obj)
+    public void OnDrag(GameObject obj, BaseEventData eventdata = null)
     {
-        if (MouseData.tempItemBeingDragged != null){
+        Vector2 pos = Vector2.zero;
+        if (eventdata != null){
+            var pointervent = eventdata as PointerEventData; 
+            pos = pointervent.position; 
+        } else {
             #if ENABLE_INPUT_SYSTEM
-                MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = Mouse.current.position.ReadValue();
+                pos = Mouse.current.position.ReadValue();
             #else
-                MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = Input.mousePosition;
+                pos = Input.mousePosition;
             #endif
+
+        }
+
+        if (MouseData.tempItemBeingDragged != null){
+            pos = Camera.main.ScreenToWorldPoint(pos); 
+            MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = pos; 
         }
     }
 
@@ -155,6 +176,7 @@ public abstract class UserInterface : MonoBehaviour
 
         if (!SlotSelection.Instance.isSelecting) {    
             // SlotSelection.Instance.inventorySlot = slotsOnInterface[obj];
+            if (slotsOnInterface[obj].IsEmpty()) return;
             SelectedSlot.obj = obj; 
             SelectedSlot.slot = slotsOnInterface[obj]; 
 
@@ -165,6 +187,7 @@ public abstract class UserInterface : MonoBehaviour
 
         } else {
             if (SelectedSlot.obj != null) {
+                obj.GetComponent<Button>().OnDeselect(null);
                 EndDragOrSecondClick(SelectedSlot.slot);                
             }
 
