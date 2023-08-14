@@ -134,13 +134,10 @@ public abstract class UserInterface : MonoBehaviour
         if (MouseData.slotHoveredOver)
         {
             InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
-            // InventorySlot mouseHoverSlotData = SelectedSlot.userinterface.slotsOnInterface[MouseData.slotHoveredOver];
-            inventoryObject.inventory.SwapItems(islot, mouseHoverSlotData);
+            
+            if (!islot.IsEmpty()) 
+                inventoryObject.inventory.SwapItems(islot, mouseHoverSlotData);
         }
-
-        // Debug.Log("slot EDED");
-
-
         SelectedSlot.obj = null; 
         SelectedSlot.isSelecting = false; 
     }
@@ -161,7 +158,22 @@ public abstract class UserInterface : MonoBehaviour
         }
 
         if (MouseData.tempItemBeingDragged != null){
-            pos = Camera.main.ScreenToWorldPoint(pos); 
+            // // // pos = Camera.main.ScreenToWorldPoint(pos); 
+
+
+            // // // //first you need the RectTransform component of your canvas
+            // // // RectTransform CanvasRect = MouseData.tempItemBeingDragged.transform.parent.GetComponent<RectTransform>();
+
+            // // // //then you calculate the position of the UI element
+            // // // //0,0 for the canvas is at the center of the screen, whereas WorldToViewPortPoint treats the lower left corner as 0,0. Because of this, you need to subtract the height / width of the canvas * 0.5 to get the correct position.
+
+            // // // Vector2 ViewportPosition = Camera.main.WorldToViewportPoint(pos);
+            // // // Vector2 WorldObject_ScreenPosition = new Vector2(
+            // // // ((ViewportPosition.x*CanvasRect.sizeDelta.x)-(CanvasRect.sizeDelta.x*0.5f)),
+            // // // ((ViewportPosition.y*CanvasRect.sizeDelta.y)-(CanvasRect.sizeDelta.y*0.5f)));
+
+            // // // pos = WorldObject_ScreenPosition;
+            // pos = MouseData.tempItemBeingDragged.transform.TransformPoint(pos); 
             MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = pos; 
         }
     }

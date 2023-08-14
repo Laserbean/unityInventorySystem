@@ -20,7 +20,7 @@ public enum InterfaceType
 public class InventoryObject : ScriptableObject
 {
     public string savePath;
-    public ItemDatabaseObject database;
+    // public ItemDatabaseObject database;
     public InterfaceType type;
     public Inventory inventory;
     public InventorySlot[] GetSlots { get { return inventory.Slots; } }
@@ -156,7 +156,7 @@ public class Inventory
         }
     }
 
-    ItemDatabaseObject database {
+    public ItemDatabaseObject database {
         get {
             if (_database == null) _database = ItemClassManager.GetDatabase(DatabaseName);
             return _database; 
@@ -329,7 +329,7 @@ public class InventorySlot
         {
             if(item.Id >= 0)
             {
-                return parent.inventoryObject.database.ItemObjects[item.Id];
+                return parent.inventoryObject.inventory.database.ItemObjects[item.Id];
             }
             return null;
         }

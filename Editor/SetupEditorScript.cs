@@ -31,6 +31,17 @@ public static class SetupFolderContextMenu
         // {
         //     Debug.LogWarning("No assets selected. Right-click on a folder to use this menu.");
         // }
+
+
+        if (!Directory.Exists(folderpath))
+            Debug.Log("Created: " + folderpath);
+            Directory.CreateDirectory(folderpath);
+        if (!Directory.Exists(folderpath + "/Items"))
+            Debug.Log("Created: " + folderpath + "/Items");
+            Directory.CreateDirectory(folderpath + "/Items");
+
+        
+
         if (!SaveAnything.FileExists(folderpath, "ItemDB", "asset")) {
             var itemDB = ScriptableObject.CreateInstance<ItemDatabaseObject>();
             AssetDatabase.CreateAsset(itemDB, folderpath + "/ItemDB.asset");
@@ -47,14 +58,7 @@ public static class SetupFolderContextMenu
         }
 
 
-        if (!Directory.Exists(folderpath))
-            Debug.Log("Created: " + folderpath);
-            Directory.CreateDirectory(folderpath);
-        if (!Directory.Exists(folderpath + "/Items"))
-            Debug.Log("Created: " + folderpath + "/Items");
-            Directory.CreateDirectory(folderpath + "/Items");
 
-        
         
     }
 
