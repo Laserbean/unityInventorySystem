@@ -141,9 +141,8 @@ public abstract class UserInterface : MonoBehaviour
         // Debug.Log("slot EDED");
 
 
-        SlotSelection.Instance.DisenableImage(false); 
         SelectedSlot.obj = null; 
-        SlotSelection.Instance.isSelecting = false; 
+        SelectedSlot.isSelecting = false; 
     }
 
     public void OnDrag(GameObject obj, BaseEventData eventdata = null)
@@ -167,77 +166,65 @@ public abstract class UserInterface : MonoBehaviour
         }
     }
 
-    public void OnPointerClick(GameObject obj) {
-        OnCLickedSlot(obj); 
-    }
 
     public void OnCLickedSlot(GameObject obj) {
         // Debug.Log("CLICKED SLOT");
 
-        if (!SlotSelection.Instance.isSelecting) {    
-            // SlotSelection.Instance.inventorySlot = slotsOnInterface[obj];
-            if (slotsOnInterface[obj].IsEmpty()) return;
-            SelectedSlot.obj = obj; 
-            SelectedSlot.slot = slotsOnInterface[obj]; 
+        // if (!SelectedSlot.isSelecting) {    
+        //     if (slotsOnInterface[obj].IsEmpty()) return;
+        //     SelectedSlot.obj = obj; 
+        //     SelectedSlot.slot = slotsOnInterface[obj]; 
 
-            SelectSlot(obj); 
-            EventManager.TriggerEvent(new SlotSelectedEvent(SelectedSlot.slot));
-
-
-
-        } else {
-            if (SelectedSlot.obj != null) {
-                obj.GetComponent<Button>().OnDeselect(null);
-                EndDragOrSecondClick(SelectedSlot.slot);                
-            }
-
-            EventManager.TriggerEvent(new SlotSelectedEvent(new InventorySlot()));
-
-        }
-
+        //     SelectSlot(obj); 
+        //     EventManager.TriggerEvent(new SlotSelectedEvent(SelectedSlot.slot));
+        // } else {
+        //     if (SelectedSlot.obj != null) {
+        //         obj.GetComponent<Button>().OnDeselect(null);
+        //         EndDragOrSecondClick(SelectedSlot.slot);                
+        //     }
+        //     EventManager.TriggerEvent(new SlotSelectedEvent(new InventorySlot()));
+        // }
+        OnSubmit(obj); 
     }
 
     void SelectSlot(GameObject obj) {
-            SlotSelection.Instance.DisenableImage(true); 
-            SlotSelection.Instance.GetComponent<RectTransform>().position = obj.GetComponent<RectTransform>().position; 
-            SlotSelection.Instance.isSelecting = true; 
+
+            SelectedSlot.isSelecting = true; 
     }
 
     public void OnSelect(GameObject obj) {
+        // Debug.Log("Select"); 
         ButtonSelectedData.sinterface = obj.GetComponentInParent<UserInterface>(); 
         ButtonSelectedData.slotGO = obj; 
     }
 
     public void OnSubmit(GameObject obj) {
-        if (!SlotSelection.Instance.isSelecting) {
+        if (!SelectedSlot.isSelecting) {
+            if (slotsOnInterface[obj].IsEmpty()) return;
 
             SelectedSlot.obj = ButtonSelectedData.slotGO; 
             SelectedSlot.slot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO]; 
-
             SelectSlot(obj); 
             EventManager.TriggerEvent(new SlotSelectedEvent(SelectedSlot.slot));
-
-
         } else {
+
+            if (obj.GetInstanceID() == SelectedSlot.obj.GetInstanceID()) {
+                Debug.Log("Selected same slot");
+            }
+
             InventorySlot curIslot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
             inventoryObject.inventory.SwapItems(curIslot, SelectedSlot.slot);
 
-            SlotSelection.Instance.DisenableImage(false); 
             SelectedSlot.obj = null; 
-            SlotSelection.Instance.isSelecting = false; 
+            SelectedSlot.isSelecting = false; 
+
+            obj.GetComponent<Button>().OnDeselect(null);
 
             EventManager.TriggerEvent(new SlotSelectedEvent(new InventorySlot()));
-
         }
     }
 
     public static GameObject OnCLickedSlotGO; 
-
-    // Vector2 mousepos; 
-    // public void OnPoint(InputValue value) {
-    //     mousepos = value.Get<Vector2>();
-    // }
-
 
 
 }
@@ -249,9 +236,16 @@ public static class MouseData
 }
 
 public static class SelectedSlot {
+    public static bool isSelecting = false; 
     public static GameObject obj;
     public static int slotnumber;
     public static InventorySlot slot; 
+
+    public static int holdamount;
+
+    public static void SelectSlot(GameObject obj) {
+
+    } 
 }
 
 public static class ButtonSelectedData {
