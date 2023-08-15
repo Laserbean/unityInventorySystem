@@ -36,16 +36,6 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
     AttributesController attributesController;
 
 
-
-    public void AddItemToInventory(unityInventorySystem.GroundItem gitem) {
-        if (gitem) {
-            Item _item = new Item(gitem.item);
-            // Debug.Log(_item.Id);
-            inventoryObject.inventory.AddItem(_item, gitem.ammount);
-        }
-    }
-
-
     // public Attribute[] attributes;
     
     public void OnRemoveItem(InventorySlot _slot)

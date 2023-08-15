@@ -4,48 +4,60 @@ using UnityEditor;
 using UnityEngine;
 
 namespace unityInventorySystem {
-public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
+public class GroundItem : MonoBehaviour, IGroundItem
 {
-    public ItemObject item;
+    public ItemObject itemObject;
 
+    Item item; 
     public int ammount = 1; 
 
-    public void OnAfterDeserialize()
+
+
+    public string ItemDatabaseName = ItemClassManager.DEF_ITEM_DB_NAME; 
+    public int amount => ammount;
+
+
+    protected void OnEnable()
     {
-    }
-
-    public void OnBeforeSerialize()
-    {
-#if UNITY_EDITOR
-        // GetComponentInChildren<SpriteRenderer>().sprite = item.uiDisplay;
-        // EditorUtility.SetDirty(GetComponentInChildren<SpriteRenderer>());
-        if (item != null && isAnimated) {
-            this.gameObject.GetComponent<SpriteRenderer>().sprite = item.uiDisplay; 
-        }
-                
-
-#endif
-    }
-
-    float time = 0; 
-    [SerializeField] float animation_speed = 1f; 
-
-    [Range(0f, 1f)]
-    [SerializeField] float sin_ratio = 0.7f; 
-
-
-    [SerializeField] bool isAnimated = true; 
-    private void Update() {
-        if (isAnimated) {
-            time += Time.deltaTime; 
-            this.transform.localScale =  Vector3.one+ (Vector3.one * Mathf.Sin(time *animation_speed) * sin_ratio); 
+        if (itemObject != null) {
+            this.gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.uiDisplay; 
+            item = itemObject.item; 
         }
     }
 
-    public void SetItem(ItemObject item) {
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = item.uiDisplay; 
-
-        this.item = item; 
+    private void OnValidate() {
+        #if UNITY_EDITOR
+        OnEnable(); 
+        #endif
     }
+
+    public void SetItem(ItemObject itemo) {
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = itemo.uiDisplay; 
+        itemObject = itemo; 
+        item = itemo.item; 
+    }
+
+    Item IGroundItem.GetItem()
+    {
+        return itemObject.item; 
+    }
+
+    void IGroundItem.DestroyItem()
+    {
+        Destroy(this.gameObject); 
+    }
+
+    void IGroundItem.SetItem(Item _item, int amm)
+    {
+        ammount = amm; 
+        item = _item; 
+
+        itemObject =ItemClassManager.GetDatabase(ItemDatabaseName).GetItemObject(_item.Name); 
+
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.characterDisplay2D;        
+    }
+
+
+
 }
 }

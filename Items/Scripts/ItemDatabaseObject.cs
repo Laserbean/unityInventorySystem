@@ -9,6 +9,19 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     [SerializeField] string SavePath = "D:/unity_projects";
     public ItemObject[] ItemObjects;
 
+    [System.NonSerialized]
+    public static Dictionary<string, int> name_index_dict = new Dictionary<string, int>(); 
+
+
+    private void OnEnable() {
+        UpdateID();
+
+        name_index_dict.Clear(); 
+        for (int i = 0; i < ItemObjects.Length; i++) {
+            name_index_dict.Add(ItemObjects[i].item.Name, i); 
+        }  
+        
+    }
 
     [ContextMenu("Update ID's")]
     public void UpdateID()
@@ -25,29 +38,20 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     }
     public void OnAfterDeserialize()
     {
+        UpdateID();
+
     }
 
     public void OnBeforeSerialize()
     {
         if(!string.IsNullOrEmpty(SavePath)) ItemClassManager.SetSavePath(SavePath); 
-        UpdateID();
 
     }
 
 
-    // [System.NonSerialized]
-    // public static Dictionary<string, int> name_index_dict; 
-
-    // public ItemObject GetItemObject(string name) {
-    //     if (name_index_dict == null) {
-    //         name_index_dict = new Dictionary<string, int>(); 
-    //         for (int i = 0; i < ItemObjects.Length; i++)
-    //         {
-    //             name_index_dict.Add(ItemObjects[i].data.Name, i); 
-    //         }  
-    //     }
-    //     return ItemObjects[name_index_dict[name]]; 
-    // }
+    public ItemObject GetItemObject(string name) {
+        return ItemObjects[name_index_dict[name]]; 
+    }
 }
 
 public static class ItemClassManager
@@ -62,6 +66,10 @@ public static class ItemClassManager
     static ItemDatabaseObject database; 
 
     const string DatabasePath = "UnityInventory/";
+
+    public const string DEF_PLAYER_INV_NAME = "PlayerInventory";
+    public const string DEF_PLAYER_EQUIP_NAME = "PlayerEquipment";
+    public const string DEF_ITEM_DB_NAME = "ItemDB";
 
     public static ItemDatabaseObject GetDatabase(string name) {
         return Resources.Load<ItemDatabaseObject>(DatabasePath + name);

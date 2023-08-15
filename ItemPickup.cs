@@ -7,23 +7,43 @@ using UnityEngine;
 
 using System.Linq; 
 
-using unityInventorySystem;
 
 using UnityEngine.Events; 
 
-public class ItemPickup : MonoBehaviour {
+namespace unityInventorySystem {
+public class ItemPickup : MonoBehaviour, IPickUp
+{
 
+    [SerializeField] bool pickupOnTrigger = false; 
 
     [SerializeField] InventoryObject inventory; 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        var gitem = other.GetComponent<GroundItem>();
-        if (gitem) {
-            Item _item = new Item(gitem.item);
+        if (!pickupOnTrigger) return; 
+        
+        var gitem = other.GetComponent<IGroundItem>();
+        if (gitem != null) {
             // Debug.Log(_item.ID);
-            inventory.inventory.AddItem(_item, gitem.ammount);
-            Destroy(other.gameObject);
+            inventory.inventory.AddItem(gitem.GetItem(), gitem.amount);
+            gitem.DestroyItem();
         }
     }
-    
+
+    void IPickUp.PickUpItem(IGroundItem groundItem)
+    {            
+        inventory.inventory.AddItem(groundItem.GetItem(), groundItem.amount);
+        groundItem.DestroyItem();
+    }
+}
+
+public interface IPickUp {
+    public void PickUpItem(IGroundItem groundItem); 
+}
+
+public interface IGroundItem {
+    public Item GetItem(); 
+    public void DestroyItem(); 
+    public void SetItem(Item item, int amount = 1); 
+    public int amount {get;}
+}
 }

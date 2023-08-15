@@ -20,7 +20,7 @@ public class ItemDrops : MonoBehaviour
                 // GameObject go = Instantiate(AllDatabases.Instance.entityDB.groundItemDropPrefab, this.transform.position, this.transform.rotation); 
 
 
-                go.GetComponent<GroundItem>().item = dropList[j].item; 
+                go.GetComponent<GroundItem>().itemObject = dropList[j].item; 
 
             }
         }
