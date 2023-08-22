@@ -6,15 +6,13 @@ namespace unityInventorySystem {
 [CreateAssetMenu(fileName = "New Item Database", menuName = "unity Inventory System/Items/Database")]
 public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiver
 {
-    [SerializeField] string SavePath = "D:/unity_projects";
     public ItemObject[] ItemObjects;
 
     [System.NonSerialized]
-    public static Dictionary<string, int> name_index_dict = new Dictionary<string, int>(); 
+    public static Dictionary<string, int> name_index_dict = new (); 
 
 
     private void OnEnable() {
-        if(!string.IsNullOrEmpty(SavePath)) InventoryStaticManager.SetSavePath(SavePath); 
         UpdateID();
 
         name_index_dict.Clear(); 
@@ -45,8 +43,6 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
     public void OnBeforeSerialize()
     {
-        if(!string.IsNullOrEmpty(SavePath)) InventoryStaticManager.SetSavePath(SavePath); 
-
     }
 
 
@@ -57,10 +53,9 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
 public static class InventoryStaticManager
 {
-    static string _save_path; 
 
-    public static string save_path {
-        get => _save_path; 
+    public static string SavePath {
+        get => GameManager.Instance.CurrentGamePath; 
     }
 
 
@@ -80,9 +75,6 @@ public static class InventoryStaticManager
         return Resources.Load<InventoryObject>(DatabasePath + name);
     }
 
-    public static void SetSavePath(string path) {
-        _save_path = path; 
-    }
 }
 
 
