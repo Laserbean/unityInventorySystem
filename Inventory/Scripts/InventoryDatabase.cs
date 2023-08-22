@@ -1,18 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using unityInventorySystem;
 
-public class InventoryDatabase : MonoBehaviour
+
+[CreateAssetMenu(fileName = "InventoryDB", menuName = "unity Inventory System/Inventory Database")]
+public class InventoryDatabase : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+
+    public List<InventoryObject> inventoryObjects = new(); 
+
+    [System.NonSerialized]
+    Dictionary<string, InventoryObject> invDict = new(); 
+
+    private void OnEnable() {
+        OnValidate(); 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void OnValidate() {
+        invDict.Clear(); 
+        foreach(var inv in inventoryObjects) {
+            invDict.Add(inv.inventory.Name, inv); 
+        }
+    }
+
+    public InventoryObject GetInventoryObject(string _name) {
+        return invDict[_name]; 
     }
 }

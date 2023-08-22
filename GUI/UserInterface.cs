@@ -11,22 +11,31 @@ using UnityEngine.InputSystem;
 
 
 using unityInventorySystem;
-using Laserbean.General;
 using UnityEditor.PackageManager;
 
 public abstract class UserInterface : MonoBehaviour
 {
 
     public InventoryObject inventoryObject;
-    public Dictionary<GameObject, InventorySlot> slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
+    public Dictionary<GameObject, InventorySlot> slotsOnInterface = new();
     void Start()
     {
+        if (inventoryObject == null) return; 
+        SetupInventory(); 
+    }
+
+    public void SetInventoryObject(InventoryObject _inventoryObject) {
+        inventoryObject = _inventoryObject; 
+    }
+
+    public void SetupInventory() {
         inventoryObject.inventory.SetSlotsAfterUpdate(OnSlotUpdate);
         inventoryObject.inventory.SetUserinterface(this);
 
         CreateSlots();
         AddEvent(gameObject, EventTriggerType.PointerEnter, delegate { OnEnterInterface(gameObject); });
         AddEvent(gameObject, EventTriggerType.PointerExit, delegate { OnExitInterface(gameObject); });
+
     }
 
     private void OnSlotUpdate(InventorySlot _slot)
@@ -128,7 +137,7 @@ public abstract class UserInterface : MonoBehaviour
         if (MouseData.interfaceMouseIsOver == null)
         {
             // islot.RemoveItem();
-            Debug.Log("Tried dragging out of inventory".DebugColor(Color.red));
+            Debug.Log("Tried dragging out of inventory");
             return;
         }
         if (MouseData.slotHoveredOver)

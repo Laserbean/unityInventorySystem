@@ -44,7 +44,7 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
     public void OnBeforeSerialize()
     {
-        if(!string.IsNullOrEmpty(SavePath)) ItemClassManager.SetSavePath(SavePath); 
+        if(!string.IsNullOrEmpty(SavePath)) InventoryStaticManager.SetSavePath(SavePath); 
 
     }
 
@@ -54,7 +54,7 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     }
 }
 
-public static class ItemClassManager
+public static class InventoryStaticManager
 {
     static string _save_path; 
 
@@ -73,6 +73,10 @@ public static class ItemClassManager
 
     public static ItemDatabaseObject GetDatabase(string name) {
         return Resources.Load<ItemDatabaseObject>(DatabasePath + name);
+    }
+
+    public static InventoryObject GetInventoryObject(string name) {
+        return Resources.Load<InventoryObject>(DatabasePath + name);
     }
 
     public static void SetSavePath(string path) {

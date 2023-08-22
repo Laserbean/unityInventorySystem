@@ -13,15 +13,15 @@ public class GroundItem : MonoBehaviour, IGroundItem
 
 
 
-    public string ItemDatabaseName = ItemClassManager.DEF_ITEM_DB_NAME; 
+    public string ItemDatabaseName = InventoryStaticManager.DEF_ITEM_DB_NAME; 
     public int amount => ammount;
 
 
     protected void OnEnable()
     {
         if (itemObject != null) {
-            this.gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.uiDisplay; 
-            item = itemObject.item; 
+            gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.uiDisplay; 
+            item = itemObject.CreateItem(); 
         }
     }
 
@@ -34,12 +34,12 @@ public class GroundItem : MonoBehaviour, IGroundItem
     public void SetItem(ItemObject itemo) {
         this.gameObject.GetComponent<SpriteRenderer>().sprite = itemo.uiDisplay; 
         itemObject = itemo; 
-        item = itemo.item; 
+        item = itemo.CreateItem(); 
     }
 
     Item IGroundItem.GetItem()
     {
-        return itemObject.item; 
+        return item; 
     }
 
     void IGroundItem.DestroyItem()
@@ -52,7 +52,7 @@ public class GroundItem : MonoBehaviour, IGroundItem
         ammount = amm; 
         item = _item; 
 
-        itemObject =ItemClassManager.GetDatabase(ItemDatabaseName).GetItemObject(_item.Name); 
+        itemObject =InventoryStaticManager.GetDatabase(ItemDatabaseName).GetItemObject(_item.Name); 
 
         this.gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.characterDisplay2D;        
     }

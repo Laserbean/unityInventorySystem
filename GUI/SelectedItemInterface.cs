@@ -19,7 +19,7 @@ public class SelectedItemInterface : MonoBehaviour
         usebutton.gameObject.SetActive(false); 
 
         if (string.IsNullOrEmpty(databaseName))
-            itemDatabase = ItemClassManager.GetDatabase(databaseName);
+            itemDatabase = InventoryStaticManager.GetDatabase(databaseName);
     }
 
     void OnEnable()

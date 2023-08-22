@@ -97,7 +97,7 @@ public class Inventory
     string DatabaseName = "ItemDB"; 
 
     [SerializeField]
-    string Name = "Inventory"; 
+    public string Name = "Inventory"; 
 
     [NonSerialized]
     ItemDatabaseObject _database;
@@ -105,12 +105,14 @@ public class Inventory
     public InventorySlot[] Slots = new InventorySlot[28];
     
     public Inventory Copy() {
-        Inventory inventory = new Inventory(); 
-        inventory.DatabaseName = DatabaseName;
+            Inventory inventory = new()
+            {
+                DatabaseName = DatabaseName,
 
-        inventory.Slots = new InventorySlot[Slots.Length];
+                Slots = new InventorySlot[Slots.Length]
+            };
 
-        for(int i = 0; i < Slots.Length; i++) {
+            for (int i = 0; i < Slots.Length; i++) {
             inventory.Slots[i] = new InventorySlot(Slots[i]);
         }
 
@@ -158,7 +160,7 @@ public class Inventory
 
     public ItemDatabaseObject database {
         get {
-            if (_database == null) _database = ItemClassManager.GetDatabase(DatabaseName);
+            if (_database == null) _database = InventoryStaticManager.GetDatabase(DatabaseName);
             return _database; 
 
         }

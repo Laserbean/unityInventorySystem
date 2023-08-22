@@ -36,13 +36,11 @@ public class ModifiableInt
     public void UpdateModifiedValue()
     {
         var valueToAdd = 0;
-        for (int i = 0; i < modifiers.Count; i++)
-        {
+        for (int i = 0; i < modifiers.Count; i++) {
             modifiers[i].AddValue(ref valueToAdd);
         }
         ModifiedValue = baseValue + valueToAdd;
-        if (ValueModified != null)
-            ValueModified.Invoke();
+        ValueModified?.Invoke();
     }
 
     public void AddModifier(IModifier _modifier)

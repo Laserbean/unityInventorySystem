@@ -26,13 +26,17 @@ public class ItemObject : ScriptableObject
     public ItemType type;
     [TextArea(15, 20)]
     public string description;
-    public Item item = new Item();
+
+    [SerializeField]
+    protected Item _item = new ();
+
+    public Item item {get => _item;}
     
     // public List<string> boneNames = new List<string>();
 
     public Item CreateItem()
     {
-        Item newItem = new Item(this);
+        Item newItem = new (_item);
         return newItem;
     }
 
@@ -41,7 +45,7 @@ public class ItemObject : ScriptableObject
     }
 
     protected virtual void OnValidatee(){
-        item.Name = this.name; 
+        _item.Name = this.name; 
     }
 
 
@@ -60,17 +64,20 @@ public class Item
         Id = -1;
     }
 
-    public Item(ItemObject item)
+    public Item(Item item)
     {
-        Name = item.name;
-        Id = item.item.Id;
-        buffs = new ItemBuff[item.item.buffs.Length];
+        Name = item.Name;
+        Id = item.Id;
+        buffs = new ItemBuff[item.buffs.Length];
         for (int i = 0; i < buffs.Length; i++)
         {
-            buffs[i] = new ItemBuff(item.item.buffs[i].min, item.item.buffs[i].max)
+            buffs[i] = new ItemBuff(item.buffs[i].min, item.buffs[i].max)
             {
-                attribute = item.item.buffs[i].attribute
+                attribute = item.buffs[i].attribute
             };
+        }
+        foreach (var kvp in item.specialDict) {
+            specialDict.Add(kvp.Key, kvp.Value);
         }
     }
 

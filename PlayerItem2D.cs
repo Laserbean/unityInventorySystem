@@ -14,15 +14,21 @@ public class EquipmentStuff {
     public ItemType type;
     public EquipmentTag tag; 
     public EquipmentEvents events; 
+
+    public bool RequirementsNotMet(InventorySlot _slot) {
+        return _slot.tag != tag;
+        // || !_slot.AllowedItems.ToList().Contains(type);
+    }
 }
 
 [System.Serializable]
 public class EquipmentEvents {
-    public MyItemObjectEvent onAdd, onRemove; 
+    public MyInventorySlotEvent onAdd, onRemove; 
 }
 
+
 [System.Serializable]
-public class MyItemObjectEvent : UnityEvent<ItemObject> {}
+public class MyInventorySlotEvent : UnityEvent<InventorySlot> {}
 
 
 
@@ -31,7 +37,10 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
 
     [SerializeField] InventoryObject inventoryObject; 
     [SerializeField] InventoryObject equipmentObject;
-    [SerializeField] List<EquipmentStuff> equipmentStuff = new List<EquipmentStuff>();
+    [SerializeField] List<EquipmentStuff> equipmentStuff = new();
+
+    [SerializeField] EquipmentEvents OnBagEqDequip;
+
 
     AttributesController attributesController;
 
@@ -44,8 +53,6 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
             return;
         switch (_slot.parent.inventoryObject.type)
         {
-            case InterfaceType.Inventory:
-                break;
             case InterfaceType.Equipment:
                 // print(string.Concat("Removed ", _slot.ItemObject, " on ", _slot.parent.inventoryObject.type, ", Allowed Items: ", string.Join(", ", _slot.AllowedItems)));
 
@@ -55,12 +62,11 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
 
                 // if (_slot.ItemObject.characterDisplay2D == null) break;
                 foreach(EquipmentStuff cur in equipmentStuff) {
-                    if (_slot.tag != cur.tag || !_slot.AllowedItems.ToList().Contains(cur.type)) continue;
-                    cur.events.onRemove.Invoke(_slot.ItemObject);
+                    if (cur.RequirementsNotMet(_slot)) 
+                        continue;
+                    cur.events.onRemove.Invoke(_slot);
                 }
 
-                break;
-            case InterfaceType.Chest:
                 break;
             default:
                 break;
@@ -73,8 +79,6 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
             return;
         switch (_slot.parent.inventoryObject.type)
         {
-            case InterfaceType.Inventory:
-                break;
             case InterfaceType.Equipment:
                 // print($"Placed {_slot.ItemObject}  on {_slot.parent.inventoryObject.type}, Allowed Items: {string.Join(", ", _slot.AllowedItems)}");
 
@@ -84,12 +88,11 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
 
                 // if (_slot.ItemObject.characterDisplay2D == null) break;
                 foreach(EquipmentStuff cur in equipmentStuff) {
-                    if (_slot.tag != cur.tag || !_slot.AllowedItems.ToList().Contains(cur.type)) continue;
-                    cur.events.onAdd.Invoke(_slot.ItemObject);
+                    if (cur.RequirementsNotMet(_slot)) 
+                        continue;
+                    cur.events.onAdd.Invoke(_slot);
                 }
 
-                break;
-            case InterfaceType.Chest:
                 break;
             default:
                 break;

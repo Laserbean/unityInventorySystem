@@ -8,17 +8,14 @@ namespace unityInventorySystem {
 
 public enum ItemType 
 {
+    Inventory, //NOTE: Very Important Don't deletes
     Consumable,
     Helmet,
     Weapon,
     Shield,
-    Boots,
+    Shoes,
     Chest,
-    Attachment, 
-    SmallAmmo,
-    LargeAmmo,
-    ShotgunAmmo, 
-    ArrowAmmo, 
+    Attachment,  
     Placeable, 
     Default
 }
@@ -27,7 +24,7 @@ public enum ItemType
 
 public enum EquipmentTag 
 {
-    Head, lefthand, righthand, body, feet, equipment
+    head, lefthand, righthand, body, feet, equipment, inventory
 
 }
 

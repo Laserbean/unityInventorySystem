@@ -48,7 +48,10 @@ public class SpecialDict : ICollection<KeyValuePair<string, SpecialData>>, IEnum
     }
 
     public SpecialData this [string key] {
-        get => KVPs[Keys.IndexOf(key)].Value; 
+        get {
+            if (KVPs.Count != Keys.Count) ResetKeys(); 
+            return KVPs[Keys.IndexOf(key)].Value; 
+        }
         set {
             if (Keys.IndexOf(key) >= 0) {
                 KVPs[Keys.IndexOf(key)].Value = value; 
@@ -272,7 +275,7 @@ public class SpecialDict : ICollection<KeyValuePair<string, SpecialData>>, IEnum
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            
+            ResetKeys();
         }
     }
 
