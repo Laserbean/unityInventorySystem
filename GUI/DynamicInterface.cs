@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -31,8 +32,13 @@ public class DynamicInterface : UserInterface
 
             slotsOnInterface.Add(obj, inventoryObject.GetSlots[i]);
         }
+    }
 
-
+    public void RemoveSlots() {
+        GameObject [] gameObjects = slotsOnInterface.Keys.ToArray<GameObject>();
+        for (int i = gameObjects.Length -1; i >= 0; i--) {
+            Destroy(gameObjects[i]); 
+        }
     }
     private Vector3 GetPosition(int i)
     {

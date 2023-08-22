@@ -36,6 +36,8 @@ public abstract class UserInterface : MonoBehaviour
         AddEvent(gameObject, EventTriggerType.PointerEnter, delegate { OnEnterInterface(gameObject); });
         AddEvent(gameObject, EventTriggerType.PointerExit, delegate { OnExitInterface(gameObject); });
 
+
+            inventoryObject.inventory.UpdateSlots();
     }
 
     private void OnSlotUpdate(InventorySlot _slot)

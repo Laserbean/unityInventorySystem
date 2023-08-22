@@ -14,6 +14,7 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
 
     private void OnEnable() {
+        if(!string.IsNullOrEmpty(SavePath)) InventoryStaticManager.SetSavePath(SavePath); 
         UpdateID();
 
         name_index_dict.Clear(); 

@@ -41,7 +41,7 @@ public class InventoryObject : ScriptableObject
         if (path == "") {
             stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Create, FileAccess.Write);
         } else {
-            stream = new FileStream(path, FileMode.Create, FileAccess.Write);
+            stream = new FileStream(path + inventory.Name + ".fishfish", FileMode.Create, FileAccess.Write);
         }
 
         formatter.Serialize(stream, inventory);
@@ -66,7 +66,7 @@ public class InventoryObject : ScriptableObject
             if (path == "") {
                 stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Open, FileAccess.Read);
             } else {
-                stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                stream = new FileStream(path + inventory.Name + ".fishfish", FileMode.Open, FileAccess.Read);
             }
 
             
@@ -124,6 +124,14 @@ public class Inventory
         {
             Slots[i].parent = userInterface;
         }
+    }
+
+    public void UpdateSlots() {
+        for (int i = 0; i < Slots.Length; i++)
+        {
+            Slots[i].OnAfterUpdate?.Invoke(Slots[i]);
+        }
+
     }
 
     public void SetSlotsAfterUpdate(SlotUpdated OnSlotUpdate) {
@@ -273,7 +281,7 @@ public class Inventory
 
 
     public List<InventorySlot> FindSlotsWithType(ItemType itype) {
-        List<InventorySlot> list = new List<InventorySlot>(); 
+        List<InventorySlot> list = new (); 
 
         for (int i = 0; i < Slots.Length; i++)
         {
@@ -289,7 +297,9 @@ public class Inventory
     {
         if(item2.CanPlaceInSlot(item1.ItemObject) && item1.CanPlaceInSlot(item2.ItemObject))
         {
-            InventorySlot temp = new InventorySlot( item2.item, item2.amount);
+            InventorySlot temp = new (item2.item, item2.amount);
+            // item2.parent = item1.parent; 
+            // item1.parent = temp.parent; 
             item2.UpdateSlot(item1.item, item1.amount);
             item1.UpdateSlot(temp.item, temp.amount);
         }
@@ -356,12 +366,10 @@ public class InventorySlot
 
     public void UpdateSlot(Item _item, int _amount)
     {
-        if (OnBeforeUpdate != null)
-            OnBeforeUpdate.Invoke(this);
+        OnBeforeUpdate?.Invoke(this);
         item = _item;
         amount = _amount;
-        if (OnAfterUpdate != null)
-            OnAfterUpdate.Invoke(this);
+        OnAfterUpdate?.Invoke(this);
     }
 
     public bool IsEmpty() {
