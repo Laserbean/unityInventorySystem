@@ -168,7 +168,10 @@ public class Inventory
 
     public ItemDatabaseObject database {
         get {
-            if (_database == null) _database = InventoryStaticManager.GetDatabase(DatabaseName);
+            if (_database == null) {
+                _database = InventoryStaticManager.GetDatabase(DatabaseName);
+                _database.Initialize();
+            }
             return _database; 
 
         }

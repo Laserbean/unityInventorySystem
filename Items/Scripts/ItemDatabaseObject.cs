@@ -13,13 +13,17 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
 
     private void OnEnable() {
+        Initialize();
+    }
+
+    public void Initialize() {
         UpdateID();
 
         name_index_dict.Clear(); 
         for (int i = 0; i < ItemObjects.Length; i++) {
             name_index_dict.Add(ItemObjects[i].item.Name, i); 
-        }  
-        
+        } 
+
     }
 
     [ContextMenu("Update ID's")]
