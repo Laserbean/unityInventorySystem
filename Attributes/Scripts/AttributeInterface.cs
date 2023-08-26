@@ -1,9 +1,11 @@
 
 
 
-using unityInventorySystem; 
-public interface IAttributeUsage {
+namespace unityInventorySystem.Attribute {
 
-    public int GetAttributeValue(AttributeType type);
+    public interface IAttributeUsage {
 
+        public int GetAttributeValue(AttributeType type);
+
+    }
 }

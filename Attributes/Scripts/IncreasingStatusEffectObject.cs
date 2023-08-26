@@ -4,6 +4,9 @@ using UnityEngine;
 
 using unityInventorySystem; 
 
+using unityInventorySystem.Attribute; 
+
+
 [CreateAssetMenu(fileName = "IncreasingSE", menuName = "Status Effects/Increasing", order = 3)]
 public class IncreasingStatusEffectObject : StatusEffectObject
 {
@@ -13,15 +16,15 @@ public class IncreasingStatusEffectObject : StatusEffectObject
 
     [SerializeField] ChangeMode damageType; 
 
-    public int damage {
+    public int Damage {
         get{return _damage;}
     }
 
-    public int change {
+    public int Change {
         get{return _change;}
     }
 
-    public float rate {
+    public float Rate {
         get{return _rate;}
     }
 

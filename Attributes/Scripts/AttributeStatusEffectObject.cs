@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-using unityInventorySystem; 
+using unityInventorySystem.Attribute; 
 
 [CreateAssetMenu(fileName = "AttributeSE", menuName = "Status Effects/Attribute", order = 2)]
 public class AttributeStatusEffectObject : StatusEffectObject

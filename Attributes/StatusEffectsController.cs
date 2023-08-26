@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using unityInventorySystem;
+using unityInventorySystem.Attribute; 
+
 
 public class StatusEffectsController : MonoBehaviour, IStatusAffect
 {

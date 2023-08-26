@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using unityInventorySystem.Attribute; 
 using unityInventorySystem; 
 [CreateAssetMenu(fileName = "StatusEffect", menuName = "Status Effects/Default", order = 0)]
 public class StatusEffectObject : ScriptableObject, IStatusDoable
@@ -15,11 +16,11 @@ public class StatusEffectObject : ScriptableObject, IStatusDoable
         get {return _Name;}
     }
 
-    public string description {
+    public string Description {
         get {return _Description;}
     }
 
-    public Sprite icon {
+    public Sprite Icon {
         get {return _icon;}
     }
 

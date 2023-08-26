@@ -5,6 +5,8 @@ using UnityEngine;
 using System.Linq; 
 
 using unityInventorySystem;
+using unityInventorySystem.Attribute; 
+
 
 using UnityEngine.Events; 
 

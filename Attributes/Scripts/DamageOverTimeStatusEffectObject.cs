@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using unityInventorySystem; 
+using unityInventorySystem.Attribute; 
 
 [CreateAssetMenu(fileName = "DamageOverTimeSE", menuName = "Status Effects/DamageOverTime", order = 1)]
 public class DamageOverTimeStatusEffectObject : StatusEffectObject

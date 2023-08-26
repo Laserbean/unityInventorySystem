@@ -7,13 +7,13 @@ using System.Linq;
 
 using Laserbean.General;
 
-namespace unityInventorySystem {
+namespace unityInventorySystem.Attribute {
 
 
 public class AttributesController : MonoBehaviour, IAttributeUsage
 {
 
-    Dictionary<AttributeType, int> AttributeDict = new Dictionary<AttributeType, int>(); 
+    Dictionary<AttributeType, int> AttributeDict = new (); 
 
     void Start()
     {
@@ -105,6 +105,7 @@ public enum AttributeType
     Defense,
     Stamina,
     Strength,
+    Health,
 }
 
 public static class AttributeCalculations {

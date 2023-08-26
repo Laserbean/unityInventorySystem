@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEditor; 
 #endif
 
+using unityInventorySystem.Attribute; 
+
+
 namespace unityInventorySystem {
 
 [CreateAssetMenu(fileName = "New Item", menuName = "unity Inventory System/Items/item")]
