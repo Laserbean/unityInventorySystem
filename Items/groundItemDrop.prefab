@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7150962383300547879}
   - component: {fileID: 7150962383300547876}
   - component: {fileID: 200038786337705681}
+  - component: {fileID: 2012583565744191061}
   m_Layer: 0
   m_Name: groundItemDrop
   m_TagString: Untagged
@@ -109,13 +110,26 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7150962383300547880}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7bb9513e57598344792267109fcf975d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  itemObject: {fileID: 0}
   ammount: 1
-  animation_speed: 1
-  sin_ratio: 0.7
-  isAnimated: 1
+  ItemDatabaseName: ItemDB
+--- !u!114 &2012583565744191061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7150962383300547880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e4da49c43d65b7448674752964973cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemObject: {fileID: 0}
+  ammount: 1
+  ItemDatabaseName: ItemDB

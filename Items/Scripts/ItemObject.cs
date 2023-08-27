@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEditor; 
 #endif
 
+using Laserbean.SpecialData; 
+
 using unityInventorySystem.Attribute; 
 
 
