@@ -9,12 +9,13 @@ public class GroundItem : MonoBehaviour, IGroundItem
     public ItemObject itemObject;
 
     Item item; 
-    public int ammount = 1; 
+
+    int _amount = 1; 
+
+    int IGroundItem.Amount => _amount;
 
 
-
-    public string ItemDatabaseName = InventoryStaticManager.DEF_ITEM_DB_NAME; 
-    public int amount => ammount;
+    public string ItemDatabaseName = InventoryStaticManager.DEF_ITEM_DB_NAME;
 
 
     protected void OnEnable()
@@ -49,7 +50,7 @@ public class GroundItem : MonoBehaviour, IGroundItem
 
     void IGroundItem.SetItem(Item _item, int amm)
     {
-        ammount = amm; 
+        _amount = amm; 
         item = _item; 
 
         itemObject =InventoryStaticManager.GetDatabase(ItemDatabaseName).GetItemObject(_item.Name); 

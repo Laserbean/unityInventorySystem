@@ -6,13 +6,15 @@ namespace unityInventorySystem
 {
     public class InteractableGroundItem : GroundItem, IInteractable
     {
-        void IInteractable.Highlight(bool on)
+        void IInteractable.Highlight()
         {
-            if (on) {
-                this.transform.localScale = new Vector3 (1.5f, 1.5f, 1); 
-            } else {
-                this.transform.localScale = new Vector3 (1, 1, 1); 
-            }
+            this.transform.localScale = new Vector3 (1.5f, 1.5f, 1); 
+
+        }
+
+        void IInteractable.UnHighlight()
+        {
+            this.transform.localScale = new Vector3 (1, 1, 1); 
         }
 
         void IInteractable.Interact(GameObject gameObject)

@@ -23,15 +23,19 @@ public class ItemPickup : MonoBehaviour, IPickUp
         
         var gitem = other.GetComponent<IGroundItem>();
         if (gitem != null) {
-            // Debug.Log(_item.ID);
-            inventory.inventory.AddItem(gitem.GetItem(), gitem.amount);
-            gitem.DestroyItem();
+            AddItem(gitem);
         }
+
     }
 
     void IPickUp.PickUpItem(IGroundItem groundItem)
     {            
-        inventory.inventory.AddItem(groundItem.GetItem(), groundItem.amount);
+        AddItem(groundItem);
+    }
+
+    void AddItem(IGroundItem groundItem) {
+        bool success = inventory.inventory.AddItem(groundItem.GetItem(), groundItem.Amount);
+        if (!success) return;
         groundItem.DestroyItem();
     }
 }
@@ -44,6 +48,6 @@ public interface IGroundItem {
     public Item GetItem(); 
     public void DestroyItem(); 
     public void SetItem(Item item, int amount = 1); 
-    public int amount {get;}
+    public int Amount {get;}
 }
 }
