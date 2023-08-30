@@ -200,7 +200,7 @@ public class Inventory
     {
         if (EmptySlotCount <= 0)
             return false;
-        InventorySlot slot = FindItemSlonOnInventory(_item);
+        InventorySlot slot = GetItemSlot(_item);
         if(!database.ItemObjects[_item.Id].stackable || slot == null)
         {
             SetEmptySlot(_item, _amount);
@@ -214,7 +214,7 @@ public class Inventory
     {
         if (EmptySlotCount <= 0)
             return false;
-        InventorySlot slot = FindItemSlonOnInventory(_item);
+        InventorySlot slot = GetItemSlot(_item);
         if(!database.ItemObjects[_item.Id].stackable || slot == null)
         {
             slot = new InventorySlot();
@@ -227,24 +227,18 @@ public class Inventory
     ///<summary>
     /// Looks for the slot in the inventory that already contains the item. 
     ///</summary>
-    public InventorySlot FindItemSlonOnInventory(Item _item)
-    {
-        for (int i = 0; i < Slots.Length; i++)
-        {
-            if(Slots[i].item.Id == _item.Id)
-            {
+    public InventorySlot GetItemSlot(Item _item) {
+        for (int i = 0; i < Slots.Length; i++) {
+            if(Slots[i].item.Id == _item.Id) {
                 return Slots[i];
             }
         }
         return null;
     }
 
-    public InventorySlot SetEmptySlot(Item _item, int _amount)
-    {
-        for (int i = 0; i < Slots.Length; i++)
-        {
-            if (Slots[i].item.Id <= -1)
-            {
+    public InventorySlot SetEmptySlot(Item _item, int _amount) {
+        for (int i = 0; i < Slots.Length; i++) {
+            if (Slots[i].item.Id <= -1) {
                 Slots[i].UpdateSlot(_item, _amount);
                 return Slots[i];
             }
@@ -268,13 +262,11 @@ public class Inventory
     
 
     public InventorySlot FindFirstSlotWithType(ItemType itype) { //make sure type is unique, example, bullets. 
-        for (int i = 0; i < Slots.Length; i++)
-        {
+        for (int i = 0; i < Slots.Length; i++) {
             try {
-            if(Slots[i].ItemObject != null && Slots[i].ItemObject.type == itype)
-            {
-                return Slots[i];
-            }
+                if(Slots[i].ItemObject != null && Slots[i].ItemObject.type == itype) {
+                    return Slots[i];
+                }
             } catch {
                 Debug.LogError("idk what's the rerroror"); 
             }
@@ -286,20 +278,16 @@ public class Inventory
     public List<InventorySlot> FindSlotsWithType(ItemType itype) {
         List<InventorySlot> list = new (); 
 
-        for (int i = 0; i < Slots.Length; i++)
-        {
-            if(Slots[i].ItemObject.type == itype)
-            {
+        for (int i = 0; i < Slots.Length; i++) {
+            if(Slots[i].ItemObject.type == itype) {
                 list.Add(Slots[i]); 
             }
         }
         return list;
     }
 
-    public void SwapItems(InventorySlot item1, InventorySlot item2)
-    {
-        if(item2.CanPlaceInSlot(item1.ItemObject) && item1.CanPlaceInSlot(item2.ItemObject))
-        {
+    public void SwapItems(InventorySlot item1, InventorySlot item2) {
+        if(item2.CanPlaceInSlot(item1.ItemObject) && item1.CanPlaceInSlot(item2.ItemObject)) {
             InventorySlot temp = new (item2.item, item2.amount);
             // item2.parent = item1.parent; 
             // item1.parent = temp.parent; 

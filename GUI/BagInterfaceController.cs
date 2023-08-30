@@ -21,7 +21,7 @@ namespace unityInventorySystem
                 _slot.item.specialDict["BagID"] = new SpecialData{String = RandomStatic.GenerateRandomString(10)};  
                 current_inventory_bag_name = _slot.item.specialDict["BagID"].String; 
             } else {
-                Debug.Log("Bag Loaded from to: " + InventoryStaticManager.SavePath + "/ " + current_inventory_bag_name);
+                Debug.Log("Bag Loaded from to: " + InventoryStaticManager.SavePath + " " + current_inventory_bag_name);
 
                 fish.inventory = SaveAnything.LoadJson<Inventory>(InventoryStaticManager.SavePath, current_inventory_bag_name); 
 
@@ -39,7 +39,7 @@ namespace unityInventorySystem
             
             SaveAnything.SaveJson<Inventory>(userInterface.inventoryObject.inventory, InventoryStaticManager.SavePath, current_inventory_bag_name); 
             
-            Debug.Log("Bag saved to: " + InventoryStaticManager.SavePath + "/ " + current_inventory_bag_name);
+            Debug.Log("Bag saved to: " + InventoryStaticManager.SavePath + " " + current_inventory_bag_name);
             userInterface.inventoryObject.Clear(); 
         
             userInterface.RemoveSlots(); 

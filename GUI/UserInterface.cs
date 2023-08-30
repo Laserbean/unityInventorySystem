@@ -307,6 +307,7 @@ public class SlotSelectedEvent {
     }
 }
 
+
 public class SlotUpdatedEvent {
     public InventorySlot slot; 
 
