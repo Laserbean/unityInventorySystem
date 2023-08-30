@@ -106,6 +106,14 @@ public abstract class UserInterface : MonoBehaviour
 
     public void OnDragStart(GameObject obj) {
         MouseData.tempItemBeingDragged = CreateTempItem(obj);
+
+        if (MouseData.tempItemCanvasObject == null) {
+            MouseData.tempItemCanvasObject = new GameObject();   
+            var ttcanvas =  MouseData.tempItemCanvasObject.AddComponent<Canvas>(); 
+            ttcanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            ttcanvas.sortingOrder = 100; 
+        }
+        MouseData.tempItemBeingDragged.transform.SetParent(MouseData.tempItemCanvasObject.transform);
     }
 
         public GameObject CreateTempItem(GameObject obj)
@@ -113,8 +121,9 @@ public abstract class UserInterface : MonoBehaviour
             GameObject tempItem = null;
             if(slotsOnInterface[obj].item.Id >= 0)
             {
+
                 tempItem = new GameObject("drag item");
-                tempItem.transform.SetParent(transform.parent);
+                // tempItem.transform.SetParent(transform.parent);
                 // tempItem.transform.SetParent(null);
                 var rt = tempItem.AddComponent<RectTransform>();
 
@@ -124,6 +133,8 @@ public abstract class UserInterface : MonoBehaviour
                 var img = tempItem.AddComponent<Image>();
                 img.sprite = slotsOnInterface[obj].ItemObject.uiDisplay;
                 img.raycastTarget = false;
+
+
             }
             return tempItem;
         }
@@ -255,6 +266,7 @@ public static class MouseData
 {
     public static UserInterface interfaceMouseIsOver;
     public static GameObject tempItemBeingDragged;
+    public static GameObject tempItemCanvasObject;
     public static GameObject slotHoveredOver;
 }
 
