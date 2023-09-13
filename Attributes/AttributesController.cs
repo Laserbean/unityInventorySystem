@@ -60,6 +60,14 @@ public class AttributesController : MonoBehaviour, IAttributeUsage
         return 0; 
     }
 
+    public int GetAttributeBaseValue(AttributeType typ)
+    {        
+        if (AttributeDict.ContainsKey(typ)) {
+            return attributes[AttributeDict[typ]].value.BaseValue; 
+        } 
+        return 0; 
+        
+    }
 }
 
 

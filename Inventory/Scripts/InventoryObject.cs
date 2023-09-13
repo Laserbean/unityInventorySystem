@@ -103,16 +103,25 @@ public class Inventory
     ItemDatabaseObject _database;
 
     public InventorySlot[] Slots = new InventorySlot[28];
+
+    public Inventory (int size = 28) {
+        Slots = new InventorySlot[size];
+
+        for (int i = 0; i < Slots.Length; i++) {
+            Slots[i] = new InventorySlot();
+        }
+    }
     
+
     public Inventory Copy() {
-            Inventory inventory = new()
-            {
-                DatabaseName = DatabaseName,
+        Inventory inventory = new()
+        {
+            DatabaseName = DatabaseName,
 
-                Slots = new InventorySlot[Slots.Length]
-            };
+            Slots = new InventorySlot[Slots.Length]
+        };
 
-            for (int i = 0; i < Slots.Length; i++) {
+        for (int i = 0; i < Slots.Length; i++) {
             inventory.Slots[i] = new InventorySlot(Slots[i]);
         }
 
@@ -186,7 +195,8 @@ public class Inventory
             int counter = 0;
             for (int i = 0; i < Slots.Length; i++)
             {
-                if (Slots[i].item.Id <= -1)
+                // if (Slots[i].item.Id <= -1)
+                if (Slots[i].IsEmpty())
                 {
                     counter++;
                 }
@@ -195,25 +205,35 @@ public class Inventory
         }
     }
 
-    
-    public bool AddItem(Item _item, int _amount)
-    {
-        if (EmptySlotCount <= 0)
-            return false;
+    public bool TryAddToExistingSlot(Item _item, int _amount) {
+        if (EmptySlotCount <= 0) return false; 
+
         InventorySlot slot = GetItemSlot(_item);
-        if(!database.ItemObjects[_item.Id].stackable || slot == null)
-        {
-            SetEmptySlot(_item, _amount);
-            return true;
+        if(slot == null) {
+            return false; 
         }
         slot.AddAmount(_amount);
         return true;
     }
 
-    public bool RemoveItem(Item _item)
-    {
-        if (EmptySlotCount <= 0)
-            return false;
+    
+    public bool TryAddItem(Item _item, int _amount) {
+        if (EmptySlotCount <= 0) return false;
+
+        InventorySlot slot = GetItemSlot(_item);
+        if(slot == null) //!database.ItemObjects[_item.Id].stackable ||
+        {
+            AddToNewSlot(_item, _amount);
+            return true;
+        }
+
+        slot.AddAmount(_amount);
+        return true;
+    }
+
+    public bool RemoveItem(Item _item) {
+        if (EmptySlotCount <= 0) return false;
+
         InventorySlot slot = GetItemSlot(_item);
         if(!database.ItemObjects[_item.Id].stackable || slot == null)
         {
@@ -236,9 +256,9 @@ public class Inventory
         return null;
     }
 
-    public InventorySlot SetEmptySlot(Item _item, int _amount) {
+    public InventorySlot AddToNewSlot(Item _item, int _amount) {
         for (int i = 0; i < Slots.Length; i++) {
-            if (Slots[i].item.Id <= -1) {
+            if (Slots[i].IsEmpty()) {
                 Slots[i].UpdateSlot(_item, _amount);
                 return Slots[i];
             }
@@ -316,12 +336,8 @@ public class InventorySlot
     public SlotUpdated OnAfterUpdate;
     [System.NonSerialized]
     public SlotUpdated OnBeforeUpdate;
-
-
+    
         public EquipmentTag tag;
-
-
-
 
     public Item item = new Item();
     public int amount;
@@ -364,7 +380,9 @@ public class InventorySlot
     }
 
     public bool IsEmpty() {
-        return item.Name == (new Item()).Name;
+        // if (Slots[i].item.Id <= -1)
+        return item.Id <= -1; 
+        // return item.Name == (new Item()).Name;
     }
 
 

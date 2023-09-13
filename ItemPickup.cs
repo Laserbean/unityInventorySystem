@@ -34,7 +34,7 @@ public class ItemPickup : MonoBehaviour, IPickUp
     }
 
     void AddItem(IGroundItem groundItem) {
-        bool success = inventory.inventory.AddItem(groundItem.GetItem(), groundItem.Amount);
+        bool success = inventory.inventory.TryAddItem(groundItem.GetItem(), groundItem.Amount);
         if (!success) return;
         groundItem.DestroyItem();
     }

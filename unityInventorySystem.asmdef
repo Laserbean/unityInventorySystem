@@ -1,0 +1,20 @@
+{
+    "name": "unityInventorySystem",
+    "rootNamespace": "",
+    "references": [
+        "laserbean",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem",
+        "EasyButtons",
+        "customUnityEvents"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
