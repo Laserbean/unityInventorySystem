@@ -32,14 +32,14 @@ public class DamageOverTimeStatusEffectObject : StatusEffectObject
         if (statuseffect.t_last_call > statuseffect.rate) {
             statuseffect.t_last_call = 0; 
             
-            int damage = 1;
+            int curdamage = 1;
             if (damageType == DamageOverTimeType.Constant) {
-                damage = statuseffect.value; 
+                curdamage = statuseffect.value; 
             } else if (damageType == DamageOverTimeType.Scaled) {
-                damage = Mathf.RoundToInt(((float) statuseffect.value)/10f * statuseffect.duration + 1f);  
+                curdamage = Mathf.RoundToInt(((float) statuseffect.value)/10f * statuseffect.duration + 1f);  
             }
 
-            statuseffect.doDamage.Invoke(damage); 
+            statuseffect.doDamage.Invoke(curdamage); 
             return true; 
         }
         return false; 

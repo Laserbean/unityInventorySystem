@@ -1,3 +1,5 @@
+#define ENTITY_POOLER
+
 using System.Collections;
 using System.Collections.Generic;
 using Laserbean.General;
@@ -9,8 +11,9 @@ namespace unityInventorySystem {
 
 public class ItemDrops : MonoBehaviour
 {
+#if !ENTITY_POOLER
     [SerializeField] GameObject groundItemDrop; 
-
+#endif
 
     [Range (0,30)]
     [SerializeField] int minItemDrop = 0;
@@ -46,7 +49,14 @@ public class ItemDrops : MonoBehaviour
 
 
     void DropItem(int itemDropIndex) {
-        GameObject go = Instantiate(groundItemDrop, transform.position, transform.rotation); 
+#if ENTITY_POOLER
+    GameObject go = EntityPooler.Instance.GetNewGroundItem(); 
+    go.transform.position = transform.position; 
+    go.transform.rotation = transform.rotation; 
+    go.SetActive(true);
+#else
+    GameObject go = Instantiate(groundItemDrop, transform.position, transform.rotation); 
+#endif
         var grounditem = go.GetComponent<IGroundItem>();
         grounditem.SetItem(dropList[itemDropIndex].itemObject.item, Random.Range(dropList[itemDropIndex].min_max_amount.x, dropList[itemDropIndex].min_max_amount.y));
         go.transform.position += (Vector3.up * Random.Range(0f, 1f)).Rotate(Random.Range(0, 360f));
@@ -58,6 +68,7 @@ public class ItemDrops : MonoBehaviour
         return itemDropIndex; 
     }
 
+    [EasyButtons.Button]
     public void DropItems() {
         float[] cur_weights = new List<float>(weights).ToArray();
 

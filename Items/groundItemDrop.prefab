@@ -116,7 +116,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemObject: {fileID: 0}
-  ammount: 1
   ItemDatabaseName: ItemDB
 --- !u!114 &2012583565744191061
 MonoBehaviour:
@@ -131,5 +130,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemObject: {fileID: 0}
-  ammount: 1
   ItemDatabaseName: ItemDB

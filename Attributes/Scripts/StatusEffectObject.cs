@@ -4,10 +4,14 @@ using UnityEngine;
 
 using unityInventorySystem.Attribute; 
 using unityInventorySystem; 
+
+
 [CreateAssetMenu(fileName = "StatusEffect", menuName = "Status Effects/Default", order = 0)]
 public class StatusEffectObject : ScriptableObject, IStatusDoable
 {
     [SerializeField] string _Name = "";
+
+    [TextArea(15, 20)]
     [SerializeField] string _Description = ""; 
     [SerializeField] Sprite _icon; 
     // [SerializeField] float  _duration; 

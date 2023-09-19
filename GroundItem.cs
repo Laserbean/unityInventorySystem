@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-using Laserbean.SpecialData; 
+using Laserbean.SpecialData;
+using System;
+
 namespace unityInventorySystem {
 public class GroundItem : MonoBehaviour, IGroundItem
 
@@ -53,7 +55,8 @@ public class GroundItem : MonoBehaviour, IGroundItem
 
     void IGroundItem.DestroyItem()
     {
-        Destroy(this.gameObject); 
+        // Destroy(this.gameObject); 
+        GetComponent<IDestroyOrDisable>().DestroyOrDisable(); 
     }
 
     void IGroundItem.SetItem(Item _item, int amm)
@@ -66,33 +69,6 @@ public class GroundItem : MonoBehaviour, IGroundItem
         this.gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.characterDisplay2D;        
     }
 
-#if ENTITYDATA
 
-    public void SetEntityData(EntityData entityData)
-    {
-        
-        SpecialData spdata = entityData.specialDict[item_key]; 
-        this_item.Name = spdata.String;
-        this_item.Id = spdata.Int;
-
-        SpecialData spdata2 = entityData.specialDict[amount_key]; 
-
-        _amount = spdata2.Int; 
-    }
-
-    public EntityData GetEntityData()
-    {
-        EntityData entityData = new (gameObject);
-
-        entityData.specialDict.Add(item_key, new SpecialData{String = this_item.Name, Int = this_item.Id});
-        entityData.specialDict.Add(amount_key, new SpecialData{Int = _amount});
-
-        return entityData; 
-    }
-
-    const string item_key = "item_key";
-    const string amount_key = "amount_key";
-
-#endif
     }
 }

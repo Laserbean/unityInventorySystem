@@ -4,6 +4,7 @@ using UnityEngine;
 using unityInventorySystem;
 using unityInventorySystem.Attribute; 
 
+using CodeMonkey.Utils; 
 
 public class StatusEffectsController : MonoBehaviour, IStatusAffect
 {
@@ -11,17 +12,21 @@ public class StatusEffectsController : MonoBehaviour, IStatusAffect
     public Dictionary<string, StatusEffectD> statusEffectsDictionary = new Dictionary<string, StatusEffectD>();
 
     [SerializeField]
-    List<StatusEffectD> statusEffectsList = new List<StatusEffectD>(); 
+    List<StatusEffectD> statusEffectsList = new(); 
 
     public void AddStatusEffect(StatusEffectObject statusEffectObj, float duration) {
+
+        AddWorldSprite(statusEffectObj.Icon); 
         if (HasStatusEffect(statusEffectObj.Name)) {
             statusEffectsDictionary[statusEffectObj.Name].duration += duration;
             return; 
         }
 
-        StatusEffectD statusEffect = new StatusEffectD(dDamage, StatusEffectType.Default); 
-        statusEffect.duration = duration; 
-        statusEffect.Name = statusEffectObj.Name; 
+        StatusEffectD statusEffect = new(dDamage, StatusEffectType.Default)
+        {
+            duration = duration,
+            Name = statusEffectObj.Name
+        };
 
         statusEffect.SetDoUpdate(statusEffectObj.DoUpdate); 
         statusEffect.SetDoAlso(statusEffectObj.DoIfUpdated); 
@@ -48,8 +53,6 @@ public class StatusEffectsController : MonoBehaviour, IStatusAffect
     }
 
 
-    [SerializeReference]
-    StatusEffectD curStatusEffect;
     public void RemoveStatusEffect(StatusEffectObject statusEffectObj) {
 
         if (statusEffectsDictionary.ContainsKey(statusEffectObj.Name)) {
@@ -87,16 +90,23 @@ public class StatusEffectsController : MonoBehaviour, IStatusAffect
     }
 
 
+    GameObject SpriteObject; 
+    void AddWorldSprite(Sprite sprite) {
+        SpriteObject = UtilsClass.CreateWorldSprite("statusEffect", sprite, transform.position, transform.localScale, 1, Color.green); 
+        SpriteObject.transform.SetParent(this.transform); 
+    }
+
+
     [SerializeReference] List<StatusEffectD> status_to_remove = new List<StatusEffectD>(); 
     private void Update() {
         status_to_remove.Clear(); 
-        List<string> keylist = new List<string>(this.statusEffectsDictionary.Keys);
+        List<string> keylist = new (this.statusEffectsDictionary.Keys);
  
         for(int i = 0; i < keylist.Count; i++) {
 
-            bool fish = statusEffectsDictionary[keylist[i]].DoUpdate(Time.deltaTime);
+            bool statusUpdated = statusEffectsDictionary[keylist[i]].DoUpdate(Time.deltaTime);
 
-            if (fish) {
+            if (statusUpdated) {
                 statusEffectsDictionary[keylist[i]].AlsoDo(); 
             }
 
@@ -117,26 +127,6 @@ public class StatusEffectsController : MonoBehaviour, IStatusAffect
     void dDamage(int damage) {
         this.GetComponent<IDamageable>()?.Damage(damage); 
     }
-
-    // bool dUpdateTimeAndCheckDamage(StatusEffectD statuseffect, float deltaTime) {
-    //     statuseffect.t_last_call += deltaTime; 
-    //     if (statuseffect.t_last_call > statuseffect.rate) {
-    //         statuseffect.t_last_call = 0; 
-            
-    //         if (statuseffect.isPercentage) {
-    //             statuseffect.value = Mathf.RoundToInt(((float)statuseffect.value * statuseffect.reduction)/100f); 
-    //         } else {
-    //             statuseffect.value -= statuseffect.reduction; 
-    //         }
-    //         if (statuseffect.value < 0) {
-    //             statuseffect.value = 0; 
-    //         }
-
-    //         statuseffect.doDamage.Invoke(statuseffect.value); 
-    //         return true; 
-    //     }
-    //     return false; 
-    // }
 
     
     //DEBUG

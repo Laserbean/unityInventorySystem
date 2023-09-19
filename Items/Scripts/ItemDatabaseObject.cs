@@ -59,7 +59,7 @@ public static class InventoryStaticManager
 {
 
     public static string SavePath {
-        get => GameManager.Instance.AppPath; //FIXME
+        get => GameManager.Instance.GamePath + "/"; 
     }
 
 

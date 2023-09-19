@@ -21,6 +21,7 @@ public class AttributesController : MonoBehaviour, IAttributeUsage
         {
             attributes[i].SetParent(this.gameObject);
             AttributeDict.Add(attributes[i].type, i); 
+            Debug.Log(attributes[i].type + ": " + attributes[i].value.BaseValue); 
         }
     }
 
@@ -44,12 +45,15 @@ public class AttributesController : MonoBehaviour, IAttributeUsage
     public void AddAttributeModifier(AttributeType type, IModifier value) {    
         if (AttributeDict.ContainsKey(type)) {
             attributes[AttributeDict[type]].value?.AddModifier(value); 
+            OnAttributeChange.Invoke(attributes[AttributeDict[type]]); 
+
         } 
     }
 
     public void RemoveAttributeModifier(AttributeType type, IModifier value) {
         if (AttributeDict.ContainsKey(type)) {
             attributes[AttributeDict[type]].value?.RemoveModifier(value); 
+            OnAttributeChange.Invoke(attributes[AttributeDict[type]]); 
         } 
     }
 
@@ -68,6 +72,14 @@ public class AttributesController : MonoBehaviour, IAttributeUsage
         return 0; 
         
     }
+
+    public AttributeChange OnAttributeChange;
+
+        
+    AttributeChange IAttributeUsage.OnAttributeChange { 
+        get => OnAttributeChange; 
+        set => OnAttributeChange = value; 
+    }
 }
 
 
@@ -79,10 +91,14 @@ public class Attribute
     public AttributeType type;
     public ModifiableInt value;
 
+    public Attribute() {
+        value = new ModifiableInt(AttributeModified);
+    }
+
     public void SetParent(GameObject _parent)
     {
         parent = _parent;
-        value = new ModifiableInt(AttributeModified);
+        // value = new ModifiableInt(AttributeModified);
     }
 
     public void AttributeModified()
