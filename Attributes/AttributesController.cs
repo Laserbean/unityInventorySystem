@@ -130,6 +130,7 @@ public enum AttributeType
     Stamina,
     Strength,
     Health,
+    Luck,
 }
 
 public static class AttributeCalculations {

@@ -6,6 +6,7 @@ using System.IO;
 using UnityEditor;
 using System.Runtime.Serialization;
 using System;
+using Laserbean.General;
 
 namespace unityInventorySystem {
 
@@ -41,6 +42,10 @@ public class InventoryObject : ScriptableObject
         if (path == "") {
             stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Create, FileAccess.Write);
         } else {
+            if (!path.EndsWith("/")) path += "/"; 
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
             stream = new FileStream(path + inventory.Name + ".fishfish", FileMode.Create, FileAccess.Write);
         }
 
@@ -52,8 +57,12 @@ public class InventoryObject : ScriptableObject
     [ContextMenu("Load")]
     public void Load(string path = "")
     {
+            if (path != "") {
+                if (!path.EndsWith("/")) path += "/"; 
+            }
+
         // if (File.Exists(string.Concat(Application.persistentDataPath, savePath)))
-        if (File.Exists(path))
+        if (File.Exists(path + inventory.Name + ".fishfish"))
         {
             //BinaryFormatter bf = new BinaryFormatter();
             //FileStream file = File.Open(string.Concat(Application.persistentDataPath, savePath), FileMode.Open);

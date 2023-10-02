@@ -1,5 +1,4 @@
-﻿// #define ENTITYDATA
-
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -10,10 +9,6 @@ using System;
 
 namespace unityInventorySystem {
 public class GroundItem : MonoBehaviour, IGroundItem
-
-#if ENTITYDATA
-    , IEntityData
-#endif
 
 {
     public ItemObject itemObject;
