@@ -11,6 +11,16 @@ namespace unityInventorySystem.Attribute {
 
     }
 
+    public interface IAttributeController {
+
+        public void AddAttributeModifier(AttributeType type, IModifier modifier);
+        public void RemoveAttributeModifier(AttributeType type, IModifier modifier);
+
+    }
+
+
+
+
     public delegate void AttributeChange(Attribute attribute);
 
 }

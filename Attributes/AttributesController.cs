@@ -10,20 +10,30 @@ using Laserbean.General;
 namespace unityInventorySystem.Attribute {
 
 
-public class AttributesController : MonoBehaviour, IAttributeUsage
+public class AttributesController : MonoBehaviour, IAttributeUsage, IAttributeController
 {
 
     Dictionary<AttributeType, int> AttributeDict = new (); 
 
     void Start()
     {
+        UpdateDict();
+    }
+
+    void UpdateDict() {
         for (int i = 0; i < attributes.Length; i++)
         {
             attributes[i].SetParent(this.gameObject);
             AttributeDict.Add(attributes[i].type, i); 
-            Debug.Log(attributes[i].type + ": " + attributes[i].value.BaseValue); 
+            // Debug.Log(attributes[i].type + ": " + attributes[i].value.BaseValue); 
         }
     }
+
+    #if UNITY_EDITOR 
+    private void OnValidate() {
+        UpdateDict();
+    }
+    #endif
 
     public Attribute[] attributes;
 
@@ -45,7 +55,7 @@ public class AttributesController : MonoBehaviour, IAttributeUsage
     public void AddAttributeModifier(AttributeType type, IModifier value) {    
         if (AttributeDict.ContainsKey(type)) {
             attributes[AttributeDict[type]].value?.AddModifier(value); 
-            OnAttributeChange.Invoke(attributes[AttributeDict[type]]); 
+            OnAttributeChange?.Invoke(attributes[AttributeDict[type]]); 
 
         } 
     }
@@ -53,7 +63,7 @@ public class AttributesController : MonoBehaviour, IAttributeUsage
     public void RemoveAttributeModifier(AttributeType type, IModifier value) {
         if (AttributeDict.ContainsKey(type)) {
             attributes[AttributeDict[type]].value?.RemoveModifier(value); 
-            OnAttributeChange.Invoke(attributes[AttributeDict[type]]); 
+            OnAttributeChange?.Invoke(attributes[AttributeDict[type]]); 
         } 
     }
 
@@ -125,6 +135,7 @@ public interface IAttributeModified {
 
 public enum AttributeType
 {
+    Nothing,
     Agility,
     Defense,
     Stamina,
