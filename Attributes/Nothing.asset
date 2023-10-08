@@ -16,15 +16,9 @@ MonoBehaviour:
   _Name: Nothing
   _Description: Does nothing
   elementType: 0
-  attributeType: 0
   _statuseffect:
     _doImediate: 0
-    _value: 0
+    _value: 5
     _rate: 0
-  stringEnumConverter:
-    enumList:
-    - Nothing
-    - Heat
-    - Wet
-    - Poison
-    - Bleed
+    attributeType: 1
+  isStackable: 0

@@ -22,11 +22,7 @@ public class StatusEffectTObject : ScriptableObject {
 
     [SerializeField] string _Description = ""; 
 
-    public ElementType elementType; 
-    public AttributeType attributeType; 
-
-
-    [SerializeField] StatusEffectT _statuseffect; 
+    [SerializeField] protected StatusEffectT statuseffect; 
 
     // public StatusEffectT StatusEffect { get => _statuseffect;}
 
@@ -40,39 +36,21 @@ public class StatusEffectTObject : ScriptableObject {
     }
 
 
-    // [SerializeField] 
-    // string _Type = "";
-    // public string Type {
-    //     get =>  _Type;
-    // }
-
     public string Description {
         get =>  _Description;
     }
 
-    public virtual void OnApply(StatusEffectT statusEffect, GameObject gameobject)
-    {
-        Debug.Log(_Name + " Applied.".DebugColor(Color.cyan));
-    }
+    [SerializeField] bool isStackable; 
 
-    public virtual void OnRemove(StatusEffectT statusEffect, GameObject gameobject)
-    {
-        Debug.Log(_Name + " Removed.".DebugColor(Color.cyan));
-    }
-
-    public virtual void OnTurn(StatusEffectT statusEffect, GameObject gameobject)
-    {
-        Debug.Log(_Name + " OnTurn.".DebugColor(Color.cyan));
+    public bool IsStackable {
+        get => isStackable; 
     }
 
 
-
-    public StatusEffectT GetStatusEffect(int duration) {
-        StatusEffectT statuseffect = new(duration);
+    public virtual StatusEffectT GetStatusEffect(int duration) {
+        StatusEffectT statusfx = new(statuseffect, Name, duration);
         
-        statuseffect.SetDelegates(OnApply, OnRemove, OnTurn);
-
-        return statuseffect;
+        return statusfx;
     }
 
 
@@ -83,7 +61,7 @@ public class StatusEffectTObject : ScriptableObject {
         }
 
         int ticks = Mathf.RoundToInt(period/tick_time); 
-        _statuseffect.SetRate(ticks); 
+        statuseffect.SetRate(ticks); 
     }
 }
 

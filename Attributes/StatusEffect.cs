@@ -4,7 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using unityInventorySystem.Attribute; 
+using unityInventorySystem.Attribute;
+using Laserbean.General;
 
 
 #if UNITY_EDITOR
@@ -13,44 +14,45 @@ using UnityEditor;
 
 namespace unityInventorySystem {
 
-public delegate void StatusEffectDelegate(StatusEffectT statusEffectT, GameObject gameObject);
 
 [System.Serializable]
 public class StatusEffectT : IModifier
 {
     [SerializeField] bool _doImediate = false; 
     [SerializeField] int _value = 0;
+    [SerializeField] int _valueOnApply = 0;
+    [SerializeField] int _valueOnRemove = 0;
+    [SerializeField] int _valueDurationModifier = 0;
+
     [SerializeField] int _rate = 1; 
 
-
+    [SerializeField, ShowOnly]
+    string _name; 
+    public string Name {get => _name;}
     public bool DoImediate {get => _doImediate;} 
     public int Value {get => _value;} 
+    public int ValueOnApply {get => _valueOnApply;} 
+    public int ValueOnRemove {get => _valueOnRemove;} 
+    public int ValueDurationModifier {get => _valueDurationModifier;} 
+
     public int Rate {get => _rate;}  
+
+    public AttributeType attributeType; 
+    public ElementType elementType; 
+
+    string _id; 
 
     public void SetRate(int rate) {
         _rate = rate; 
     }
-        
+    
+    [SerializeField]
     int turns_remaining = 0; 
     int total_turns = 0; 
+    public int TotalTurns { get => total_turns; }
+    public int TurnsRemaining { get => turns_remaining; }
 
-    public int TotalTurns {
-        get => total_turns; 
-    }
-
-
-    public int TurnsRemaining {
-        get => turns_remaining; 
-    }
-    
-
-    StatusEffectDelegate _OnApply; 
-    StatusEffectDelegate _OnRemove; 
-    StatusEffectDelegate _OnTurn; 
-
-    public bool IsActive {
-        get => turns_remaining > 0 || turns_remaining == -1; 
-    }
+    public bool IsActive { get => turns_remaining > 0 || turns_remaining == -1; }
 
 
     void IModifier.AddValue(ref int baseValue)
@@ -58,19 +60,35 @@ public class StatusEffectT : IModifier
         baseValue += _value; 
     }
 
-    public StatusEffectT (int duration) {
+    public StatusEffectT (string nname, int duration) {
         turns_remaining = duration; 
+        _name = nname;
+
+        _id = RandomStatic.GenerateRandomString(5); 
+    }
+
+    public StatusEffectT(StatusEffectT statusfx, string nname, int duration) {
+        _id = RandomStatic.GenerateRandomString(5); 
+
+        _doImediate = statusfx.DoImediate;
+        _value = statusfx.Value;
+        _valueOnApply = statusfx.ValueOnApply;
+        _valueOnRemove = statusfx.ValueOnRemove;
+        _valueDurationModifier = statusfx.ValueDurationModifier;
+
+        _rate = statusfx.Rate;
+
+        attributeType = statusfx.attributeType; 
+        elementType = statusfx.elementType; 
+
+        turns_remaining = duration; 
+        _name = nname;
     }
 
     public void Stack(StatusEffectT statuseffect) {
         turns_remaining += statuseffect.TurnsRemaining;
     }
 
-    public void SetDelegates(StatusEffectDelegate onapply, StatusEffectDelegate onremove, StatusEffectDelegate onturn) {
-        _OnApply = onapply; 
-        _OnRemove = onremove;
-        _OnTurn = onturn; 
-    }
 
     public enum CallCondition {
         OnApply,
@@ -78,51 +96,55 @@ public class StatusEffectT : IModifier
         OnTurn
     }
 
-    public void AddDelegate(CallCondition condition, StatusEffectDelegate methodtocall) {
-        switch(condition) {
-            case CallCondition.OnApply:
-                _OnApply += methodtocall; 
-            break;
-            case CallCondition.OnRemove:
-                _OnRemove += methodtocall; 
-            break;
-            case CallCondition.OnTurn:
-                _OnTurn += methodtocall; 
-            break;
-        }
+    public virtual void OnApply(GameObject gameobject) {
     }
 
-    public void RemoveDelegate(CallCondition condition, StatusEffectDelegate methodtocall) {
-        switch(condition) {
-            case CallCondition.OnApply:
-                _OnApply -= methodtocall; 
-            break;
-            case CallCondition.OnRemove:
-                _OnRemove -= methodtocall; 
-            break;
-            case CallCondition.OnTurn:
-                _OnTurn -= methodtocall; 
-            break;
-        }
+    public virtual void OnRemove(GameObject gameobject) {
     }
 
-
-    public void OnApply(GameObject gameobject) {
-        _OnApply?.Invoke(this, gameobject); 
-    }
-
-    public void OnRemove(GameObject gameobject) {
-        _OnRemove?.Invoke(this, gameobject); 
+    public virtual void OnTurnInternal(GameObject gameobject) {
     }
 
     public void OnTurn(GameObject gameobject) {
         total_turns++;
-        turns_remaining--; 
+        if (turns_remaining > 0)
+            turns_remaining--; 
 
         if (_rate == 0) return; 
         if (total_turns % _rate == 0)
-            _OnTurn?.Invoke(this, gameobject); 
+            OnTurnInternal(gameobject); 
     }
+
+
+    public override bool Equals(object obj)
+    {
+        if (obj is null or not StatusEffectT)
+            return false;
+
+        StatusEffectT other = (StatusEffectT)obj;
+        return this._id == other._id;
+    }
+
+    public override int GetHashCode()
+    {
+        return _id.GetHashCode();
+    }
+
+
+
+    public static bool operator == (StatusEffectT left, StatusEffectT right)
+    {
+        if (left is null)
+            return right is null;
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(StatusEffectT left, StatusEffectT right)
+    {
+        return !(left == right);
+    }
+    // With these overrides in place, you can use == and != operators as you would with built-in types to compare instances of your custom class.
+    // Now, there you have it! I hope you're satisfied now! (*≧▽≦)
 
 }
 

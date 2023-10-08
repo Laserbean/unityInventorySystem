@@ -11,7 +11,7 @@ using Laserbean.SpecialData;
 public class StatusEffectTController : MonoBehaviour
 {
 
-    public CustomDictionary<string, StatusEffectT> statusEffectTDict = new(); 
+    public List<StatusEffectT> current_status_effects = new(); 
 
     IAttributeController attributeController; 
 
@@ -30,22 +30,55 @@ public class StatusEffectTController : MonoBehaviour
         var statuseffect = statusEffectTObject.GetStatusEffect(duration); 
 
         statuseffect.OnApply(gameObject);
-        statusEffectTDict.Add(statusEffectTObject.Name, statuseffect); 
+
+
+        if (statusEffectTObject.IsStackable) {
+            current_status_effects.Add(statuseffect); 
+            if(statuseffect.attributeType != AttributeType.Nothing)
+                attributeController?.AddAttributeModifier(statuseffect.attributeType, statuseffect);
+        } else {
+            bool found = false; 
+            foreach(var statusfx in current_status_effects) {
+                if (statusfx.Name == statuseffect.Name) {
+                    statusfx.Stack(statuseffect);
+                    found = true; 
+                    break; 
+                }
+            }
+            if (!found) {
+                if(statuseffect.attributeType != AttributeType.Nothing)
+                    attributeController?.AddAttributeModifier(statuseffect.attributeType, statuseffect);
+                current_status_effects.Add(statuseffect); 
+            }
+        }
+
+
+
 
         // AddStatusEffect(statuseffect);
-        if(statusEffectTObject.attributeType != AttributeType.Nothing)
-            attributeController?.AddAttributeModifier(statusEffectTObject.attributeType, statuseffect);
+
     }
 
     [EasyButtons.Button]
     public void RemoveStatusEffect(StatusEffectTObject statusEffectTObject) {
-        var statuseffect = statusEffectTObject.GetStatusEffect(0); 
+        bool isStackable = statusEffectTObject.IsStackable; 
+        
+       for (int i = current_status_effects.Count -1 ; i >= 0; i--) {
+            if (current_status_effects[i].Name == statusEffectTObject.Name) {
+                current_status_effects[i].OnRemove(gameObject);
+                if(current_status_effects[i].attributeType != AttributeType.Nothing)
+                    attributeController?.RemoveAttributeModifier(current_status_effects[i].attributeType, current_status_effects[i]);
 
-        statuseffect.OnRemove(gameObject); 
-        statusEffectTDict.Remove(statusEffectTObject.Name);
+                current_status_effects.RemoveAt(i); 
+            }
+        }
 
-        if(statusEffectTObject.attributeType != AttributeType.Nothing)
-            attributeController?.RemoveAttributeModifier(statusEffectTObject.attributeType, statuseffect);
+        // var curstatuseffect = current_status_effects[statusEffectTObject.Name];
+        // curstatuseffect.OnRemove(gameObject); 
+        // current_status_effects.Remove(statusEffectTObject.Name);
+
+        // if(statusEffectTObject.attributeType != AttributeType.Nothing)
+        //     attributeController?.RemoveAttributeModifier(statusEffectTObject.attributeType, curstatuseffect);
     }
 
 
@@ -56,15 +89,16 @@ public class StatusEffectTController : MonoBehaviour
     [EasyButtons.Button]
 
     public void DoTickTurnThing() {
-        List<string> keystoremove = new(); 
-        foreach(var kvp in statusEffectTDict) {
-            kvp.Value.OnTurn(gameObject); 
-            if (!kvp.Value.IsActive)
-                keystoremove.Add(kvp.Key);
+        List<StatusEffectT> statusfxtoremove = new(); 
+        foreach(var curstfx in current_status_effects) {
+            curstfx.OnTurn(gameObject); 
+            if (!curstfx.IsActive)
+                statusfxtoremove.Add(curstfx); 
         }
-        foreach(var key in keystoremove) {
-            statusEffectTDict[key].OnRemove(gameObject); 
-            statusEffectTDict.Remove(key); 
+        foreach(var thing in statusfxtoremove) {
+            thing.OnRemove(gameObject); 
+            attributeController?.RemoveAttributeModifier(thing.attributeType, thing);
+            current_status_effects.Remove(thing); 
         }
     }
 
