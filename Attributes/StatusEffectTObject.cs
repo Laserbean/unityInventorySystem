@@ -55,7 +55,7 @@ public class StatusEffectTObject : ScriptableObject {
 
 
     [EasyButtons.Button]
-    void SetRate(float period, float tick_time = 0f) {
+    protected void SetRate(float period, float tick_time = 0f) {
         if (tick_time == 0f) {
             tick_time = TimeTickSystem.TICK_TIME; 
         }

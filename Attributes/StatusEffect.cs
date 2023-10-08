@@ -22,7 +22,7 @@ public class StatusEffectT : IModifier
     [SerializeField] int _value = 0;
     [SerializeField] int _valueOnApply = 0;
     [SerializeField] int _valueOnRemove = 0;
-    [SerializeField] int _valueDurationModifier = 0;
+    [SerializeField] float _valueDurationModifier = 0;
 
     [SerializeField] int _rate = 1; 
 
@@ -33,7 +33,7 @@ public class StatusEffectT : IModifier
     public int Value {get => _value;} 
     public int ValueOnApply {get => _valueOnApply;} 
     public int ValueOnRemove {get => _valueOnRemove;} 
-    public int ValueDurationModifier {get => _valueDurationModifier;} 
+    public float ValueDurationModifier {get => _valueDurationModifier;} 
 
     public int Rate {get => _rate;}  
 

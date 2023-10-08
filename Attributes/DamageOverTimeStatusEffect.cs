@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using unityInventorySystem;
 
+using Laserbean.General.GlobalTicks;
+
 [CreateAssetMenu(fileName = "StatusEffectDOT", menuName = "Status Effects T/DamageOverTime", order = 2)]
 public class DamageOverTimeStatusEffect : StatusEffectTObject
 {
@@ -12,6 +14,7 @@ public class DamageOverTimeStatusEffect : StatusEffectTObject
         StatusEffectDOT statusfx = new(statuseffect, Name, duration);
         return statusfx;
     }
+
 }
 
 public class StatusEffectDOT : StatusEffectT
@@ -36,7 +39,8 @@ public class StatusEffectDOT : StatusEffectT
 
     public override void OnTurnInternal(GameObject gameobject)
     {
-        gameobject.GetComponent<IDamageable>()?.Damage(Value); 
+        int damage = Mathf.RoundToInt(Value + (TotalTurns * ValueDurationModifier/Rate)); 
+        gameobject.GetComponent<IDamageable>()?.Damage(damage); 
     }
 
 
