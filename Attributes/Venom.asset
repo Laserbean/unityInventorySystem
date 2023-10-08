@@ -16,13 +16,13 @@ MonoBehaviour:
   _Name: Venom
   _Description: '1 damage every 3 seconds.
 
-'
+    Increases by 2 every 3 seconds. '
   statuseffect:
     _doImediate: 0
     _value: 3
     _valueOnApply: 5
     _valueOnRemove: 0
-    _valueDurationModifier: 1
+    _valueDurationModifier: 2
     _rate: 2
     _name: 
     attributeType: 0

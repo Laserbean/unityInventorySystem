@@ -39,7 +39,7 @@ public class StatusEffectDOT : StatusEffectT
 
     public override void OnTurnInternal(GameObject gameobject)
     {
-        int damage = Mathf.RoundToInt(Value + (TotalTurns * ValueDurationModifier/Rate)); 
+        int damage = Mathf.RoundToInt(Value + ((TotalTurns-1) * ValueDurationModifier/Rate)); 
         gameobject.GetComponent<IDamageable>()?.Damage(damage); 
     }
 
