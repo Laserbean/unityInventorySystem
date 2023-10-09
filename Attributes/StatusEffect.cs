@@ -19,10 +19,13 @@ namespace unityInventorySystem {
 public class StatusEffectT : IModifier
 {
     [SerializeField] bool _doImediate = false; 
-    [SerializeField] int _value = 0;
-    [SerializeField] int _valueOnApply = 0;
-    [SerializeField] int _valueOnRemove = 0;
-    [SerializeField] float _valueDurationModifier = 0;
+    [SerializeField] protected int _value = 0;
+    [SerializeField] protected int _valueOnApply = 0;
+    [SerializeField] protected int _valueOnRemove = 0;
+    // [SerializeField] int _valueDurationModifier = 0;
+
+    [Tooltip("[onturn, min, max]")]
+    [SerializeField] Vector3Int _valueDurationModifier = new(0,0,0);
 
     [SerializeField] int _rate = 1; 
 
@@ -33,11 +36,17 @@ public class StatusEffectT : IModifier
     public int Value {get => _value;} 
     public int ValueOnApply {get => _valueOnApply;} 
     public int ValueOnRemove {get => _valueOnRemove;} 
-    public float ValueDurationModifier {get => _valueDurationModifier;} 
+    // public int ValueDurationModifier {get => _valueDurationModifier;} 
+
+    public Vector3Int ValueDurationModifier {get => _valueDurationModifier;} 
+
 
     public int Rate {get => _rate;}  
 
     public AttributeType attributeType; 
+    public int attribute_value; 
+
+
     public ElementType elementType; 
 
     string _id; 
@@ -45,10 +54,14 @@ public class StatusEffectT : IModifier
     public void SetRate(int rate) {
         _rate = rate; 
     }
+
+    public void SetValue(int val) {
+        _value= val; 
+    }
     
     [SerializeField]
-    int turns_remaining = 0; 
-    int total_turns = 0; 
+    protected int turns_remaining = 0; 
+    protected int total_turns = 0; 
     public int TotalTurns { get => total_turns; }
     public int TurnsRemaining { get => turns_remaining; }
 
@@ -57,7 +70,7 @@ public class StatusEffectT : IModifier
 
     void IModifier.AddValue(ref int baseValue)
     {
-        baseValue += _value; 
+        baseValue += attribute_value; 
     }
 
     public StatusEffectT (string nname, int duration) {
@@ -76,6 +89,8 @@ public class StatusEffectT : IModifier
         _valueOnRemove = statusfx.ValueOnRemove;
         _valueDurationModifier = statusfx.ValueDurationModifier;
 
+        attribute_value = statusfx.attribute_value; 
+
         _rate = statusfx.Rate;
 
         attributeType = statusfx.attributeType; 
@@ -85,7 +100,12 @@ public class StatusEffectT : IModifier
         _name = nname;
     }
 
-    public void Stack(StatusEffectT statuseffect) {
+        public StatusEffectT(int turns_remaining)
+        {
+            this.turns_remaining = turns_remaining;
+        }
+
+        public virtual void Stack(StatusEffectT statuseffect) {
         turns_remaining += statuseffect.TurnsRemaining;
     }
 
@@ -110,9 +130,24 @@ public class StatusEffectT : IModifier
         if (turns_remaining > 0)
             turns_remaining--; 
 
+        _value += ValueDurationModifier.x; 
+
+
+        _value = Mathf.Clamp(_value, ValueDurationModifier.y, ValueDurationModifier.z);
+        // _value += Mathf.RoundToInt((TotalTurns-1) * ValueDurationModifier/Rate); 
+
+        if (_value == (ValueDurationModifier.y)) OnValueMin(gameobject); 
+        if (_value == (ValueDurationModifier.z)) OnValueMax(gameobject); 
+
         if (_rate == 0) return; 
         if (total_turns % _rate == 0)
             OnTurnInternal(gameobject); 
+    }
+
+    public virtual void OnValueMin(GameObject gameobject) {
+    }
+
+    public virtual void OnValueMax(GameObject gameobject) {
     }
 
 
@@ -151,6 +186,8 @@ public class StatusEffectT : IModifier
 
 public interface IStatusAffect {
     void AddStatusEffect(StatusEffectTObject statusEffectTObject, float duration); 
+    void RemoveStatusEffect(StatusEffectTObject statusEffectTObject); 
+    void RemoveStatusEffect(StatusEffectT statusEffectt); 
 }
 
 

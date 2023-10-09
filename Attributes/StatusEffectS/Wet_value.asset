@@ -9,21 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6bfad2993739d843a00d0a1032f2693, type: 3}
-  m_Name: Poison
+  m_Script: {fileID: 11500000, guid: 3d05c6ee34a248a46abd7ed4479e1066, type: 3}
+  m_Name: Wet_value
   m_EditorClassIdentifier: 
-  _icon: {fileID: 1660957820977104790, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
-  _Name: Poison
-  _Description: 3 damage every 3 seconds.
+  _icon: {fileID: -675955477173538400, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
+  _Name: Wet
+  _Description: 
   statuseffect:
     _doImediate: 0
-    _value: 3
-    _valueOnApply: 5
+    _value: 0
+    _valueOnApply: 0
     _valueOnRemove: 0
-    _valueDurationModifier: 0
-    _rate: 15
+    _valueDurationModifier: {x: -1, y: 0, z: 100}
+    _rate: 5
     _name: 
     attributeType: 0
-    elementType: 3
+    attribute_value: 0
+    elementType: 2
     turns_remaining: 0
   isStackable: 0
