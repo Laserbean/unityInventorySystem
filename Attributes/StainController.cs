@@ -7,7 +7,7 @@ using UnityEngine.Search;
 using unityInventorySystem;
 using unityInventorySystem.Attribute;
 
-public class StainController : MonoBehaviour
+public class StainController : MonoBehaviour, IStainable
 {
     
     // [SearchContext("p: Stain")]
@@ -49,6 +49,21 @@ public class StainController : MonoBehaviour
     }
 
 
+    public void SetStain(StainType stainType, int value) {
+        if (all_stains.ContainsKey(stainType)) {
+            int val_start = all_stains[stainType].Value;
+
+            if (val_start == 0 && value != 0) 
+                all_stains[stainType].OnApply(gameObject); 
+            
+            all_stains[stainType].SetValue(value);
+
+            if (val_start != 0 && value == 0) 
+                all_stains[stainType].OnRemove(gameObject); 
+        }        
+    }
+
+
     public void ModifyStain(StainType stainType, int value) {
         if (value == 0) return;
         if (all_stains.ContainsKey(stainType)) {
@@ -76,6 +91,8 @@ public class StainController : MonoBehaviour
             statusEffectT.OnTurn(gameObject); 
         }
     }
+
+
 
 
     // public void RemoveStatusEffect(StatusEffectT statusEffectt)
@@ -106,3 +123,11 @@ public class StainController : MonoBehaviour
 //     }
 
 // }
+
+
+public interface IStainable {
+    public int GetStainValue(StainType stainType);
+    public void SetStain(StainType stainType, int value); 
+    public void ModifyStain(StainType staintype, int value);
+    public void RemoveStain(StainType staintype);
+}

@@ -21,6 +21,7 @@ public class AttributesController : MonoBehaviour, IAttributeUsage, IAttributeCo
     }
 
     void UpdateDict() {
+        AttributeDict.Clear(); 
         for (int i = 0; i < attributes.Length; i++)
         {
             attributes[i].SetParent(this.gameObject);

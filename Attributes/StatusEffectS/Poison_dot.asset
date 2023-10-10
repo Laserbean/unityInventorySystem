@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _icon: {fileID: 1660957820977104790, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
   _Name: Poison
-  _Description: '3 damage every 3 seconds.
+  _Description: '10 damage every 3 seconds.
 
 
     Stackable'
   statuseffect:
     <Name>k__BackingField: Poison
     <DoImediate>k__BackingField: 0
-    <Value>k__BackingField: 3
+    <Value>k__BackingField: 10
     <ValueOnApply>k__BackingField: 0
     <ValueOnRemove>k__BackingField: 0
     <ValueDurationModifier>k__BackingField: {x: 0, y: 0, z: 0}
     <Rate>k__BackingField: 15
     attributeType: 0
     attribute_value: 0
-    elementType: 3
+    stainType: 0
     turns_remaining: 0
   isStackable: 1
