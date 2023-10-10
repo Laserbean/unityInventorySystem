@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5892398ce304bf24d96cf240f0b2fd7e, type: 3}
-  m_Name: StatusEffectSettings
+  m_Name: StainSettings
   m_EditorClassIdentifier: 
   stringEnumConverter:
     enumList:
     - Nothing
-    - Heat
+    - Fire
     - Wet
-    - Poison
-    - Bleed
+    - Slime
+    - Bloody

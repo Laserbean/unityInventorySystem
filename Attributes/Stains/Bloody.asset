@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d05c6ee34a248a46abd7ed4479e1066, type: 3}
-  m_Name: Wet_value
+  m_Name: Bloody
   m_EditorClassIdentifier: 
-  _icon: {fileID: -675955477173538400, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
-  _Name: Wet
+  _icon: {fileID: 6592680923324011761, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
+  _Name: Bloody
   _Description: 
   statuseffect:
-    _doImediate: 0
-    _value: 0
-    _valueOnApply: 0
-    _valueOnRemove: 0
-    _valueDurationModifier: {x: -1, y: 0, z: 100}
-    _rate: 5
-    _name: 
+    <Name>k__BackingField: Bloody
+    <DoImediate>k__BackingField: 0
+    <Value>k__BackingField: 0
+    <ValueOnApply>k__BackingField: 0
+    <ValueOnRemove>k__BackingField: 0
+    <ValueDurationModifier>k__BackingField: {x: 0, y: 0, z: 50}
+    <Rate>k__BackingField: 0
     attributeType: 0
     attribute_value: 0
-    elementType: 2
+    stainType: 4
     turns_remaining: 0
   isStackable: 0

@@ -29,11 +29,11 @@ public class StatusEffectValue : StatusEffectT
 
     public override void Stack(StatusEffectT statuseffect)
     {
-        _value += statuseffect.Value; 
+        Value += statuseffect.Value; 
     }
 
     public override void OnValueMin(GameObject gameObject){
-        if (_value == 0) {
+        if (Value == 0) {
             turns_remaining = 0; 
         }
     }

@@ -9,24 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6bfad2993739d843a00d0a1032f2693, type: 3}
-  m_Name: Venom_dot
+  m_Script: {fileID: 11500000, guid: 3d05c6ee34a248a46abd7ed4479e1066, type: 3}
+  m_Name: Slime
   m_EditorClassIdentifier: 
-  _icon: {fileID: 1660957820977104790, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
-  _Name: Venom
-  _Description: '1 damage every 3 seconds.
-
-    Increases by 2 every 3 seconds. '
+  _icon: {fileID: -4212146986876241664, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
+  _Name: Slimy
+  _Description: Movement is slowed
   statuseffect:
     <Name>k__BackingField: 
     <DoImediate>k__BackingField: 0
-    <Value>k__BackingField: 1
+    <Value>k__BackingField: 0
     <ValueOnApply>k__BackingField: 0
     <ValueOnRemove>k__BackingField: 0
-    <ValueDurationModifier>k__BackingField: {x: 2, y: 0, z: 200}
-    <Rate>k__BackingField: 15
-    attributeType: 0
-    attribute_value: 0
-    elementType: 3
+    <ValueDurationModifier>k__BackingField: {x: 0, y: 0, z: 40}
+    <Rate>k__BackingField: 0
+    attributeType: 1
+    attribute_value: -5
+    stainType: 3
     turns_remaining: 0
   isStackable: 0

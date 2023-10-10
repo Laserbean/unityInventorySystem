@@ -19,6 +19,10 @@ public class StatusEffectTController : MonoBehaviour, IStatusAffect
 
     private void Awake() {
         attributeController = this.GetComponent<IAttributeController>(); 
+
+        TimeTickSystem.OnTick += delegate (object sender, TimeTickSystem.OnTickEventArgs e) {
+            DoTickTurnThing();
+        };
     }
 
     #if UNITY_EDITOR

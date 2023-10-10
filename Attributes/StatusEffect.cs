@@ -17,55 +17,54 @@ namespace unityInventorySystem {
 
 [System.Serializable]
 public class StatusEffectT : IModifier
-{
-    [SerializeField] bool _doImediate = false; 
-    [SerializeField] protected int _value = 0;
-    [SerializeField] protected int _valueOnApply = 0;
-    [SerializeField] protected int _valueOnRemove = 0;
-    // [SerializeField] int _valueDurationModifier = 0;
+{    
+    [field: SerializeField]
+    public string Name {get; private set;} 
+    [field: SerializeField]
+    public bool DoImediate {get; private set;} 
 
-    [Tooltip("[onturn, min, max]")]
-    [SerializeField] Vector3Int _valueDurationModifier = new(0,0,0);
 
-    [SerializeField] int _rate = 1; 
-
-    [SerializeField, ShowOnly]
-    string _name; 
-    public string Name {get => _name;}
-    public bool DoImediate {get => _doImediate;} 
-    public int Value {get => _value;} 
-    public int ValueOnApply {get => _valueOnApply;} 
-    public int ValueOnRemove {get => _valueOnRemove;} 
+    [field: SerializeField]
+    public int Value {get; protected set;} 
+    [field: SerializeField]
+    public int ValueOnApply {get; private set;} 
+    [field: SerializeField]
+    public int ValueOnRemove {get; private set;} 
     // public int ValueDurationModifier {get => _valueDurationModifier;} 
 
-    public Vector3Int ValueDurationModifier {get => _valueDurationModifier;} 
+    [field: SerializeField, Tooltip("[onturn, min, max]")]
+    public Vector3Int ValueDurationModifier {get; private set;} 
 
-
-    public int Rate {get => _rate;}  
+    [field: SerializeField]
+    public int Rate {get; private set;}  
 
     public AttributeType attributeType; 
     public int attribute_value; 
 
 
-    public ElementType elementType; 
+    public StainType stainType; 
 
-    string _id; 
-
-    public void SetRate(int rate) {
-        _rate = rate; 
-    }
-
-    public void SetValue(int val) {
-        _value= val; 
-    }
-    
     [SerializeField]
     protected int turns_remaining = 0; 
     protected int total_turns = 0; 
     public int TotalTurns { get => total_turns; }
     public int TurnsRemaining { get => turns_remaining; }
-
     public bool IsActive { get => turns_remaining > 0 || turns_remaining == -1; }
+
+
+    string _id; 
+
+    public void SetRate(int rate) {
+        Rate = rate; 
+    }
+
+    public void SetValue(int val) {
+        Value= val; 
+    }
+    
+    public void ModifyValue(int val) {
+        Value += val; 
+    }
 
 
     void IModifier.AddValue(ref int baseValue)
@@ -75,7 +74,7 @@ public class StatusEffectT : IModifier
 
     public StatusEffectT (string nname, int duration) {
         turns_remaining = duration; 
-        _name = nname;
+        Name = nname;
 
         _id = RandomStatic.GenerateRandomString(5); 
     }
@@ -83,21 +82,21 @@ public class StatusEffectT : IModifier
     public StatusEffectT(StatusEffectT statusfx, string nname, int duration) {
         _id = RandomStatic.GenerateRandomString(5); 
 
-        _doImediate = statusfx.DoImediate;
-        _value = statusfx.Value;
-        _valueOnApply = statusfx.ValueOnApply;
-        _valueOnRemove = statusfx.ValueOnRemove;
-        _valueDurationModifier = statusfx.ValueDurationModifier;
+        DoImediate = statusfx.DoImediate;
+        Value = statusfx.Value;
+        ValueOnApply = statusfx.ValueOnApply;
+        ValueOnRemove = statusfx.ValueOnRemove;
+        ValueDurationModifier = statusfx.ValueDurationModifier;
 
         attribute_value = statusfx.attribute_value; 
 
-        _rate = statusfx.Rate;
+        Rate = statusfx.Rate;
 
         attributeType = statusfx.attributeType; 
-        elementType = statusfx.elementType; 
+        stainType = statusfx.stainType; 
 
         turns_remaining = duration; 
-        _name = nname;
+        Name = nname;
     }
 
         public StatusEffectT(int turns_remaining)
@@ -130,17 +129,17 @@ public class StatusEffectT : IModifier
         if (turns_remaining > 0)
             turns_remaining--; 
 
-        _value += ValueDurationModifier.x; 
+        Value += ValueDurationModifier.x; 
 
-
-        _value = Mathf.Clamp(_value, ValueDurationModifier.y, ValueDurationModifier.z);
+        if (ValueDurationModifier.x != 0)
+            Value = Mathf.Clamp(Value, ValueDurationModifier.y, ValueDurationModifier.z);
         // _value += Mathf.RoundToInt((TotalTurns-1) * ValueDurationModifier/Rate); 
 
-        if (_value == (ValueDurationModifier.y)) OnValueMin(gameobject); 
-        if (_value == (ValueDurationModifier.z)) OnValueMax(gameobject); 
+        if (Value == (ValueDurationModifier.y)) OnValueMin(gameobject); 
+        if (Value == (ValueDurationModifier.z)) OnValueMax(gameobject); 
 
-        if (_rate == 0) return; 
-        if (total_turns % _rate == 0)
+        if (Rate == 0) return; 
+        if (total_turns % Rate == 0)
             OnTurnInternal(gameobject); 
     }
 

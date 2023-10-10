@@ -1,8 +1,8 @@
 // CustomEnum Generated Code. Do not edit!
-public enum ElementType {
+public enum StainType {
 	Nothing = 0,
-	Heat = 1,
+	Fire = 1,
 	Wet = 2,
-	Poison = 3,
-	Bleed = 4,
+	Slime = 3,
+	Bloody = 4,
 }

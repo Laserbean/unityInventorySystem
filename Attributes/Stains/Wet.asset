@@ -9,25 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6bfad2993739d843a00d0a1032f2693, type: 3}
-  m_Name: Poison_dot
+  m_Script: {fileID: 11500000, guid: 3d05c6ee34a248a46abd7ed4479e1066, type: 3}
+  m_Name: Wet
   m_EditorClassIdentifier: 
-  _icon: {fileID: 1660957820977104790, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
-  _Name: Poison
-  _Description: '3 damage every 3 seconds.
-
-
-    Stackable'
+  _icon: {fileID: -675955477173538400, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
+  _Name: Wet
+  _Description: 
   statuseffect:
-    <Name>k__BackingField: Poison
+    <Name>k__BackingField: Wet
     <DoImediate>k__BackingField: 0
-    <Value>k__BackingField: 3
+    <Value>k__BackingField: 0
     <ValueOnApply>k__BackingField: 0
     <ValueOnRemove>k__BackingField: 0
-    <ValueDurationModifier>k__BackingField: {x: 0, y: 0, z: 0}
-    <Rate>k__BackingField: 15
+    <ValueDurationModifier>k__BackingField: {x: 0, y: 0, z: 50}
+    <Rate>k__BackingField: 0
     attributeType: 0
     attribute_value: 0
-    elementType: 3
+    stainType: 2
     turns_remaining: 0
-  isStackable: 1
+  isStackable: 0

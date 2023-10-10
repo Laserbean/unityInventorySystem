@@ -7,11 +7,13 @@ using unityInventorySystem.Attribute;
 using unityInventorySystem;
 using Laserbean.General;
 using Laserbean.General.GlobalTicks;
+using UnityEngine.Search;
 
 [CreateAssetMenu(fileName = "StatusEffect", menuName = "Status Effects T/Default", order = 1)]
 public class StatusEffectTObject : ScriptableObject {
 
     [SpritePreview (0, 64)] 
+    // [SearchContext("", SearchViewFlags.GridView)]
     [SerializeField] Sprite _icon; 
 
     [SerializeField] 
