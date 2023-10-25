@@ -6,12 +6,16 @@ using System.Linq;
 
 
 using Laserbean.General;
+using Laserbean.SpecialData;
 
 namespace unityInventorySystem.Attribute {
 
 
+
 public class AttributesController : MonoBehaviour, IAttributeUsage, IAttributeController
 {
+    [SerializeField]
+    CustomDictionary<AttributeType, Attribute> newAttributeDict = new(); 
 
     Dictionary<AttributeType, int> AttributeDict = new (); 
 
@@ -26,6 +30,8 @@ public class AttributesController : MonoBehaviour, IAttributeUsage, IAttributeCo
         {
             attributes[i].SetParent(this.gameObject);
             AttributeDict.Add(attributes[i].type, i); 
+
+            OnAttributeChange?.Invoke(attributes[i]); 
             // Debug.Log(attributes[i].type + ": " + attributes[i].value.BaseValue); 
         }
     }
@@ -37,21 +43,6 @@ public class AttributesController : MonoBehaviour, IAttributeUsage, IAttributeCo
     #endif
 
     public Attribute[] attributes;
-
-
-    // void AddAttribute1(AttributeType attType, IModifier buff) {
-    //     for (int j = 0; j < attributes.Length; j++) {
-    //         if (attributes[j].type == attType)
-    //             attributes[j].value?.AddModifier(buff);
-    //     }
-    // }
-
-    // void RemoveAttribute1(AttributeType attType, IModifier buff) {
-    //     for (int j = 0; j < attributes.Length; j++) {
-    //         if (attributes[j].type == attType)
-    //             attributes[j].value?.RemoveModifier(buff);
-    //     }
-    // }
 
     public void AddAttributeModifier(AttributeType type, IModifier value) {    
         if (AttributeDict.ContainsKey(type)) {
@@ -106,20 +97,15 @@ public class Attribute
         value = new ModifiableInt(AttributeModified);
     }
 
-    public void SetParent(GameObject _parent)
-    {
+    public void SetParent(GameObject _parent) {
         parent = _parent;
-        // value = new ModifiableInt(AttributeModified);
     }
 
-    public void AttributeModified()
-    {
-        if (parent == null) {
+    public void AttributeModified() {
+        if (parent == null) 
             return; 
-        }
+        
         List<IAttributeModified> interfaceList = parent.GetInterfaces<IAttributeModified>().ToList();
-
-        // var inter = parent.GetComponent<IAttributeModified>();
 
         foreach(var inter in interfaceList) {
             inter?.AttributeModified(this); 
@@ -139,6 +125,7 @@ public enum AttributeType
     Nothing,
     Agility,
     Defense,
+    Armour,
     Stamina,
     Strength,
     Health,
@@ -160,7 +147,11 @@ public static class AttributeCalculations {
     }
 
     public static int CalculateDefense(int val) {
-        return val; 
+        return Mathf.RoundToInt((5 * Mathf.Sqrt(val)) + 0);
+    }
+
+    public static float CalculateDefensePercentage(int val) {
+        return ((5 * Mathf.Sqrt(val)) + 0)/100f;
     }
 
 }

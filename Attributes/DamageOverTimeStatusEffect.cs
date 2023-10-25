@@ -4,6 +4,7 @@ using UnityEngine;
 using unityInventorySystem;
 
 using Laserbean.General.GlobalTicks;
+using Laserbean.General.OtherInterfaces;
 
 [CreateAssetMenu(fileName = "StatusEffectDOT", menuName = "Status Effects T/DamageOverTime", order = 2)]
 public class DamageOverTimeStatusEffect : StatusEffectTObject
@@ -29,17 +30,17 @@ public class StatusEffectDOT : StatusEffectT
 
     public override void OnApply(GameObject gameobject)
     {
-        gameobject.GetComponent<IDamageable>()?.Damage(ValueOnApply); 
+        gameobject.GetComponent<IDamageableInt>()?.Damage(ValueOnApply); 
     }
 
     public override void OnRemove(GameObject gameobject)
     {
-        gameobject.GetComponent<IDamageable>()?.Damage(ValueOnRemove); 
+        gameobject.GetComponent<IDamageableInt>()?.Damage(ValueOnRemove); 
     }
 
     public override void OnTurnInternal(GameObject gameobject)
     {
-        gameobject.GetComponent<IDamageable>()?.Damage(Value); 
+        gameobject.GetComponent<IDamageableInt>()?.Damage(Value); 
     }
 
 

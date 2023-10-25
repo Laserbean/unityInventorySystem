@@ -10,31 +10,27 @@ public class ModifiableInt
     private int baseValue;
     public int BaseValue { get { return baseValue; } set { baseValue = value; UpdateModifiedValue(); } }
 
-    [SerializeField]
-    private int modifiedValue;
-    public int ModifiedValue { get { return modifiedValue; } private set { modifiedValue = value; } }
+    [field: SerializeField]
+    public int ModifiedValue {get; private set;}
 
-    public List<IModifier> modifiers = new List<IModifier>();
+    [System.NonSerialized]
+    public List<IModifier> modifiers = new ();
 
     public event ModifiedEvent ValueModified;
-    public ModifiableInt(ModifiedEvent method = null)
-    {
-        modifiedValue = BaseValue;
-        if (method != null)
-            ValueModified += method;
+    public ModifiableInt(ModifiedEvent method = null) {
+        ModifiedValue = BaseValue;
+        if (method != null) ValueModified += method;
     }
 
-    public void RegsiterModEvent(ModifiedEvent method)
-    {
+    public void RegsiterModEvent(ModifiedEvent method) {
         ValueModified += method;
     }
-    public void UnregsiterModEvent(ModifiedEvent method)
-    {
+    
+    public void UnregsiterModEvent(ModifiedEvent method) {
         ValueModified -= method;
     }
 
-    public void UpdateModifiedValue()
-    {
+    public void UpdateModifiedValue() {
         var valueToAdd = 0;
         for (int i = 0; i < modifiers.Count; i++) {
             modifiers[i].AddValue(ref valueToAdd);
@@ -43,13 +39,12 @@ public class ModifiableInt
         ValueModified?.Invoke();
     }
 
-    public void AddModifier(IModifier _modifier)
-    {
+    public void AddModifier(IModifier _modifier) {
         modifiers.Add(_modifier);
         UpdateModifiedValue();
     }
-    public void RemoveModifier(IModifier _modifier)
-    {
+
+    public void RemoveModifier(IModifier _modifier) {
         modifiers.Remove(_modifier);
         UpdateModifiedValue();
     }
