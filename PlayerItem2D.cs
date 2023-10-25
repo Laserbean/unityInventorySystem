@@ -106,7 +106,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
 
     public void AttributeModified(Attribute attribute)
     {
-        Debug.Log(string.Concat(attribute.type, " was updated! Value is now ", attribute.value.ModifiedValue));
+        Debug.Log(string.Concat(attribute.type, " was updated! Value is now ", attribute.ModifiedValue));
     }
 
     Vector3 currentItemPos;

@@ -14,8 +14,8 @@ namespace unityInventorySystem.Attribute {
 
 public class AttributesController : MonoBehaviour, IAttributeUsage, IAttributeController
 {
-    [SerializeField]
-    CustomDictionary<AttributeType, Attribute> newAttributeDict = new(); 
+    // [SerializeField]
+    // CustomDictionary<AttributeType, Attribute> newAttributeDict = new(); 
 
     Dictionary<AttributeType, int> AttributeDict = new (); 
 
@@ -28,7 +28,6 @@ public class AttributesController : MonoBehaviour, IAttributeUsage, IAttributeCo
         AttributeDict.Clear(); 
         for (int i = 0; i < attributes.Length; i++)
         {
-            attributes[i].SetParent(this.gameObject);
             AttributeDict.Add(attributes[i].type, i); 
 
             OnAttributeChange?.Invoke(attributes[i]); 
@@ -46,38 +45,47 @@ public class AttributesController : MonoBehaviour, IAttributeUsage, IAttributeCo
 
     public void AddAttributeModifier(AttributeType type, IModifier value) {    
         if (AttributeDict.ContainsKey(type)) {
-            attributes[AttributeDict[type]].value?.AddModifier(value); 
-            OnAttributeChange?.Invoke(attributes[AttributeDict[type]]); 
-
+            attributes[AttributeDict[type]]?.AddModifier(value); 
+            OnAttributeChangeInternal(attributes[AttributeDict[type]]); 
         } 
     }
 
     public void RemoveAttributeModifier(AttributeType type, IModifier value) {
         if (AttributeDict.ContainsKey(type)) {
-            attributes[AttributeDict[type]].value?.RemoveModifier(value); 
-            OnAttributeChange?.Invoke(attributes[AttributeDict[type]]); 
+            attributes[AttributeDict[type]]?.RemoveModifier(value); 
+            OnAttributeChangeInternal(attributes[AttributeDict[type]]); 
         } 
+    }
+
+    void OnAttributeChangeInternal(Attribute attribute) {
+        OnAttributeChange?.Invoke(attribute); 
+
+        List<IAttributeModified> interfaceList = gameObject.GetInterfacesInChildren<IAttributeModified>().ToList();
+        foreach(var inter in interfaceList) {
+            inter?.AttributeModified(attribute); 
+        }
     }
 
     public int GetAttributeValue(AttributeType typ) {
-        if (AttributeDict.ContainsKey(typ)) {
-            return attributes[AttributeDict[typ]].value.ModifiedValue; 
-        } 
+        if (AttributeDict.ContainsKey(typ)) 
+            return attributes[AttributeDict[typ]].ModifiedValue; 
         return 0; 
     }
 
-    public int GetAttributeBaseValue(AttributeType typ)
-    {        
-        if (AttributeDict.ContainsKey(typ)) {
-            return attributes[AttributeDict[typ]].value.BaseValue; 
-        } 
+    public int GetAttributeBaseValue(AttributeType typ) {        
+        if (AttributeDict.ContainsKey(typ)) 
+            return attributes[AttributeDict[typ]].BaseValue; 
         return 0; 
-        
+    }
+
+    public Attribute GetAttribute(AttributeType typ) {
+        if (AttributeDict.ContainsKey(typ)) 
+            return attributes[AttributeDict[typ]]; 
+        return null; 
     }
 
     public AttributeChange OnAttributeChange;
 
-        
     AttributeChange IAttributeUsage.OnAttributeChange { 
         get => OnAttributeChange; 
         set => OnAttributeChange = value; 
@@ -87,30 +95,13 @@ public class AttributesController : MonoBehaviour, IAttributeUsage, IAttributeCo
 
 
 [System.Serializable]
-public class Attribute
+public class Attribute : ModifiableInt
 {
-    [System.NonSerialized] public GameObject parent;
     public AttributeType type;
-    public ModifiableInt value;
 
     public Attribute() {
-        value = new ModifiableInt(AttributeModified);
     }
 
-    public void SetParent(GameObject _parent) {
-        parent = _parent;
-    }
-
-    public void AttributeModified() {
-        if (parent == null) 
-            return; 
-        
-        List<IAttributeModified> interfaceList = parent.GetInterfaces<IAttributeModified>().ToList();
-
-        foreach(var inter in interfaceList) {
-            inter?.AttributeModified(this); 
-        }
-    }
 }
 
 
