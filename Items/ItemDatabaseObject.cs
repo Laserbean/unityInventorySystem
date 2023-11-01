@@ -4,7 +4,8 @@ using UnityEngine;
 using System.Linq;
 using Laserbean.SpecialData;
 
-namespace unityInventorySystem {
+namespace unityInventorySystem
+{
     [CreateAssetMenu(fileName = "New Item Database", menuName = "unity Inventory System/Items/Database")]
     public class ItemDatabaseObject : ScriptableObject//, ISerializationCallbackReceiver
     {
@@ -18,15 +19,18 @@ namespace unityInventorySystem {
         [EasyButtons.Button]
         public void UpdateDictionary() {
             ItemDict.Clear(); 
-            var folderpath = UnityInventoryConfig.ITEMS_PATH;
+            var folderpath = UnityInventoryConfig.ItemsPath;
             // var folderpath = "dfs";
             var list1 = Resources.LoadAll<ItemObject>(folderpath).ToList(); 
 
+            int ind = 0; 
+
             foreach(var asset in list1) {
                 if (asset is null) continue;
+                asset.item.Id = ind; 
+                ItemDict.Add(asset.item.Name, asset);
 
-                var curstatusobject = asset as ItemObject;
-                ItemDict.Add(curstatusobject.item.Name, curstatusobject);
+                ind += 1; 
             }
             Debug.Log(folderpath); 
         }
@@ -42,31 +46,6 @@ namespace unityInventorySystem {
         }
     }
 
-public static class InventoryStaticManager
-{
-
-    public static string SavePath {
-        get => GameManager.Instance.GamePath + "/"; 
-    }
-
-
-    static ItemDatabaseObject database; 
-
-    const string DatabasePath = "UnityInventory/";
-
-    public const string DEF_PLAYER_INV_NAME = "PlayerInventory";
-    public const string DEF_PLAYER_EQUIP_NAME = "PlayerEquipment";
-    public const string DEF_ITEM_DB_NAME = "ItemDB";
-
-    public static ItemDatabaseObject GetDatabase(string name) {
-        return Resources.Load<ItemDatabaseObject>(DatabasePath + name);
-    }
-
-    public static InventoryObject GetInventoryObject(string name) {
-        return Resources.Load<InventoryObject>(DatabasePath + name);
-    }
-
-}
 
 
 }

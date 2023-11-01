@@ -105,13 +105,11 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         Debug.Log(string.Concat(attribute.type, " was updated! Value is now ", attribute.ModifiedValue));
     }
 
-    Vector3 currentItemPos;
 
 
     void Start()
     {
         attributesController = this.GetComponent<AttributesController>(); 
-        currentItemPos = new Vector3(0.55f,2.15f,0);
 
         #region 3dstuff
         // boneCombiner = new BoneCombiner(gameObject);

@@ -43,7 +43,7 @@ public abstract class UserInterface : MonoBehaviour
     private void OnSlotUpdate(InventorySlot _slot)
     {
         EventManager.TriggerEvent(new SlotUpdatedEvent(_slot));
-        if (_slot.item.Id >= 0)
+        if (!_slot.IsEmpty())
         {
             _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = _slot.ItemObject.uiDisplay;
             _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
@@ -119,7 +119,7 @@ public abstract class UserInterface : MonoBehaviour
         public GameObject CreateTempItem(GameObject obj)
         {
             GameObject tempItem = null;
-            if(slotsOnInterface[obj].item.Id >= 0)
+            if(!slotsOnInterface[obj].IsEmpty())
             {
 
                 tempItem = new GameObject("drag item");
@@ -293,19 +293,19 @@ public static class ExtensionMethods
 {
     public static void UpdateSlotDisplay(this Dictionary<GameObject, InventorySlot> _slotsOnInterface)
     {
-        foreach (KeyValuePair<GameObject, InventorySlot> _slot in _slotsOnInterface)
+        foreach (KeyValuePair<GameObject, InventorySlot> kvp in _slotsOnInterface)
         {
-            if (_slot.Value.item.Id >= 0)
+            if (!kvp.Value.IsEmpty())
             {
-                _slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = _slot.Value.ItemObject.uiDisplay;
-                _slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-                _slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = _slot.Value.amount == 1 ? "" : _slot.Value.amount.ToString("n0");
+                kvp.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = kvp.Value.ItemObject.uiDisplay;
+                kvp.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
+                kvp.Key.GetComponentInChildren<TextMeshProUGUI>().text = kvp.Value.amount == 1 ? "" : kvp.Value.amount.ToString("n0");
             }
             else
             {
-                _slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
-                _slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
-                _slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = "";
+                kvp.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
+                kvp.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+                kvp.Key.GetComponentInChildren<TextMeshProUGUI>().text = "";
             }
         }
     }
