@@ -41,13 +41,9 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
     [SerializeField] InventoryObject equipmentObject;
     [SerializeField] List<EquipmentStuff> equipmentStuff = new();
 
-    [SerializeField] EquipmentEvents OnBagEqDequip;
-
-
+    // [SerializeField] EquipmentEvents OnBagEqDequip;
     AttributesController attributesController;
 
-
-    // public Attribute[] attributes;
     
     public void OnRemoveItem(InventorySlot _slot)
     {

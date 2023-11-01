@@ -17,21 +17,17 @@ public class AttributesController : MonoBehaviour, IAttributeUsage, IAttributeCo
     // [SerializeField]
     // CustomDictionary<AttributeType, Attribute> newAttributeDict = new(); 
 
-    Dictionary<AttributeType, int> AttributeDict = new (); 
+    readonly Dictionary<AttributeType, int> AttributeDict = new (); 
 
-    void Start()
-    {
+    void Start() {
         UpdateDict();
     }
 
     void UpdateDict() {
         AttributeDict.Clear(); 
-        for (int i = 0; i < attributes.Length; i++)
-        {
+        for (int i = 0; i < attributes.Length; i++) {
             AttributeDict.Add(attributes[i].type, i); 
-
             OnAttributeChange?.Invoke(attributes[i]); 
-            // Debug.Log(attributes[i].type + ": " + attributes[i].value.BaseValue); 
         }
     }
 
@@ -101,8 +97,24 @@ public class Attribute : ModifiableInt
 
     public Attribute() {
     }
-
 }
+
+
+[System.Serializable]
+public class AttributeModifier : IModifier
+{
+    public AttributeType type;
+    public int value; 
+
+    public AttributeModifier() {
+    }
+
+    public void AddValue(ref int baseValue)
+    {
+        baseValue += value; 
+    }
+}
+
 
 
 public interface IAttributeModified {
@@ -126,10 +138,10 @@ public enum AttributeType
 public static class AttributeCalculations {
 
 
-    public static float CalculateAgility(int val) {
+    public static float CalculateAgilityPercentage(int val) {
 
         // Currently returns the extra percentage. Eg. returns 0.6 for a 60% speed buff
-        return (float) val/50;
+        return DecayFunc(val)/50f;
 
     }
 
@@ -138,11 +150,16 @@ public static class AttributeCalculations {
     }
 
     public static int CalculateDefense(int val) {
-        return Mathf.RoundToInt((5 * Mathf.Sqrt(val)) + 0);
+        return Mathf.RoundToInt(DecayFunc(val));
     }
 
     public static float CalculateDefensePercentage(int val) {
-        return ((5 * Mathf.Sqrt(val)) + 0)/100f;
+        return DecayFunc(val)/100f;
+    }
+
+    static float DecayFunc(int val) {
+        static float func1(float val1) => (10 * Mathf.Sqrt(val1)) + 0;
+        return val > 0 ?  func1(val) : -func1(-val);
     }
 
 }
