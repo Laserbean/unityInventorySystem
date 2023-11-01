@@ -8,6 +8,9 @@ using unityInventorySystem;
 using unityInventorySystem.Items;
 using unityInventorySystem.Inventories;
 
+using Laserbean.General;
+using unityInventorySystem.Items.Components;
+
 public class TestUnityInventorySystem
 {
 
@@ -79,7 +82,32 @@ public class TestUnityInventorySystem
         Inventory inventory = new(size: 1);
         Assert.IsTrue(inventory.TryAddItem(new Item() { Name = "Fish", Id = 27 }, 1));
         Assert.IsFalse(inventory.TryAddItem(new Item() { Name = "Chicken", Id = 23 }, 1));
+    }
 
+
+    [Test]
+    public void SavingItemComponents()
+    {
+        var item1 = new Item() {
+            Name = "Fish",
+            Id = 27
+        };
+        item1.Components.Add(new TestItemComponent(42)); 
+        var  buffitem = new BuffItemComponent(); 
+
+        buffitem.buffs.Add(new ItemBuff(0, 4){
+            attribute = unityInventorySystem.Attribute.AttributeType.Agility
+        });
+        item1.Components.Add(buffitem); 
+
+        SaveAnything.SaveThing(item1, "/unity_projects/Debug", "itemtest1", "item"); 
+       var item2 =  SaveAnything.LoadThing<Item>("/unity_projects/Debug", "itemtest1", "item"); 
+
+        Assert.IsTrue(item2.Components[0] is TestItemComponent);
+        Assert.IsTrue((item2.Components[0] as TestItemComponent).Fish == 42);
+
+        Assert.IsTrue(item2.Components[1] is BuffItemComponent);
+        Assert.IsTrue((item2.Components[1] as BuffItemComponent).buffs[0].attribute == unityInventorySystem.Attribute.AttributeType.Agility);
 
 
     }

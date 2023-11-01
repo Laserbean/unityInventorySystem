@@ -6,7 +6,8 @@ using UnityEngine;
 using Laserbean.SpecialData;
 
 
-using unityInventorySystem.Items.Component; 
+using unityInventorySystem.Items.Components;
+using System;
 
 namespace unityInventorySystem
 {
@@ -15,7 +16,8 @@ namespace unityInventorySystem
     {
         public string Name;
         public int Id = -1;
-        public ItemBuff[] buffs;
+
+        [field: SerializeReference] public List<ItemComponent> Components = new();
 
         public Item()
         {
@@ -27,20 +29,32 @@ namespace unityInventorySystem
         {
             Name = item.Name;
             Id = item.Id;
-            buffs = new ItemBuff[item.buffs.Length];
 
-            for (int i = 0; i < buffs.Length; i++) {
-                buffs[i] = new ItemBuff(item.buffs[i].min, item.buffs[i].max) {
-                    attribute = item.buffs[i].attribute
-                };
+            foreach (var comp in item.Components) {
+                Components.Add(comp.Copy());
             }
-            foreach (var kvp in item.specialDict) {
-                specialDict.Add(kvp.Key, kvp.Value);
-            }
+
         }
 
-        // public string MetaData = ""; 
-        public SpecialDict specialDict = new SpecialDict();
+        [System.NonSerialized] Dictionary<Type, int> comp_index_dict = new(); 
+        public ItemComponent GetItemComponent<TIComp>() where TIComp : ItemComponent
+        {
+            if (comp_index_dict.Keys.Count != Components.Count) UpdateDict(); 
+            if (comp_index_dict.ContainsKey(typeof(TIComp))) {
+                return Components[comp_index_dict[typeof(TIComp)]];
+            }
+            return null;
+        }
+
+        void UpdateDict() {
+            comp_index_dict.Clear(); 
+
+
+            for (int i =0; i < Components.Count; i++)  {
+                comp_index_dict.Add(Components[i].GetType(), i); 
+            }
+
+        }
     }
 
 

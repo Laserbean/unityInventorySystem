@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Linq;
 
 using unityInventorySystem.Items;
+using unityInventorySystem.Items.Components;
 using unityInventorySystem.Attribute;
 using unityInventorySystem.Inventories;
 
@@ -57,8 +58,11 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
             case InterfaceType.Equipment:
                 // print(string.Concat("Removed ", _slot.ItemObject, " on ", _slot.parent.inventoryObject.type, ", Allowed Items: ", string.Join(", ", _slot.AllowedItems)));
 
-                for (int i = 0; i < _slot.item.buffs.Length; i++) {
-                    attributesController.RemoveAttributeModifier(_slot.item.buffs[i].attribute, _slot.item.buffs[i]);
+                if (_slot.item.GetItemComponent<BuffItemComponent>() is BuffItemComponent buffcomp) {
+
+                    for (int i = 0; i < buffcomp.buffs.Count; i++) {
+                        attributesController.RemoveAttributeModifier(buffcomp.buffs[i].attribute, buffcomp.buffs[i]);
+                    }
                 }
 
                 // if (_slot.ItemObject.characterDisplay2D == null) break;
@@ -82,9 +86,12 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
             case InterfaceType.Equipment:
                 // print($"Placed {_slot.ItemObject}  on {_slot.parent.inventoryObject.type}, Allowed Items: {string.Join(", ", _slot.AllowedItems)}");
 
-                for (int i = 0; i < _slot.item.buffs.Length; i++) {
-                    attributesController.AddAttributeModifier(_slot.item.buffs[i].attribute, _slot.item.buffs[i]);
+                if (_slot.item.GetItemComponent<BuffItemComponent>() is BuffItemComponent buffcomp) {
+                    for (int i = 0; i < buffcomp.buffs.Count; i++) {
+                        attributesController.AddAttributeModifier(buffcomp.buffs[i].attribute, buffcomp.buffs[i]);
+                    }
                 }
+
 
                 // if (_slot.ItemObject.characterDisplay2D == null) break;
                 foreach (EquipmentStuff cur in equipmentStuff) {

@@ -4,12 +4,35 @@ using UnityEngine;
 
 using unityInventorySystem.Attribute;
 
-namespace unityInventorySystem.Items.Component
+namespace unityInventorySystem.Items.Components
 {
-    public class BuffItemComponent 
+    [System.Serializable]
+    public class BuffItemComponent : ItemComponent
     {
+        public List<ItemBuff> buffs = new();
 
+
+        public BuffItemComponent()
+        {
+        }
+
+        public BuffItemComponent(BuffItemComponent itemcomp)
+        {
+            // buffs = new ItemBuff[itemcomp.buffs.Count];
+            for (int i = 0; i < itemcomp.buffs.Count; i++) {
+                var newbuff = new ItemBuff(itemcomp.buffs[i].min, itemcomp.buffs[i].max) {
+                    attribute = itemcomp.buffs[i].attribute
+                };
+                buffs.Add(newbuff);
+            }
+        }
+
+        public override ItemComponent Copy()
+        {
+            return new BuffItemComponent(this);
+        }
     }
+
 
 
     [System.Serializable]

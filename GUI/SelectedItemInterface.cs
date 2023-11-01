@@ -6,6 +6,7 @@ using unityInventorySystem;
 
 using unityInventorySystem.Inventories;
 using unityInventorySystem.Items;
+using unityInventorySystem.Items.Components;
 
 public class SelectedItemInterface : MonoBehaviour
 {
@@ -47,17 +48,18 @@ public class SelectedItemInterface : MonoBehaviour
 
         itemNameTMP.text = slot.item.Name;
         if (slot.item.Name != "") {
-
             string description = itemDatabase.GetItemObject(slot.item.Name).description;
 
-            foreach (var itembuff in slot.item.buffs) {
-                description += "\n" + itembuff.attribute + " " + itembuff.value;
+
+            if (slot.item.GetItemComponent<BuffItemComponent>() is BuffItemComponent buffcomp) {
+                foreach (var itembuff in buffcomp.buffs) {
+                    description += "\n" + itembuff.attribute + " " + itembuff.value;
+                }
             }
 
             if (itemDatabase.GetItemObject(slot.item.Name).type == ItemType.Consumable) {
                 usebutton.gameObject.SetActive(true);
             }
-
 
             descriptionTMP.text = description;
             //TODO show stats for stuff.
@@ -65,18 +67,16 @@ public class SelectedItemInterface : MonoBehaviour
         }
         else {
             descriptionTMP.text = "";
-
-            usebutton.gameObject.SetActive(false);
+            if (usebutton != null) 
+                usebutton?.gameObject.SetActive(false);
 
         }
     }
 
     void OnSlotUpdated(SlotUpdatedEvent evnt)
     {
-        if (slot == evnt.slot) {
-            if (evnt.slot.amount <= 0) {
-                usebutton.gameObject.SetActive(false);
-            }
+        if (slot == evnt.slot && evnt.slot.amount <= 0 && usebutton != null) {
+            usebutton.gameObject.SetActive(false);
         }
 
     }

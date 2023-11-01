@@ -12,6 +12,13 @@ using Laserbean.SpecialData;
 using unityInventorySystem.Attribute;
 // using unityInventorySystem.Items;
 
+
+
+
+using System.Linq;
+using UnityEditor.Callbacks;
+using unityInventorySystem.Items.Components;
+
 namespace unityInventorySystem.Items
 {
 
@@ -38,7 +45,6 @@ namespace unityInventorySystem.Items
 
         public Item item { get => _item; }
 
-        // public List<string> boneNames = new List<string>();
 
         public Item CreateItem()
         {
@@ -56,8 +62,66 @@ namespace unityInventorySystem.Items
             _item.Name = this.name;
         }
 
+        public void AddData(ItemComponent itemComponent) {
+            if (_item.Components.Contains(itemComponent)) return; 
+            _item.Components.Add(itemComponent);
+        }
 
     }
+
+
+    #if UNITY_EDITOR 
+
+    [CustomEditor(typeof(ItemObject))]
+    public class ItemObjectEditor : Editor
+    {
+        private static List<Type> dataCompTypes = new ();
+
+        private ItemObject this_so;
+
+        private bool showAddComponentButtons;
+
+        private void OnEnable()
+        {
+            this_so = target as ItemObject;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            showAddComponentButtons = EditorGUILayout.Foldout(showAddComponentButtons, "Add Components");
+
+            if (showAddComponentButtons) {
+                foreach (var dataCompType in dataCompTypes) {
+                    if (GUILayout.Button(dataCompType.Name)) {
+                        if (Activator.CreateInstance(dataCompType) is not ItemComponent comp)
+                            return;
+                    
+                        this_so.AddData(comp);
+                        EditorUtility.SetDirty(this_so);
+                    }
+                } 
+            }
+
+        }
+
+        [DidReloadScripts]
+        private static void OnRecompile()
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var types = assemblies.SelectMany(assembly => assembly.GetTypes());
+            var filteredTypes = types.Where(
+                type => type.IsSubclassOf(typeof(ItemComponent)) && !type.ContainsGenericParameters && type.IsClass
+            );
+            dataCompTypes = filteredTypes.ToList();
+        }
+    }
+
+    #endif
+
+
+
+
 
 
 }
