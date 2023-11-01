@@ -1,59 +1,46 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using Laserbean.SpecialData;
 
 namespace unityInventorySystem {
-[CreateAssetMenu(fileName = "New Item Database", menuName = "unity Inventory System/Items/Database")]
-public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiver
-{
-    public ItemObject[] ItemObjects;
-
-    [System.NonSerialized]
-    public static Dictionary<string, int> name_index_dict = new (); 
-
-
-    private void OnEnable() {
-        Initialize();
-    }
-
-    public void Initialize() {
-        UpdateID();
-
-        name_index_dict.Clear(); 
-        for (int i = 0; i < ItemObjects.Length; i++) {
-            name_index_dict.Add(ItemObjects[i].item.Name, i); 
-        } 
-
-    }
-
-    [ContextMenu("Update ID's")]
-    public void UpdateID()
+    [CreateAssetMenu(fileName = "New Item Database", menuName = "unity Inventory System/Items/Database")]
+    public class ItemDatabaseObject : ScriptableObject//, ISerializationCallbackReceiver
     {
-        for (int i = 0; i < ItemObjects.Length; i++)
-        {
-            if (ItemObjects[i] == null) {
-                Debug.LogWarning("Warning: ItemObject is null"); 
-                continue;
+        [SerializeField] CustomDictionary<string, ItemObject> ItemDict = new(); 
+
+        public void Initialize() {
+            UpdateDictionary();            
+        }
+
+
+        [EasyButtons.Button]
+        public void UpdateDictionary() {
+            ItemDict.Clear(); 
+            var folderpath = UnityInventoryConfig.ITEMS_PATH;
+            // var folderpath = "dfs";
+            var list1 = Resources.LoadAll<ItemObject>(folderpath).ToList(); 
+
+            foreach(var asset in list1) {
+                if (asset is null) continue;
+
+                var curstatusobject = asset as ItemObject;
+                ItemDict.Add(curstatusobject.item.Name, curstatusobject);
             }
-            if (ItemObjects[i].item.Id != i)
-                ItemObjects[i].item.Id = i;
+            Debug.Log(folderpath); 
+        }
+
+
+        public void OnEnable()
+        {
+            UpdateDictionary();
+        }
+
+        public ItemObject GetItemObject(string name) {
+            return ItemDict[name]; 
         }
     }
-    public void OnAfterDeserialize()
-    {
-        UpdateID();
-
-    }
-
-    public void OnBeforeSerialize()
-    {
-    }
-
-
-    public ItemObject GetItemObject(string name) {
-        return ItemObjects[name_index_dict[name]]; 
-    }
-}
 
 public static class InventoryStaticManager
 {

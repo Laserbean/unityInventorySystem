@@ -244,7 +244,7 @@ public class Inventory
         if (EmptySlotCount <= 0) return false;
 
         InventorySlot slot = GetItemSlot(_item);
-        if(!database.ItemObjects[_item.Id].stackable || slot == null)
+        if(!database.GetItemObject(_item.Name).stackable || slot == null)
         {
             slot = new InventorySlot();
             return true;
@@ -357,7 +357,7 @@ public class InventorySlot
         {
             if(item.Id >= 0)
             {
-                return parent.inventoryObject.inventory.database.ItemObjects[item.Id];
+                return parent.inventoryObject.inventory.database.GetItemObject(item.Name);
             }
             return null;
         }

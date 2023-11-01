@@ -42,13 +42,13 @@ public class SelectedItemInterface : MonoBehaviour
         itemNameTMP.text = slot.item.Name;
         if (slot.item.Name != "") {
 
-            string description = itemDatabase.ItemObjects[slot.item.Id].description;
+            string description = itemDatabase.GetItemObject(slot.item.Name).description;
 
             foreach(var itembuff in slot.item.buffs) {
                 description += "\n" + itembuff.attribute + " " + itembuff.value;  
             }
 
-            if (itemDatabase.ItemObjects[slot.item.Id].type == ItemType.Consumable) {
+            if (itemDatabase.GetItemObject(slot.item.Name).type == ItemType.Consumable) {
                 usebutton.gameObject.SetActive(true); 
             }
 
