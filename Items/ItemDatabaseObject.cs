@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using Laserbean.SpecialData;
 
-namespace unityInventorySystem
+namespace unityInventorySystem.Items
 {
     [CreateAssetMenu(fileName = "New Item Database", menuName = "unity Inventory System/Items/Database")]
     public class ItemDatabaseObject : ScriptableObject//, ISerializationCallbackReceiver
@@ -32,7 +32,7 @@ namespace unityInventorySystem
 
                 ind += 1; 
             }
-            Debug.Log(folderpath); 
+            // Debug.Log(folderpath); 
         }
 
 

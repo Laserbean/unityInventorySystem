@@ -8,7 +8,8 @@ using System.Runtime.Serialization;
 using System;
 using Laserbean.General;
 
-namespace unityInventorySystem {
+namespace unityInventorySystem.Inventories
+{
 
     public enum InterfaceType
     {
@@ -41,8 +42,9 @@ namespace unityInventorySystem {
             Stream stream;
             if (path == "") {
                 stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Create, FileAccess.Write);
-            } else {
-                if (!path.EndsWith("/")) path += "/"; 
+            }
+            else {
+                if (!path.EndsWith("/")) path += "/";
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
 
@@ -57,13 +59,12 @@ namespace unityInventorySystem {
         [ContextMenu("Load")]
         public void Load(string path = "")
         {
-                if (path != "") {
-                    if (!path.EndsWith("/")) path += "/"; 
-                }
+            if (path != "") {
+                if (!path.EndsWith("/")) path += "/";
+            }
 
             // if (File.Exists(string.Concat(Application.persistentDataPath, savePath)))
-            if (File.Exists(path + inventory.Name + ".fishfish"))
-            {
+            if (File.Exists(path + inventory.Name + ".fishfish")) {
                 //BinaryFormatter bf = new BinaryFormatter();
                 //FileStream file = File.Open(string.Concat(Application.persistentDataPath, savePath), FileMode.Open);
                 //JsonUtility.FromJsonOverwrite(bf.Deserialize(file).ToString(), this);
@@ -74,21 +75,21 @@ namespace unityInventorySystem {
 
                 if (path == "") {
                     stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Open, FileAccess.Read);
-                } else {
+                }
+                else {
                     stream = new FileStream(path + inventory.Name + ".fishfish", FileMode.Open, FileAccess.Read);
                 }
 
-                
+
                 Inventory newContainer = (Inventory)formatter.Deserialize(stream);
-                for (int i = 0; i < GetSlots.Length; i++)
-                {
+                for (int i = 0; i < GetSlots.Length; i++) {
                     GetSlots[i].UpdateSlot(newContainer.Slots[i].item, newContainer.Slots[i].amount);
                 }
                 stream.Close();
             }
         }
 
-        
+
 
         [ContextMenu("Clear")]
         public void Clear()

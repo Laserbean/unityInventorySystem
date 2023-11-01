@@ -5,49 +5,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using System.Linq; 
+using System.Linq;
 
 
-using UnityEngine.Events; 
+using UnityEngine.Events;
 
-namespace unityInventorySystem {
-public class ItemPickup : MonoBehaviour, IPickUp
+using unityInventorySystem.Inventories; 
+
+namespace unityInventorySystem.Items
 {
-
-    [SerializeField] bool pickupOnTrigger = false; 
-
-    [SerializeField] InventoryObject inventory; 
-    public void OnTriggerEnter2D(Collider2D other)
+    public class ItemPickup : MonoBehaviour, IPickUp
     {
-        if (!pickupOnTrigger) return; 
-        
-        var gitem = other.GetComponent<IGroundItem>();
-        if (gitem != null) {
-            AddItem(gitem);
+
+        [SerializeField] bool pickupOnTrigger = false;
+
+        [SerializeField] InventoryObject inventory;
+        public void OnTriggerEnter2D(Collider2D other)
+        {
+            if (!pickupOnTrigger) return;
+
+            var gitem = other.GetComponent<IGroundItem>();
+            if (gitem != null) {
+                AddItem(gitem);
+            }
+
         }
 
+        void IPickUp.PickUpItem(IGroundItem groundItem)
+        {
+            AddItem(groundItem);
+        }
+
+        void AddItem(IGroundItem groundItem)
+        {
+            bool success = inventory.inventory.TryAddItem(groundItem.GetItem(), groundItem.Amount);
+            if (!success) return;
+            groundItem.DestroyItem();
+        }
     }
 
-    void IPickUp.PickUpItem(IGroundItem groundItem)
-    {            
-        AddItem(groundItem);
+    public interface IPickUp
+    {
+        public void PickUpItem(IGroundItem groundItem);
     }
 
-    void AddItem(IGroundItem groundItem) {
-        bool success = inventory.inventory.TryAddItem(groundItem.GetItem(), groundItem.Amount);
-        if (!success) return;
-        groundItem.DestroyItem();
+    public interface IGroundItem
+    {
+        public Item GetItem();
+        public void DestroyItem();
+        public void SetItem(Item item, int amount = 1);
+        public int Amount { get; }
     }
-}
-
-public interface IPickUp {
-    public void PickUpItem(IGroundItem groundItem); 
-}
-
-public interface IGroundItem {
-    public Item GetItem(); 
-    public void DestroyItem(); 
-    public void SetItem(Item item, int amount = 1); 
-    public int Amount {get;}
-}
 }

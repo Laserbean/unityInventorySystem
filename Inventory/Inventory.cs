@@ -4,7 +4,9 @@ using UnityEngine;
 
 using System;
 
-namespace unityInventorySystem
+using unityInventorySystem.Items; 
+
+namespace unityInventorySystem.Inventories
 {
     [System.Serializable]
     public class Inventory

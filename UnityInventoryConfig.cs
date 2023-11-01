@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-namespace unityInventorySystem 
+using unityInventorySystem.Inventories;
+using unityInventorySystem.Items;
+namespace unityInventorySystem
 {
 
-    public static class UnityInventoryConfig 
+    public static class UnityInventoryConfig
     {
         // Following folders are in the Resources folder
         public const string ItemsPath = "UnityInventory/Items/";
@@ -18,11 +19,11 @@ namespace unityInventorySystem
     {
 
         public static string SavePath {
-            get => GameManager.Instance.GamePath + "/"; 
+            get => GameManager.Instance.GamePath + "/";
         }
 
 
-        static ItemDatabaseObject database; 
+        static ItemDatabaseObject database;
 
         const string DatabasePath = "UnityInventory/";
 
@@ -30,11 +31,13 @@ namespace unityInventorySystem
         public const string DEF_PLAYER_EQUIP_NAME = "PlayerEquipment";
         public const string DEF_ITEM_DB_NAME = "ItemDB";
 
-        public static ItemDatabaseObject GetDatabase(string name) {
+        public static ItemDatabaseObject GetDatabase(string name)
+        {
             return Resources.Load<ItemDatabaseObject>(DatabasePath + name);
         }
 
-        public static InventoryObject GetInventoryObject(string name) {
+        public static InventoryObject GetInventoryObject(string name)
+        {
             return Resources.Load<InventoryObject>(DatabasePath + name);
         }
 

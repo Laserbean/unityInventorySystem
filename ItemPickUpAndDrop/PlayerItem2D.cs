@@ -2,55 +2,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using System.Linq; 
+using System.Linq;
 
-using unityInventorySystem;
-using unityInventorySystem.Attribute; 
+using unityInventorySystem.Items;
+using unityInventorySystem.Attribute;
+using unityInventorySystem.Inventories;
 
 
-using UnityEngine.Events; 
+using UnityEngine.Events;
 
 
 [System.Serializable]
-public class EquipmentStuff {
+public class EquipmentStuff
+{
     public ItemType type;
-    public EquipmentTag tag; 
-    public EquipmentEvents events; 
+    public EquipmentTag tag;
+    public EquipmentEvents events;
 
-    public bool RequirementsNotMet(InventorySlot _slot) {
+    public bool RequirementsNotMet(InventorySlot _slot)
+    {
         return _slot.tag != tag;
         // || !_slot.AllowedItems.ToList().Contains(type);
     }
 }
 
 [System.Serializable]
-public class EquipmentEvents {
-    public MyInventorySlotEvent onAdd, onRemove; 
+public class EquipmentEvents
+{
+    public MyInventorySlotEvent onAdd, onRemove;
 }
 
 
 [System.Serializable]
-public class MyInventorySlotEvent : UnityEvent<InventorySlot> {}
+public class MyInventorySlotEvent : UnityEvent<InventorySlot> { }
 
 
 
 public class PlayerItem2D : MonoBehaviour, IAttributeModified
 {
 
-    [SerializeField] InventoryObject inventoryObject; 
+    [SerializeField] InventoryObject inventoryObject;
     [SerializeField] InventoryObject equipmentObject;
     [SerializeField] List<EquipmentStuff> equipmentStuff = new();
 
     // [SerializeField] EquipmentEvents OnBagEqDequip;
     AttributesController attributesController;
 
-    
+
     public void OnRemoveItem(InventorySlot _slot)
     {
         if (_slot.ItemObject == null)
             return;
-        switch (_slot.parent.inventoryObject.type)
-        {
+        switch (_slot.parent.inventoryObject.type) {
             case InterfaceType.Equipment:
                 // print(string.Concat("Removed ", _slot.ItemObject, " on ", _slot.parent.inventoryObject.type, ", Allowed Items: ", string.Join(", ", _slot.AllowedItems)));
 
@@ -59,8 +62,8 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
                 }
 
                 // if (_slot.ItemObject.characterDisplay2D == null) break;
-                foreach(EquipmentStuff cur in equipmentStuff) {
-                    if (cur.RequirementsNotMet(_slot)) 
+                foreach (EquipmentStuff cur in equipmentStuff) {
+                    if (cur.RequirementsNotMet(_slot))
                         continue;
                     cur.events.onRemove.Invoke(_slot);
                 }
@@ -75,8 +78,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
     {
         if (_slot.ItemObject == null)
             return;
-        switch (_slot.parent.inventoryObject.type)
-        {
+        switch (_slot.parent.inventoryObject.type) {
             case InterfaceType.Equipment:
                 // print($"Placed {_slot.ItemObject}  on {_slot.parent.inventoryObject.type}, Allowed Items: {string.Join(", ", _slot.AllowedItems)}");
 
@@ -85,8 +87,8 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
                 }
 
                 // if (_slot.ItemObject.characterDisplay2D == null) break;
-                foreach(EquipmentStuff cur in equipmentStuff) {
-                    if (cur.RequirementsNotMet(_slot)) 
+                foreach (EquipmentStuff cur in equipmentStuff) {
+                    if (cur.RequirementsNotMet(_slot))
                         continue;
                     cur.events.onAdd.Invoke(_slot);
                 }
@@ -109,7 +111,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
 
     void Start()
     {
-        attributesController = this.GetComponent<AttributesController>(); 
+        attributesController = this.GetComponent<AttributesController>();
 
         #region 3dstuff
         // boneCombiner = new BoneCombiner(gameObject);
@@ -124,11 +126,13 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         equipmentObject.inventory.SetSlotsAfterUpdate(OnAddItem);
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         equipmentObject.inventory.ClearAllEvents();
     }
 
-    private void OnApplicationQuit() {
+    private void OnApplicationQuit()
+    {
         inventoryObject.Clear();
         equipmentObject.Clear();
         // inventoryObject.Container.Clear(); 

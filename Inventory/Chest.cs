@@ -2,28 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Laserbean.SpecialData; 
-using Laserbean.General; 
+using Laserbean.SpecialData;
+using Laserbean.General;
+using unityInventorySystem.Inventories;
 
-namespace unityInventorySystem {
-
-public class Chest : MonoBehaviour
+namespace unityInventorySystem.Bags
 {
 
-    string inventory_id = ""; 
-
-    Inventory inventory; 
-    void Start()
+    public class Chest : MonoBehaviour
     {
-        
-    }
 
-    void Update()
-    {
-        
-    }
+        string inventory_id = "";
 
-        string current_inventory_bag_name = ""; 
+        Inventory inventory;
+        void Start()
+        {
+
+        }
+
+        void Update()
+        {
+
+        }
+
+        string current_inventory_bag_name = "";
 
         // public void OnBagEquip(InventorySlot _slot) {
         //     gameObject.SetActive(true); 
@@ -43,7 +45,7 @@ public class Chest : MonoBehaviour
         //     // userInterface?.SetInventoryObject(fish);
         //     // userInterface?.SetupInventory();
         // }
-}
+    }
 
 
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace unityInventorySystem
+namespace unityInventorySystem.Items
 {
     public class InteractableGroundItem : GroundItem, IInteractable
     {
