@@ -46,9 +46,6 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
     [SerializeField] InventoryObject equipmentObject;
     [SerializeField] List<EquipmentStuff> equipmentStuff = new();
 
-    // [SerializeField] EquipmentEvents OnBagEqDequip;
-    AttributesController attributesController;
-
 
     public void OnRemoveItem(InventorySlot _slot)
     {
@@ -56,16 +53,9 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
             return;
         switch (_slot.parent.inventoryObject.type) {
             case InterfaceType.Equipment:
-                // print(string.Concat("Removed ", _slot.ItemObject, " on ", _slot.parent.inventoryObject.type, ", Allowed Items: ", string.Join(", ", _slot.AllowedItems)));
+                foreach (var comp in _slot.item.Components)
+                    comp.OnUnequip(gameObject);
 
-                if (_slot.item.GetItemComponent<BuffItemComponent>() is BuffItemComponent buffcomp) {
-
-                    for (int i = 0; i < buffcomp.buffs.Count; i++) {
-                        attributesController.RemoveAttributeModifier(buffcomp.buffs[i].attribute, buffcomp.buffs[i]);
-                    }
-                }
-
-                // if (_slot.ItemObject.characterDisplay2D == null) break;
                 foreach (EquipmentStuff cur in equipmentStuff) {
                     if (cur.RequirementsNotMet(_slot))
                         continue;
@@ -84,16 +74,9 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
             return;
         switch (_slot.parent.inventoryObject.type) {
             case InterfaceType.Equipment:
-                // print($"Placed {_slot.ItemObject}  on {_slot.parent.inventoryObject.type}, Allowed Items: {string.Join(", ", _slot.AllowedItems)}");
+                foreach (var comp in _slot.item.Components)
+                    comp.OnEquip(gameObject);
 
-                if (_slot.item.GetItemComponent<BuffItemComponent>() is BuffItemComponent buffcomp) {
-                    for (int i = 0; i < buffcomp.buffs.Count; i++) {
-                        attributesController.AddAttributeModifier(buffcomp.buffs[i].attribute, buffcomp.buffs[i]);
-                    }
-                }
-
-
-                // if (_slot.ItemObject.characterDisplay2D == null) break;
                 foreach (EquipmentStuff cur in equipmentStuff) {
                     if (cur.RequirementsNotMet(_slot))
                         continue;
@@ -118,7 +101,6 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
 
     void Start()
     {
-        attributesController = this.GetComponent<AttributesController>();
 
         #region 3dstuff
         // boneCombiner = new BoneCombiner(gameObject);

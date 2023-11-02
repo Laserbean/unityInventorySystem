@@ -11,7 +11,6 @@ namespace unityInventorySystem.Items.Components
     {
         public List<ItemBuff> buffs = new();
 
-
         public BuffItemComponent()
         {
         }
@@ -30,6 +29,22 @@ namespace unityInventorySystem.Items.Components
         public override ItemComponent Copy()
         {
             return new BuffItemComponent(this);
+        }
+
+        public override void OnEquip(GameObject character)
+        {
+            var attributesController = character.GetComponent<AttributesController>();
+            if (attributesController == null) return; 
+            for (int i = 0; i < buffs.Count; i++) 
+                attributesController.AddAttributeModifier(buffs[i].attribute, buffs[i]);            
+        }
+
+        public override void OnUnequip(GameObject character)
+        {
+            var attributesController = character.GetComponent<AttributesController>();
+            if (attributesController == null) return; 
+            for (int i = 0; i < buffs.Count; i++) 
+                attributesController.RemoveAttributeModifier(buffs[i].attribute, buffs[i]);          
         }
     }
 

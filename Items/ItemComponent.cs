@@ -11,6 +11,11 @@ namespace unityInventorySystem.Items.Components
         protected string Name; 
         
         public abstract ItemComponent Copy(); 
+
+        public abstract void OnEquip(GameObject character);
+        public abstract void OnUnequip(GameObject character);
+ 
+
     }
 
 
@@ -31,6 +36,18 @@ namespace unityInventorySystem.Items.Components
         public override ItemComponent Copy()
         {
             return new TestItemComponent(Fish);
+        }
+
+        public override void OnEquip(GameObject character)
+        {
+            // Do nothing
+        }
+
+        public override void OnUnequip(GameObject character)
+        {
+            // 
+            // Do nothing.... but more
+            // 
         }
     }
 
