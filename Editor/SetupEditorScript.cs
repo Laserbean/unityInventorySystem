@@ -46,17 +46,17 @@ namespace unityInventorySystem
 
 
 
-            if (!SaveAnything.FileExists(folderpath, InventoryStaticManager.DEF_ITEM_DB_NAME, "asset")) {
+            if (!SaveAnything.FileExists(folderpath, UnityInventoryConfig.DEF_ITEM_DB_NAME, "asset")) {
                 var itemDB = ScriptableObject.CreateInstance<ItemDatabaseObject>();
                 AssetDatabase.CreateAsset(itemDB, folderpath + "/ItemDB.asset");
             }
 
-            if (!SaveAnything.FileExists(folderpath, InventoryStaticManager.DEF_PLAYER_EQUIP_NAME, "asset")) {
+            if (!SaveAnything.FileExists(folderpath, UnityInventoryConfig.DEF_PLAYER_EQUIP_NAME, "asset")) {
                 var itemDB1 = ScriptableObject.CreateInstance<InventoryObject>();
                 AssetDatabase.CreateAsset(itemDB1, folderpath + "/PlayerEquipment.asset");
             }
 
-            if (!SaveAnything.FileExists(folderpath, InventoryStaticManager.DEF_PLAYER_INV_NAME, "asset")) {
+            if (!SaveAnything.FileExists(folderpath, UnityInventoryConfig.DEF_PLAYER_INV_NAME, "asset")) {
                 var itemDB2 = ScriptableObject.CreateInstance<InventoryObject>();
                 AssetDatabase.CreateAsset(itemDB2, folderpath + "/PlayerInventory.asset");
             }

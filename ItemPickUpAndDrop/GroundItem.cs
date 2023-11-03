@@ -21,7 +21,7 @@ namespace unityInventorySystem.Items
         int IGroundItem.Amount => _amount;
 
 
-        public string ItemDatabaseName = InventoryStaticManager.DEF_ITEM_DB_NAME;
+        public string ItemDatabaseName = UnityInventoryConfig.DEF_ITEM_DB_NAME;
 
 
         protected void OnEnable()

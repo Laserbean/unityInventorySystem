@@ -12,6 +12,10 @@ namespace unityInventorySystem
         // Following folders are in the Resources folder
         public const string ItemsPath = "UnityInventory/Items/";
         public const string InventoryPath = "UnityInventory/Inventories/";
+
+        public const string DEF_PLAYER_INV_NAME = "PlayerInventory";
+        public const string DEF_PLAYER_EQUIP_NAME = "PlayerEquipment";
+        public const string DEF_ITEM_DB_NAME = "ItemDB";
     }
 
 
@@ -27,9 +31,7 @@ namespace unityInventorySystem
 
         const string DatabasePath = "UnityInventory/";
 
-        public const string DEF_PLAYER_INV_NAME = "PlayerInventory";
-        public const string DEF_PLAYER_EQUIP_NAME = "PlayerEquipment";
-        public const string DEF_ITEM_DB_NAME = "ItemDB";
+
 
         public static ItemDatabaseObject GetDatabase(string name)
         {

@@ -54,7 +54,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         switch (_slot.parent.inventoryObject.type) {
             case InterfaceType.Equipment:
                 foreach (var comp in _slot.item.Components)
-                    comp.OnUnequip(gameObject);
+                    comp.OnUnequip(transform.parent.gameObject);
 
                 foreach (EquipmentStuff cur in equipmentStuff) {
                     if (cur.RequirementsNotMet(_slot))
@@ -75,7 +75,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         switch (_slot.parent.inventoryObject.type) {
             case InterfaceType.Equipment:
                 foreach (var comp in _slot.item.Components)
-                    comp.OnEquip(gameObject);
+                    comp.OnEquip(transform.parent.gameObject);
 
                 foreach (EquipmentStuff cur in equipmentStuff) {
                     if (cur.RequirementsNotMet(_slot))

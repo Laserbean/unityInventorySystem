@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 using UnityEngine.UI;
 
-using unityInventorySystem; 
+using unityInventorySystem;
 
 public class DynamicInterface : UserInterface
 {
@@ -21,12 +21,11 @@ public class DynamicInterface : UserInterface
     public override void CreateSlots()
     {
         slotsOnInterface.Clear();
-        for (int i = 0; i < inventoryObject.GetSlots.Length; i++)
-        {
+        for (int i = 0; i < inventoryObject.GetSlots.Length; i++) {
             var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
 
-            SetEventTriggers(obj); 
+            SetEventTriggers(obj);
 
             inventoryObject.GetSlots[i].slotDisplay = obj;
 
@@ -34,10 +33,11 @@ public class DynamicInterface : UserInterface
         }
     }
 
-    public void RemoveSlots() {
-        GameObject [] gameObjects = slotsOnInterface.Keys.ToArray<GameObject>();
-        for (int i = gameObjects.Length -1; i >= 0; i--) {
-            Destroy(gameObjects[i]); 
+    public void RemoveSlots()
+    {
+        GameObject[] gameObjects = slotsOnInterface.Keys.ToArray<GameObject>();
+        for (int i = gameObjects.Length - 1; i >= 0; i--) {
+            Destroy(gameObjects[i]);
         }
     }
     private Vector3 GetPosition(int i)
@@ -47,7 +47,7 @@ public class DynamicInterface : UserInterface
 
     // public override void SelectSlot(GameObject obj)
     // {
-  
+
 
     //     // GameObject tempItem = null;
     //     // if(slotsOnInterface[obj].item.Id >= 0)

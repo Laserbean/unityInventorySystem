@@ -145,8 +145,8 @@ public static class AttributeCalculations {
 
     }
 
-    public static int CalculateStrength(int val) {
-        return val; 
+    public static float CalculateStrengthPercentage(int val) {
+        return DecayFunc(val)/100f;
     }
 
     public static int CalculateDefense(int val) {

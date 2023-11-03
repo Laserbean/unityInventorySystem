@@ -15,6 +15,10 @@ namespace unityInventorySystem.Items
             UpdateDictionary();            
         }
 
+        private void Start() {
+            UpdateDictionary(); 
+        }
+
 
         [EasyButtons.Button]
         public void UpdateDictionary() {

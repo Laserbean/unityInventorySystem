@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-using unityInventorySystem; 
+using unityInventorySystem;
 
 public class StaticInterface : UserInterface
 {
@@ -12,18 +12,17 @@ public class StaticInterface : UserInterface
     public override void CreateSlots()
     {
         slotsOnInterface.Clear();
-        for (int i = 0; i < inventoryObject.GetSlots.Length; i++)
-        {
+        for (int i = 0; i < inventoryObject.GetSlots.Length; i++) {
             var obj = slots[i];
 
-            SetEventTriggers(obj); 
+            SetEventTriggers(obj);
 
             inventoryObject.GetSlots[i].slotDisplay = obj;
 
             // inventoryObject.GetSlots[i].SetSlotNumber(i); 
             slotsOnInterface.Add(obj, inventoryObject.GetSlots[i]);
 
-                
+
         }
     }
 

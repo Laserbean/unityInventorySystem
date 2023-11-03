@@ -185,15 +185,15 @@ SpriteRenderer:
   m_SortingLayerID: 1900219283
   m_SortingLayer: -3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -6447425667752118579, guid: d07b803c54ae9fb4ebfc1e8a13b12f4c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.875, y: 2.9166667}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!58 &8796799423144509935
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e4da49c43d65b7448674752964973cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemObject: {fileID: 0}
+  itemObject: {fileID: 11400000, guid: f166bddc3d054c4429fceaae153e47ed, type: 2}
   ItemDatabaseName: ItemDB
 --- !u!114 &-6626510892274208761
 MonoBehaviour:

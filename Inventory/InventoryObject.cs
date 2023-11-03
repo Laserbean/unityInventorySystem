@@ -96,6 +96,11 @@ namespace unityInventorySystem.Inventories
         {
             inventory.Clear();
         }
+
+        public Inventory CopyInventory()
+        {
+            return inventory.Copy();
+        }
     }
 
 
