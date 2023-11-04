@@ -174,7 +174,7 @@ public abstract class UserInterface : MonoBehaviour
         if (MouseData.slotHoveredOver) {
             InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
 
-            if (!islot.IsEmpty())
+            if (!islot.IsEmpty() && mouseHoverSlotData.CanPlaceInSlot(islot.ItemObject) && MouseData.slotHoveredOver.GetInstanceID() != islot.slotDisplay.GetInstanceID())
                 inventoryObject.inventory.SwapItems(islot, mouseHoverSlotData);
         }
         SelectedSlot.obj = null;

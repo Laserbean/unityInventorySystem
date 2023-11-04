@@ -8,13 +8,14 @@ namespace unityInventorySystem.Items.Components
     [System.Serializable]
     public abstract class ItemComponent
     {
-        protected string Name; 
+        [HideInInspector]
+        public string Name; 
         
         public abstract ItemComponent Copy(); 
 
-        public abstract void OnEquip(GameObject character);
-        public abstract void OnUnequip(GameObject character);
- 
+        public abstract void OnEquip(GameObject character, EquipmentTag tag);
+        public abstract void OnUnequip(GameObject character, EquipmentTag tag);
+
 
     }
 
@@ -38,12 +39,12 @@ namespace unityInventorySystem.Items.Components
             return new TestItemComponent(Fish);
         }
 
-        public override void OnEquip(GameObject character)
+        public override void OnEquip(GameObject character, EquipmentTag tag)
         {
             // Do nothing
         }
 
-        public override void OnUnequip(GameObject character)
+        public override void OnUnequip(GameObject character, EquipmentTag tag)
         {
             // 
             // Do nothing.... but more

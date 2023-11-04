@@ -4,6 +4,8 @@ using UnityEngine;
 
 using unityInventorySystem.Attribute;
 
+using unityInventorySystem.Items; 
+
 namespace unityInventorySystem.Items.Components
 {
     [System.Serializable]
@@ -13,6 +15,7 @@ namespace unityInventorySystem.Items.Components
 
         public BuffItemComponent()
         {
+            Name = "BuffItemComponent"; 
         }
 
         public BuffItemComponent(BuffItemComponent itemcomp)
@@ -31,7 +34,7 @@ namespace unityInventorySystem.Items.Components
             return new BuffItemComponent(this);
         }
 
-        public override void OnEquip(GameObject character)
+        public override void OnEquip(GameObject character, EquipmentTag tag)
         {
             var attributesController = character.GetComponent<AttributesController>();
             if (attributesController == null) return; 
@@ -39,7 +42,7 @@ namespace unityInventorySystem.Items.Components
                 attributesController.AddAttributeModifier(buffs[i].attribute, buffs[i]);            
         }
 
-        public override void OnUnequip(GameObject character)
+        public override void OnUnequip(GameObject character, EquipmentTag tag)
         {
             var attributesController = character.GetComponent<AttributesController>();
             if (attributesController == null) return; 

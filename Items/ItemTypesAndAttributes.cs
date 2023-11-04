@@ -25,7 +25,13 @@ namespace unityInventorySystem.Items
 
     public enum EquipmentTag
     {
-        head, lefthand, righthand, body, feet, equipment, inventory
+        head, 
+        lefthand, 
+        righthand, 
+        body, 
+        feet, 
+        equipment, 
+        inventory
 
     }
 
