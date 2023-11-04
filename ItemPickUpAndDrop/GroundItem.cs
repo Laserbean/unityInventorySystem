@@ -16,7 +16,7 @@ namespace unityInventorySystem.Items
 
         Item this_item;
 
-        int _amount = 1;
+        [SerializeField] int _amount = 1;
 
         int IGroundItem.Amount => _amount;
 

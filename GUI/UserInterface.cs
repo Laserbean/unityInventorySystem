@@ -14,11 +14,17 @@ using unityInventorySystem;
 using unityInventorySystem.Inventories;
 using UnityEditor.PackageManager;
 
+
 public abstract class UserInterface : MonoBehaviour
 {
 
     public InventoryObject inventoryObject;
     public Dictionary<GameObject, InventorySlot> slotsOnInterface = new();
+
+
+    public static Action<InventorySlot> OnSlotSelect;
+    public static Action<InventorySlot> OnSlotRelease;
+
     void Start()
     {
         if (inventoryObject == null) return;
@@ -43,19 +49,25 @@ public abstract class UserInterface : MonoBehaviour
         inventoryObject.inventory.UpdateSlots();
     }
 
+
     private void OnSlotUpdate(InventorySlot _slot)
     {
         EventManager.TriggerEvent(new SlotUpdatedEvent(_slot));
-        if (!_slot.IsEmpty()) {
-            _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = _slot.ItemObject.uiDisplay;
-            _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-            _slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = _slot.amount == 1 ? "" : _slot.amount.ToString("n0");
-        }
-        else {
-            _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
-            _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
-            _slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = "";
-        }
+        bool notEmpty = !_slot.IsEmpty();
+
+        _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = notEmpty ? _slot.ItemObject.uiDisplay : null;
+        _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = notEmpty ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0);
+        _slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = !notEmpty || _slot.amount == 1 ? "" : _slot.amount.ToString("n0");
+    }
+
+    public void DisableSlot(InventorySlot _slot)
+    {
+        _slot.slotDisplay.GetComponent<Button>().interactable = false;
+    }
+
+    public void EnableSlot(InventorySlot _slot)
+    {
+        _slot.slotDisplay.GetComponent<Button>().interactable = true;
     }
 
 
@@ -74,18 +86,15 @@ public abstract class UserInterface : MonoBehaviour
         AddEvent(obj, EventTriggerType.Submit, delegate { OnSubmit(obj); });
     }
 
-    //// Update is called once per frame
-    //void Update()
-    //{
-    //    slotsOnInterface.UpdateSlotDisplay();
-    //}
+
     public abstract void CreateSlots();
 
     protected void AddEvent(GameObject obj, EventTriggerType type, UnityAction<BaseEventData> action)
     {
         EventTrigger trigger = obj.GetComponent<EventTrigger>();
-        var eventTrigger = new EventTrigger.Entry();
-        eventTrigger.eventID = type;
+        var eventTrigger = new EventTrigger.Entry {
+            eventID = type
+        };
         eventTrigger.callback.AddListener(action);
         trigger.triggers.Add(eventTrigger);
     }
@@ -114,11 +123,15 @@ public abstract class UserInterface : MonoBehaviour
     {
         MouseData.tempItemBeingDragged = CreateTempItem(obj);
 
+        if (MouseData.tempItemBeingDragged == null) return;
+        OnSlotSelect.Invoke(slotsOnInterface[obj]); 
+
         if (MouseData.tempItemCanvasObject == null) {
             MouseData.tempItemCanvasObject = new GameObject();
             var ttcanvas = MouseData.tempItemCanvasObject.AddComponent<Canvas>();
             ttcanvas.renderMode = RenderMode.ScreenSpaceOverlay;
             ttcanvas.sortingOrder = 100;
+
         }
         MouseData.tempItemBeingDragged.transform.SetParent(MouseData.tempItemCanvasObject.transform);
     }
@@ -129,8 +142,6 @@ public abstract class UserInterface : MonoBehaviour
         if (!slotsOnInterface[obj].IsEmpty()) {
 
             tempItem = new GameObject("drag item");
-            // tempItem.transform.SetParent(transform.parent);
-            // tempItem.transform.SetParent(null);
             var rt = tempItem.AddComponent<RectTransform>();
 
             rt.sizeDelta = new Vector2(50, 50);
@@ -148,6 +159,7 @@ public abstract class UserInterface : MonoBehaviour
 
     public void OnDragEnd(GameObject obj)
     {
+        if (MouseData.tempItemBeingDragged == null) return;
         Destroy(MouseData.tempItemBeingDragged);
         EndDragOrSecondClick(slotsOnInterface[obj]);
     }
@@ -166,7 +178,7 @@ public abstract class UserInterface : MonoBehaviour
                 inventoryObject.inventory.SwapItems(islot, mouseHoverSlotData);
         }
         SelectedSlot.obj = null;
-        SelectedSlot.isSelecting = false;
+        SelectedSlot.Deselect();
     }
 
     public void OnDrag(GameObject obj, BaseEventData eventdata = null)
@@ -180,28 +192,11 @@ public abstract class UserInterface : MonoBehaviour
 #if ENABLE_INPUT_SYSTEM
             pos = Mouse.current.position.ReadValue();
 #else
-                pos = Input.mousePosition;
+            pos = Input.mousePosition;
 #endif
-
         }
 
         if (MouseData.tempItemBeingDragged != null) {
-            // // // pos = Camera.main.ScreenToWorldPoint(pos); 
-
-
-            // // // //first you need the RectTransform component of your canvas
-            // // // RectTransform CanvasRect = MouseData.tempItemBeingDragged.transform.parent.GetComponent<RectTransform>();
-
-            // // // //then you calculate the position of the UI element
-            // // // //0,0 for the canvas is at the center of the screen, whereas WorldToViewPortPoint treats the lower left corner as 0,0. Because of this, you need to subtract the height / width of the canvas * 0.5 to get the correct position.
-
-            // // // Vector2 ViewportPosition = Camera.main.WorldToViewportPoint(pos);
-            // // // Vector2 WorldObject_ScreenPosition = new Vector2(
-            // // // ((ViewportPosition.x*CanvasRect.sizeDelta.x)-(CanvasRect.sizeDelta.x*0.5f)),
-            // // // ((ViewportPosition.y*CanvasRect.sizeDelta.y)-(CanvasRect.sizeDelta.y*0.5f)));
-
-            // // // pos = WorldObject_ScreenPosition;
-            // pos = MouseData.tempItemBeingDragged.transform.TransformPoint(pos); 
             MouseData.tempItemBeingDragged.GetComponent<RectTransform>().position = pos;
         }
     }
@@ -209,29 +204,7 @@ public abstract class UserInterface : MonoBehaviour
 
     public void OnCLickedSlot(GameObject obj)
     {
-        // Debug.Log("CLICKED SLOT");
-
-        // if (!SelectedSlot.isSelecting) {    
-        //     if (slotsOnInterface[obj].IsEmpty()) return;
-        //     SelectedSlot.obj = obj; 
-        //     SelectedSlot.slot = slotsOnInterface[obj]; 
-
-        //     SelectSlot(obj); 
-        //     EventManager.TriggerEvent(new SlotSelectedEvent(SelectedSlot.slot));
-        // } else {
-        //     if (SelectedSlot.obj != null) {
-        //         obj.GetComponent<Button>().OnDeselect(null);
-        //         EndDragOrSecondClick(SelectedSlot.slot);                
-        //     }
-        //     EventManager.TriggerEvent(new SlotSelectedEvent(new InventorySlot()));
-        // }
         OnSubmit(obj);
-    }
-
-    void SelectSlot(GameObject obj)
-    {
-
-        SelectedSlot.isSelecting = true;
     }
 
     public void OnSelect(GameObject obj)
@@ -244,35 +217,39 @@ public abstract class UserInterface : MonoBehaviour
     public void OnSubmit(GameObject obj)
     {
         if (!SelectedSlot.isSelecting) {
-            if (slotsOnInterface[obj].IsEmpty()) return;
+            if (slotsOnInterface[obj].IsEmpty()) {
+                OnSlotRelease.Invoke(null);
+                return; //clicked empty slot. do nothing.
+            }
 
             SelectedSlot.obj = ButtonSelectedData.slotGO;
             SelectedSlot.slot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
-            SelectSlot(obj);
+            SelectedSlot.isSelecting = true;
             EventManager.TriggerEvent(new SlotSelectedEvent(SelectedSlot.slot));
+
+            OnSlotSelect.Invoke(SelectedSlot.slot);
         }
         else {
 
             if (obj.GetInstanceID() == SelectedSlot.obj.GetInstanceID()) {
                 Debug.Log("Selected same slot");
             }
-
-            InventorySlot curIslot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
-            inventoryObject.inventory.SwapItems(curIslot, SelectedSlot.slot);
+            else {
+                InventorySlot curIslot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
+                inventoryObject.inventory.SwapItems(curIslot, SelectedSlot.slot);
+            }
 
             SelectedSlot.obj = null;
-            SelectedSlot.isSelecting = false;
-
+            SelectedSlot.Deselect();
             obj.GetComponent<Button>().OnDeselect(null);
 
             EventManager.TriggerEvent(new SlotSelectedEvent(new InventorySlot()));
         }
     }
 
-    public static GameObject OnCLickedSlotGO;
-
-
 }
+
+
 public static class MouseData
 {
     public static UserInterface interfaceMouseIsOver;
@@ -285,14 +262,12 @@ public static class SelectedSlot
 {
     public static bool isSelecting = false;
     public static GameObject obj;
-    public static int slotnumber;
     public static InventorySlot slot;
 
-    public static int holdamount;
 
-    public static void SelectSlot(GameObject obj)
-    {
-
+    public static void Deselect() {
+        isSelecting = false;
+        UserInterface.OnSlotRelease.Invoke(null); 
     }
 }
 
@@ -303,24 +278,6 @@ public static class ButtonSelectedData
 
 }
 
-public static class ExtensionMethods
-{
-    public static void UpdateSlotDisplay(this Dictionary<GameObject, InventorySlot> _slotsOnInterface)
-    {
-        foreach (KeyValuePair<GameObject, InventorySlot> kvp in _slotsOnInterface) {
-            if (!kvp.Value.IsEmpty()) {
-                kvp.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = kvp.Value.ItemObject.uiDisplay;
-                kvp.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-                kvp.Key.GetComponentInChildren<TextMeshProUGUI>().text = kvp.Value.amount == 1 ? "" : kvp.Value.amount.ToString("n0");
-            }
-            else {
-                kvp.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
-                kvp.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
-                kvp.Key.GetComponentInChildren<TextMeshProUGUI>().text = "";
-            }
-        }
-    }
-}
 
 public class SlotSelectedEvent
 {
