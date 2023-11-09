@@ -98,6 +98,10 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
     }
 
 
+    void Awake() {
+        equipmentObject.inventory.ClearAllEvents();
+    }
+
 
     void Start()
     {

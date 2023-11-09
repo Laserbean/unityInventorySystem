@@ -9,6 +9,7 @@ namespace unityInventorySystem.Items
 
     public enum ItemType
     {
+        Default,
         Inventory, //NOTE: Very Important Don't deletes
         Consumable,
         Helmet,
@@ -18,7 +19,6 @@ namespace unityInventorySystem.Items
         Chest,
         Attachment,
         Placeable,
-        Default
     }
 
 

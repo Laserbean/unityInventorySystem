@@ -21,6 +21,11 @@ namespace unityInventorySystem.Items
         [Range(0, 30)]
         [SerializeField] int maxItemDrop = 1;
 
+        [SerializeField] float dropradius = 1f;
+
+
+
+
         public List<ItemDrop> dropList = new();
 
         List<float> weights = new();
@@ -54,6 +59,7 @@ namespace unityInventorySystem.Items
         {
 #if ENTITY_POOLER
             GameObject go = EntityPooler.Instance.GetNewGroundItem();
+            if (go == null) return; 
             go.transform.position = transform.position;
             go.transform.rotation = transform.rotation;
             go.SetActive(true);
@@ -62,7 +68,7 @@ namespace unityInventorySystem.Items
 #endif
             var grounditem = go.GetComponent<IGroundItem>();
             grounditem.SetItem(dropList[itemDropIndex].itemObject.item, Random.Range(dropList[itemDropIndex].min_max_amount.x, dropList[itemDropIndex].min_max_amount.y));
-            go.transform.position += (Vector3.up * Random.Range(0f, 1f)).Rotate(Random.Range(0, 360f));
+            go.transform.position += (Vector3.up * Random.Range(0f, dropradius)).Rotate(Random.Range(0, 360f));
             go.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
         }
 

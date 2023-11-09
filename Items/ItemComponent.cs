@@ -10,12 +10,34 @@ namespace unityInventorySystem.Items.Components
     {
         [HideInInspector]
         public string Name; 
-        
+
+        protected Item ParentItem; 
+
+        public ItemComponent() {
+        }
+
+        public ItemComponent(ItemComponent itemComponent) {
+            ParentItem = itemComponent.ParentItem; 
+            Name = itemComponent.Name; 
+        }
+
         public abstract ItemComponent Copy(); 
 
         public abstract void OnEquip(GameObject character, EquipmentTag tag);
         public abstract void OnUnequip(GameObject character, EquipmentTag tag);
 
+        public virtual void OnUse(GameObject character) {
+
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public void SetParentItem(Item _item) {
+            ParentItem = _item; 
+        }
 
     }
 

@@ -27,8 +27,7 @@ namespace unityInventorySystem.Items
         protected void OnEnable()
         {
             if (itemObject != null) {
-                gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.uiDisplay;
-                this_item = itemObject.CreateItem();
+                SetItemObject(itemObject);
             }
         }
 
@@ -39,9 +38,10 @@ namespace unityInventorySystem.Items
 #endif
         }
 
+
         public void SetItemObject(ItemObject itemo)
         {
-            gameObject.GetComponent<SpriteRenderer>().sprite = itemo.uiDisplay;
+            gameObject.GetComponent<SpriteRenderer>().sprite = itemo.characterDisplay2D;
             itemObject = itemo;
             this_item = itemo.CreateItem();
         }
@@ -64,7 +64,7 @@ namespace unityInventorySystem.Items
 
             itemObject = InventoryStaticManager.GetDatabase(ItemDatabaseName).GetItemObject(_item.Name);
 
-            this.gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.characterDisplay2D;
+            gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.characterDisplay2D;
         }
 
 

@@ -32,26 +32,36 @@ namespace unityInventorySystem
 
             foreach (var comp in item.Components) {
                 Components.Add(comp.Copy());
+                comp.SetParentItem(this); 
             }
 
         }
 
-        [System.NonSerialized] Dictionary<Type, int> comp_index_dict = new(); 
+        public void UseComponents(GameObject character)
+        {
+            foreach (var comp in Components) {
+                comp.OnUse(character);
+            }
+
+        }
+
+        [System.NonSerialized] Dictionary<Type, int> comp_index_dict = new();
         public ItemComponent GetItemComponent<TIComp>() where TIComp : ItemComponent
         {
-            if (comp_index_dict.Keys.Count != Components.Count) UpdateDict(); 
+            if (comp_index_dict.Keys.Count != Components.Count) UpdateDict();
             if (comp_index_dict.ContainsKey(typeof(TIComp))) {
                 return Components[comp_index_dict[typeof(TIComp)]];
             }
             return null;
         }
 
-        void UpdateDict() {
-            comp_index_dict.Clear(); 
+        void UpdateDict()
+        {
+            comp_index_dict.Clear();
 
 
-            for (int i =0; i < Components.Count; i++)  {
-                comp_index_dict.Add(Components[i].GetType(), i); 
+            for (int i = 0; i < Components.Count; i++) {
+                comp_index_dict.Add(Components[i].GetType(), i);
             }
 
         }

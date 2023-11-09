@@ -47,17 +47,23 @@ public class SelectedItemInterface : MonoBehaviour
         slot = slotSelectedEvent.slot;
 
         itemNameTMP.text = slot.item.Name;
-        if (slot.item.Name != "") {
+        if (!slot.IsEmpty()) {
             string description = itemDatabase.GetItemObject(slot.item.Name).description;
 
 
-            if (slot.item.GetItemComponent<BuffItemComponent>() is BuffItemComponent buffcomp) {
-                foreach (var itembuff in buffcomp.buffs) {
-                    description += "\n" + itembuff.attribute + " " + itembuff.value;
-                }
+            // if (slot.item.GetItemComponent<BuffItemComponent>() is BuffItemComponent buffcomp) {
+            //     foreach (var itembuff in buffcomp.buffs) {
+            //         description += "\n" + itembuff.attribute + " " + itembuff.value;
+            //     }
+            // }
+
+            foreach (var itemcomponents in slot.item.Components) {
+                description += itemcomponents.ToString(); 
+                description += "\n";
             }
 
-            if (itemDatabase.GetItemObject(slot.item.Name).type == ItemType.Consumable) {
+
+            if (usebutton != null && itemDatabase.GetItemObject(slot.item.Name).type == ItemType.Consumable) {
                 usebutton.gameObject.SetActive(true);
             }
 
@@ -83,12 +89,13 @@ public class SelectedItemInterface : MonoBehaviour
 
     public void OnButton()
     {
-        // // inventoryObject.RemoveItem(slot.item);
-        // if (slot.ItemObject is ConsumableObject) {
+        // inventoryObject.RemoveItem(slot.item);
+        // if (slot.item.GetItemComponent<BuffItemComponent>() is BuffItemComponent buffcomp) {
         //     slot.RemoveAmount(1);  
-        //     EventManager.TriggerEvent(new ConsumeItemEvent(((ConsumableObject)slot.ItemObject).consumable));
-        // } FIXME
+        // } 
+        // // EventManager.TriggerEvent(new ConsumeItemEvent(((ConsumableObject)slot.ItemObject).consumable));
 
+        slot.item.UseComponents(GameManager.Instance.player); 
 
     }
 

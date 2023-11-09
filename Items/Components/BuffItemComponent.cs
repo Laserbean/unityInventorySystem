@@ -18,7 +18,7 @@ namespace unityInventorySystem.Items.Components
             Name = "BuffItemComponent"; 
         }
 
-        public BuffItemComponent(BuffItemComponent itemcomp)
+        public BuffItemComponent(BuffItemComponent itemcomp) : base(itemcomp)
         {
             // buffs = new ItemBuff[itemcomp.buffs.Count];
             for (int i = 0; i < itemcomp.buffs.Count; i++) {
@@ -48,6 +48,16 @@ namespace unityInventorySystem.Items.Components
             if (attributesController == null) return; 
             for (int i = 0; i < buffs.Count; i++) 
                 attributesController.RemoveAttributeModifier(buffs[i].attribute, buffs[i]);          
+        }
+
+
+        public override string ToString()
+        {
+            var strr = "";
+            foreach (var itembuff in buffs) {
+                strr += itembuff.attribute + " " + itembuff.value + "\n";
+            }
+            return strr; 
         }
     }
 

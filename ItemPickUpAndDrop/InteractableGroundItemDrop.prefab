@@ -225,6 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemObject: {fileID: 11400000, guid: f166bddc3d054c4429fceaae153e47ed, type: 2}
+  _amount: 1
   ItemDatabaseName: ItemDB
 --- !u!114 &-6626510892274208761
 MonoBehaviour:

@@ -64,6 +64,7 @@ namespace unityInventorySystem.Items
 
         public void AddData(ItemComponent itemComponent) {
             if (_item.Components.Contains(itemComponent)) return; 
+            itemComponent.SetParentItem(_item);
             _item.Components.Add(itemComponent);
         }
 
