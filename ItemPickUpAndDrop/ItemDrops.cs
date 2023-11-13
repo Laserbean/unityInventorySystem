@@ -59,7 +59,7 @@ namespace unityInventorySystem.Items
         {
 #if ENTITY_POOLER
             GameObject go = EntityPooler.Instance.GetNewGroundItem();
-            if (go == null) return; 
+            if (go == null) return;
             go.transform.position = transform.position;
             go.transform.rotation = transform.rotation;
             go.SetActive(true);
@@ -67,7 +67,7 @@ namespace unityInventorySystem.Items
     GameObject go = Instantiate(groundItemDrop, transform.position, transform.rotation); 
 #endif
             var grounditem = go.GetComponent<IGroundItem>();
-            grounditem.SetItem(dropList[itemDropIndex].itemObject.item, Random.Range(dropList[itemDropIndex].min_max_amount.x, dropList[itemDropIndex].min_max_amount.y));
+            grounditem.SetItem(dropList[itemDropIndex].itemObject.CreateItem(), Random.Range(dropList[itemDropIndex].min_max_amount.x, dropList[itemDropIndex].min_max_amount.y));
             go.transform.position += (Vector3.up * Random.Range(0f, dropradius)).Rotate(Random.Range(0, 360f));
             go.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
         }

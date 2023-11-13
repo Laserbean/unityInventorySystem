@@ -16,8 +16,12 @@ using unityInventorySystem.Attribute;
 
 
 using System.Linq;
-using UnityEditor.Callbacks;
 using unityInventorySystem.Items.Components;
+
+#if UNITY_EDITOR
+using UnityEditor.Callbacks;
+#endif
+
 
 namespace unityInventorySystem.Items
 {
@@ -62,8 +66,9 @@ namespace unityInventorySystem.Items
             _item.Name = this.name;
         }
 
-        public void AddData(ItemComponent itemComponent) {
-            if (_item.Components.Contains(itemComponent)) return; 
+        public void AddData(ItemComponent itemComponent)
+        {
+            if (_item.Components.Contains(itemComponent)) return;
             itemComponent.SetParentItem(_item);
             _item.Components.Add(itemComponent);
         }
@@ -71,12 +76,12 @@ namespace unityInventorySystem.Items
     }
 
 
-    #if UNITY_EDITOR 
+#if UNITY_EDITOR
 
     [CustomEditor(typeof(ItemObject))]
     public class ItemObjectEditor : Editor
     {
-        private static List<Type> dataCompTypes = new ();
+        private static List<Type> dataCompTypes = new();
 
         private ItemObject this_so;
 
@@ -97,14 +102,17 @@ namespace unityInventorySystem.Items
                     if (GUILayout.Button(dataCompType.Name)) {
                         if (Activator.CreateInstance(dataCompType) is not ItemComponent comp)
                             return;
-                    
+
                         this_so.AddData(comp);
                         EditorUtility.SetDirty(this_so);
                     }
-                } 
+                }
             }
 
         }
+
+#if UNITY_EDITOR
+        // #endif
 
         [DidReloadScripts]
         private static void OnRecompile()
@@ -116,9 +124,11 @@ namespace unityInventorySystem.Items
             );
             dataCompTypes = filteredTypes.ToList();
         }
+#endif
+
     }
 
-    #endif
+#endif
 
 
 

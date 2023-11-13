@@ -1,0 +1,19 @@
+{
+    "name": "unityinventory_edtitor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:21ffa5e09b99da646a7b08e323cc96f8",
+        "GUID:eadd00cbdb6cf744a846403ec8829696"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

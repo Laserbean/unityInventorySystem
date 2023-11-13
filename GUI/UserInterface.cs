@@ -10,9 +10,7 @@ using System;
 using UnityEngine.InputSystem;
 
 
-using unityInventorySystem;
 using unityInventorySystem.Inventories;
-using UnityEditor.PackageManager;
 
 
 public abstract class UserInterface : MonoBehaviour
@@ -29,6 +27,23 @@ public abstract class UserInterface : MonoBehaviour
     {
         if (inventoryObject == null) return;
         SetupInventory();
+    }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener<InventoryCloseEvent>(InventoryCloseHandler);
+    }
+
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener<InventoryCloseEvent>(InventoryCloseHandler);
+    }
+
+
+    private void InventoryCloseHandler(InventoryCloseEvent @event)
+    {
+        Deselect();
     }
 
     public void SetInventoryObject(InventoryObject _inventoryObject)
@@ -124,7 +139,7 @@ public abstract class UserInterface : MonoBehaviour
         MouseData.tempItemBeingDragged = CreateTempItem(obj);
 
         if (MouseData.tempItemBeingDragged == null) return;
-        OnSlotSelect.Invoke(slotsOnInterface[obj]); 
+        OnSlotSelect.Invoke(slotsOnInterface[obj]);
 
         if (MouseData.tempItemCanvasObject == null) {
             MouseData.tempItemCanvasObject = new GameObject();
@@ -177,8 +192,7 @@ public abstract class UserInterface : MonoBehaviour
             if (!islot.IsEmpty() && mouseHoverSlotData.CanPlaceInSlot(islot.ItemObject) && MouseData.slotHoveredOver.GetInstanceID() != islot.slotDisplay.GetInstanceID())
                 inventoryObject.inventory.SwapItems(islot, mouseHoverSlotData);
         }
-        SelectedSlot.obj = null;
-        SelectedSlot.Deselect();
+        Deselect();
     }
 
     public void OnDrag(GameObject obj, BaseEventData eventdata = null)
@@ -238,16 +252,27 @@ public abstract class UserInterface : MonoBehaviour
                 InventorySlot curIslot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
                 inventoryObject.inventory.SwapItems(curIslot, SelectedSlot.slot);
             }
-
-            SelectedSlot.obj = null;
-            SelectedSlot.Deselect();
             obj.GetComponent<Button>().OnDeselect(null);
 
-            EventManager.TriggerEvent(new SlotSelectedEvent(new InventorySlot()));
+            Deselect();
         }
     }
 
+    public void Deselect()
+    {
+        SelectedSlot.obj = null;
+        SelectedSlot.Deselect();
+
+        EventManager.TriggerEvent(new SlotSelectedEvent(new InventorySlot()));
+
+    }
+
+
+
+
 }
+
+
 
 
 public static class MouseData
@@ -265,9 +290,10 @@ public static class SelectedSlot
     public static InventorySlot slot;
 
 
-    public static void Deselect() {
+    public static void Deselect()
+    {
         isSelecting = false;
-        UserInterface.OnSlotRelease.Invoke(null); 
+        UserInterface.OnSlotRelease.Invoke(null);
     }
 }
 
@@ -298,4 +324,9 @@ public class SlotUpdatedEvent
     {
         slot = _slot;
     }
+}
+
+public class InventoryCloseEvent
+{
+
 }
