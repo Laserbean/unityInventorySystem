@@ -29,21 +29,22 @@ public abstract class UserInterface : MonoBehaviour
         SetupInventory();
     }
 
-    private void OnEnable()
+    private void Awake()
     {
-        EventManager.AddListener<InventoryCloseEvent>(InventoryCloseHandler);
+        EventManager.AddListener<ToggleInventoryEvent>(ToggleInventoryHandler);
     }
 
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        EventManager.RemoveListener<InventoryCloseEvent>(InventoryCloseHandler);
+        EventManager.RemoveListener<ToggleInventoryEvent>(ToggleInventoryHandler);
     }
 
 
-    private void InventoryCloseHandler(InventoryCloseEvent @event)
+    private void ToggleInventoryHandler(ToggleInventoryEvent @event)
     {
-        Deselect();
+        if (!@event.IsInventory)
+            Deselect();
     }
 
     public void SetInventoryObject(InventoryObject _inventoryObject)
@@ -260,6 +261,7 @@ public abstract class UserInterface : MonoBehaviour
 
     public void Deselect()
     {
+        if (SelectedSlot.obj == null) return;
         SelectedSlot.obj = null;
         SelectedSlot.Deselect();
 
@@ -326,7 +328,12 @@ public class SlotUpdatedEvent
     }
 }
 
-public class InventoryCloseEvent
+public class ToggleInventoryEvent
 {
+    public bool IsInventory { get; private set; }
 
+    public ToggleInventoryEvent(bool fish)
+    {
+        IsInventory = fish;
+    }
 }

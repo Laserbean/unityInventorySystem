@@ -21,6 +21,8 @@ namespace unityInventorySystem.Items
         [Range(0, 30)]
         [SerializeField] int maxItemDrop = 1;
 
+        [SerializeField] float dropradiusmin = 0f;
+        
         [SerializeField] float dropradius = 1f;
 
 
@@ -55,21 +57,27 @@ namespace unityInventorySystem.Items
 
 
 
-        void DropItem(int itemDropIndex)
+        void DropItem(int itemDropIndex, Vector3 center, float mindistance, float maxdistance)
         {
+
 #if ENTITY_POOLER
             GameObject go = EntityPooler.Instance.GetNewGroundItem();
             if (go == null) return;
-            go.transform.position = transform.position;
-            go.transform.rotation = transform.rotation;
+            go.transform.position = center;
+            go.transform.rotation = Quaternion.identity;
             go.SetActive(true);
 #else
-    GameObject go = Instantiate(groundItemDrop, transform.position, transform.rotation); 
+            GameObject go = Instantiate(groundItemDrop, center, Quaternion.identity); 
 #endif
+
             var grounditem = go.GetComponent<IGroundItem>();
             grounditem.SetItem(dropList[itemDropIndex].itemObject.CreateItem(), Random.Range(dropList[itemDropIndex].min_max_amount.x, dropList[itemDropIndex].min_max_amount.y));
-            go.transform.position += (Vector3.up * Random.Range(0f, dropradius)).Rotate(Random.Range(0, 360f));
+            
+            go.transform.position += (Vector3.up * Random.Range(mindistance, maxdistance)).Rotate(Random.Range(0, 360f));
             go.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
+            
+            // go.transform.position += (Vector3.up * Random.Range(0f, dropradius)).Rotate(Random.Range(0, 360f));
+            // go.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
         }
 
         int ChooseItem(float[] weights)
@@ -81,6 +89,11 @@ namespace unityInventorySystem.Items
         [EasyButtons.Button]
         public void DropItems()
         {
+            DropItemsAt(transform.position, dropradiusmin, dropradius);
+        }
+
+        public void DropItemsAt(Vector3 pos, float mindistance, float maxdistance)
+        {
             float[] cur_weights = new List<float>(weights).ToArray();
 
             int numtodrop = Random.Range(minItemDrop, maxItemDrop + 1);
@@ -90,8 +103,9 @@ namespace unityInventorySystem.Items
                 if (curitemtodrop == -1) return;
 
                 cur_weights[curitemtodrop] *= 0.5f;
-                DropItem(curitemtodrop);
+                DropItem(curitemtodrop, pos, mindistance, maxdistance);
             }
+
         }
 
 
