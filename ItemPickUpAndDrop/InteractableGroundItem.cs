@@ -19,6 +19,7 @@ namespace unityInventorySystem.Items
 
         void IInteractable.Interact(GameObject gameObject)
         {
+            if (!CanPickUp) return; 
             gameObject.GetComponent<IPickUp>()?.PickUpItem(this); 
         }
     }

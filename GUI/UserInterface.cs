@@ -12,6 +12,7 @@ using UnityEngine.InputSystem;
 
 using unityInventorySystem.Inventories;
 
+using unityInventorySystem.GuiEvents; 
 
 public abstract class UserInterface : MonoBehaviour
 {
@@ -183,8 +184,12 @@ public abstract class UserInterface : MonoBehaviour
     void EndDragOrSecondClick(InventorySlot islot)
     {
         if (MouseData.interfaceMouseIsOver == null) {
-            // islot.RemoveItem();
-            Debug.Log("Tried dragging out of inventory");
+            // Debug.Log("Tried dragging out of inventory");
+
+            EventManager.TriggerEvent(new ItemDroppedEvent(islot.item)); 
+            islot.RemoveItem();
+
+
             return;
         }
         if (MouseData.slotHoveredOver) {
@@ -202,8 +207,7 @@ public abstract class UserInterface : MonoBehaviour
         if (eventdata != null) {
             var pointervent = eventdata as PointerEventData;
             pos = pointervent.position;
-        }
-        else {
+        } else {
 #if ENABLE_INPUT_SYSTEM
             pos = Mouse.current.position.ReadValue();
 #else
@@ -243,13 +247,11 @@ public abstract class UserInterface : MonoBehaviour
             EventManager.TriggerEvent(new SlotSelectedEvent(SelectedSlot.slot));
 
             OnSlotSelect.Invoke(SelectedSlot.slot);
-        }
-        else {
+        } else {
 
             if (obj.GetInstanceID() == SelectedSlot.obj.GetInstanceID()) {
                 Debug.Log("Selected same slot");
-            }
-            else {
+            } else {
                 InventorySlot curIslot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
                 inventoryObject.inventory.SwapItems(curIslot, SelectedSlot.slot);
             }
@@ -307,33 +309,3 @@ public static class ButtonSelectedData
 }
 
 
-public class SlotSelectedEvent
-{
-    public InventorySlot slot;
-
-    public SlotSelectedEvent(InventorySlot _slot)
-    {
-        slot = _slot;
-    }
-}
-
-
-public class SlotUpdatedEvent
-{
-    public InventorySlot slot;
-
-    public SlotUpdatedEvent(InventorySlot _slot)
-    {
-        slot = _slot;
-    }
-}
-
-public class ToggleInventoryEvent
-{
-    public bool IsInventory { get; private set; }
-
-    public ToggleInventoryEvent(bool fish)
-    {
-        IsInventory = fish;
-    }
-}

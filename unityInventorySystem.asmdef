@@ -6,8 +6,7 @@
         "Unity.TextMeshPro",
         "Unity.InputSystem",
         "EasyButtons",
-        "customUnityEvents",
-        "CodeMonkey"
+        "customUnityEvents"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -21,17 +21,13 @@ namespace unityInventorySystem
 
     public static class InventoryStaticManager
     {
-
         public static string SavePath {
             get => GameManager.Instance.GamePath + "/";
         }
 
-
         static ItemDatabaseObject database;
 
         const string DatabasePath = "UnityInventory/";
-
-
 
         public static ItemDatabaseObject GetDatabase(string name)
         {

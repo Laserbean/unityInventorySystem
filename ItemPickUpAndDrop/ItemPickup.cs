@@ -10,7 +10,7 @@ using System.Linq;
 
 using UnityEngine.Events;
 
-using unityInventorySystem.Inventories; 
+using unityInventorySystem.Inventories;
 
 namespace unityInventorySystem.Items
 {
@@ -20,15 +20,14 @@ namespace unityInventorySystem.Items
         [SerializeField] bool pickupOnTrigger = false;
 
         [SerializeField] InventoryObject inventory;
-        public void OnTriggerEnter2D(Collider2D other)
+        public void OnTriggerStay2D(Collider2D other)
         {
             if (!pickupOnTrigger) return;
 
             var gitem = other.GetComponent<IGroundItem>();
-            if (gitem != null) {
-                AddItem(gitem);
-            }
-
+            if (gitem == null) return;
+            if (!gitem.CanPickUp) return;
+            AddItem(gitem);
         }
 
         void IPickUp.PickUpItem(IGroundItem groundItem)
@@ -55,5 +54,7 @@ namespace unityInventorySystem.Items
         public void DestroyItem();
         public void SetItem(Item item, int amount = 1);
         public int Amount { get; }
+
+        public bool CanPickUp { get; }
     }
 }

@@ -6,7 +6,8 @@ using unityInventorySystem;
 
 using unityInventorySystem.Inventories;
 using unityInventorySystem.Items;
-using unityInventorySystem.Items.Components;
+
+using unityInventorySystem.GuiEvents;
 
 public class SelectedItemInterface : MonoBehaviour
 {
@@ -27,13 +28,13 @@ public class SelectedItemInterface : MonoBehaviour
             itemDatabase = InventoryStaticManager.GetDatabase(databaseName);
     }
 
-    void OnEnable()
+    void Awake()
     {
         EventManager.AddListener<SlotSelectedEvent>(OnSlotSelected);
         EventManager.AddListener<SlotUpdatedEvent>(OnSlotUpdated);
     }
 
-    void OnDisable()
+    void OnDestroy()
     {
         EventManager.RemoveListener<SlotSelectedEvent>(OnSlotSelected);
         EventManager.RemoveListener<SlotUpdatedEvent>(OnSlotUpdated);
@@ -50,15 +51,8 @@ public class SelectedItemInterface : MonoBehaviour
         if (!slot.IsEmpty()) {
             string description = itemDatabase.GetItemObject(slot.item.Name).description;
 
-
-            // if (slot.item.GetItemComponent<BuffItemComponent>() is BuffItemComponent buffcomp) {
-            //     foreach (var itembuff in buffcomp.buffs) {
-            //         description += "\n" + itembuff.attribute + " " + itembuff.value;
-            //     }
-            // }
-
             foreach (var itemcomponents in slot.item.Components) {
-                description += itemcomponents.ToString(); 
+                description += itemcomponents.ToString();
                 description += "\n";
             }
 
@@ -70,10 +64,9 @@ public class SelectedItemInterface : MonoBehaviour
             descriptionTMP.text = description;
             //TODO show stats for stuff.
 
-        }
-        else {
+        } else {
             descriptionTMP.text = "";
-            if (usebutton != null) 
+            if (usebutton != null)
                 usebutton?.gameObject.SetActive(false);
 
         }
@@ -95,7 +88,7 @@ public class SelectedItemInterface : MonoBehaviour
         // } 
         // // EventManager.TriggerEvent(new ConsumeItemEvent(((ConsumableObject)slot.ItemObject).consumable));
 
-        slot.item.UseComponents(GameManager.Instance.player); 
+        slot.item.UseComponents(GameManager.Instance.player);
 
     }
 

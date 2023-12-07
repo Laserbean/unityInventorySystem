@@ -9,6 +9,7 @@ using System;
 
 namespace unityInventorySystem.Items
 {
+    [RequireComponent(typeof(IDestroyOrDisable))]
     public class GroundItem : MonoBehaviour, IGroundItem
 
     {
@@ -20,6 +21,8 @@ namespace unityInventorySystem.Items
 
         int IGroundItem.Amount => _amount;
 
+        public bool CanPickUp => canPickUp;
+        bool canPickUp = true; 
 
         public string ItemDatabaseName = UnityInventoryConfig.DEF_ITEM_DB_NAME;
 
@@ -38,6 +41,16 @@ namespace unityInventorySystem.Items
 #endif
         }
 
+        public void DisablePickupForSeconds(float secs) {
+            StartCoroutine(DisablePickupForSecs(secs));
+        }
+
+        IEnumerator DisablePickupForSecs(float secs) {
+            canPickUp = false; 
+            yield return new WaitForSeconds(secs);
+            canPickUp = true; 
+        }
+
 
         public void SetItemObject(ItemObject itemo)
         {
@@ -53,7 +66,6 @@ namespace unityInventorySystem.Items
 
         void IGroundItem.DestroyItem()
         {
-            // Destroy(this.gameObject); 
             GetComponent<IDestroyOrDisable>().DestroyOrDisable();
         }
 
@@ -61,9 +73,7 @@ namespace unityInventorySystem.Items
         {
             _amount = amm;
             this_item = _item;
-
             itemObject = InventoryStaticManager.GetDatabase(ItemDatabaseName).GetItemObject(_item.Name);
-
             gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.characterDisplay2D;
         }
 

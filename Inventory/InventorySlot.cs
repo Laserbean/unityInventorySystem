@@ -38,9 +38,8 @@ namespace unityInventorySystem.Inventories
 
         public ItemObject ItemObject {
             get {
-                if (item.Id >= 0)
+                if (item.Id >= 0 && !IsEmpty())
                     return Parent.inventoryObject.inventory.Database.GetItemObject(item.Name);
-
                 return null;
             }
         }
@@ -82,24 +81,24 @@ namespace unityInventorySystem.Inventories
         void OnSlotRelease(InventorySlot other)
         {
             if (!Locked)
-                Parent.EnableSlot(this); 
-            else 
+                Parent.EnableSlot(this);
+            else
                 Parent.DisableSlot(this);
         }
 
-        public void Lock() => Locked = true; 
-        public void Unlock() => Locked = false; 
+        public void Lock() => Locked = true;
+        public void Unlock() => Locked = false;
 
 
         public bool IsEmpty()
         {
-            return item.Id <= -1;
+            return item.Id <= -1 || string.IsNullOrEmpty(item.Name);
         }
 
 
         public void RemoveItem()
         {
-            Unlock(); 
+            Unlock();
             UpdateSlot(new Item(), 0);
         }
 
@@ -118,7 +117,7 @@ namespace unityInventorySystem.Inventories
 
         public bool CanPlaceInSlot(ItemObject _itemObject)
         {
-            if (Locked) return false; 
+            if (Locked) return false;
             if (AllowedItems.Length <= 0 || _itemObject == null || _itemObject.item.Id < 0)
                 return true;
             for (int i = 0; i < AllowedItems.Length; i++) {

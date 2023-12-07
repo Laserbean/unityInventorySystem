@@ -32,7 +32,7 @@ namespace unityInventorySystem
 
             foreach (var comp in item.Components) {
                 Components.Add(comp.Copy());
-                comp.SetParentItem(this); 
+                comp.SetParentItem(this);
             }
 
         }
@@ -42,7 +42,6 @@ namespace unityInventorySystem
             foreach (var comp in Components) {
                 comp.OnUse(character);
             }
-
         }
 
         [System.NonSerialized] Dictionary<Type, int> comp_index_dict = new();
@@ -58,8 +57,6 @@ namespace unityInventorySystem
         void UpdateDict()
         {
             comp_index_dict.Clear();
-
-
             for (int i = 0; i < Components.Count; i++) {
                 comp_index_dict.Add(Components[i].GetType(), i);
             }

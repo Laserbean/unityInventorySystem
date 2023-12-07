@@ -3,24 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_EDITOR 
-using UnityEditor;
-#endif
-
-using Laserbean.SpecialData;
-
-using unityInventorySystem.Attribute;
-// using unityInventorySystem.Items;
-
-
-
-
-using System.Linq;
 using unityInventorySystem.Items.Components;
 
-#if UNITY_EDITOR
-using UnityEditor.Callbacks;
-#endif
 
 
 namespace unityInventorySystem.Items
@@ -36,8 +20,8 @@ namespace unityInventorySystem.Items
 
         //TODO add gameobject for it to be placed on the ground
 
-
         public bool stackable;
+        [HideInInspector]
         public int stackSize; //idk how to use this now
 
         public ItemType type;
@@ -75,60 +59,6 @@ namespace unityInventorySystem.Items
 
     }
 
-
-#if UNITY_EDITOR
-
-    [CustomEditor(typeof(ItemObject))]
-    public class ItemObjectEditor : Editor
-    {
-        private static List<Type> dataCompTypes = new();
-
-        private ItemObject this_so;
-
-        private bool showAddComponentButtons;
-
-        private void OnEnable()
-        {
-            this_so = target as ItemObject;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-            showAddComponentButtons = EditorGUILayout.Foldout(showAddComponentButtons, "Add Components");
-
-            if (showAddComponentButtons) {
-                foreach (var dataCompType in dataCompTypes) {
-                    if (GUILayout.Button(dataCompType.Name)) {
-                        if (Activator.CreateInstance(dataCompType) is not ItemComponent comp)
-                            return;
-
-                        this_so.AddData(comp);
-                        EditorUtility.SetDirty(this_so);
-                    }
-                }
-            }
-
-        }
-
-#if UNITY_EDITOR
-        // #endif
-
-        [DidReloadScripts]
-        private static void OnRecompile()
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var types = assemblies.SelectMany(assembly => assembly.GetTypes());
-            var filteredTypes = types.Where(
-                type => type.IsSubclassOf(typeof(ItemComponent)) && !type.ContainsGenericParameters && type.IsClass
-            );
-            dataCompTypes = filteredTypes.ToList();
-        }
-#endif
-
-    }
-
-#endif
 
 
 

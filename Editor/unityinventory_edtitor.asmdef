@@ -2,8 +2,8 @@
     "name": "unityinventory_edtitor",
     "rootNamespace": "",
     "references": [
-        "GUID:21ffa5e09b99da646a7b08e323cc96f8",
-        "GUID:eadd00cbdb6cf744a846403ec8829696"
+        "GUID:bfd60175d1fa08246b6ae53074aab0dc",
+        "GUID:3f305cf5538b5a7439cb84fc376e720d"
     ],
     "includePlatforms": [
         "Editor"
