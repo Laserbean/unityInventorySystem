@@ -56,5 +56,6 @@ namespace unityInventorySystem.Items
         public int Amount { get; }
 
         public bool CanPickUp { get; }
+        public void DisablePickupForSeconds(float secs);
     }
 }

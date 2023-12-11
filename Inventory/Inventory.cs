@@ -42,6 +42,8 @@ namespace unityInventorySystem.Inventories
             return inventory;
         }
 
+        #region EventSetup
+
         public void SetUserinterface(UserInterface userInterface)
         {
             for (int i = 0; i < Slots.Length; i++) {
@@ -79,13 +81,7 @@ namespace unityInventorySystem.Inventories
             }
         }
 
-
-        public void Clear()
-        {
-            for (int i = 0; i < Slots.Length; i++) {
-                Slots[i].RemoveItem();
-            }
-        }
+        #endregion
 
         public ItemDatabaseObject Database {
             get {
@@ -94,11 +90,8 @@ namespace unityInventorySystem.Inventories
                     _database.Initialize();
                 }
                 return _database;
-
             }
-
         }
-
 
         public int EmptySlotCount {
             get {
@@ -110,6 +103,13 @@ namespace unityInventorySystem.Inventories
                     }
                 }
                 return counter;
+            }
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < Slots.Length; i++) {
+                Slots[i].RemoveItem();
             }
         }
 

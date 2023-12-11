@@ -186,7 +186,7 @@ public abstract class UserInterface : MonoBehaviour
         if (MouseData.interfaceMouseIsOver == null) {
             // Debug.Log("Tried dragging out of inventory");
 
-            EventManager.TriggerEvent(new ItemDroppedEvent(islot.item)); 
+            EventManager.TriggerEvent(new ItemDroppedEvent(islot.item, islot.amount)); 
             islot.RemoveItem();
 
 

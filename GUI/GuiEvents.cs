@@ -50,10 +50,12 @@ namespace unityInventorySystem.GuiEvents
     public class ItemDroppedEvent 
     {
         public Item item;
+        public int amount; 
 
-        public ItemDroppedEvent(Item item)
+        public ItemDroppedEvent(Item item, int amont)
         {
             this.item = item;
+            this.amount = amont; 
         }
     }
 
