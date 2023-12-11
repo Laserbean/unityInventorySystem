@@ -259,7 +259,7 @@ namespace unityInventorySystem.Inventories
         }
 
 
-        public InventorySlot FindFirstSlotWithType(ItemType itype)
+        internal InventorySlot FindFirstSlotWithType(ItemType itype)
         { //make sure type is unique, example, bullets. 
             for (int i = 0; i < Slots.Length; i++) {
                 try {
@@ -275,7 +275,7 @@ namespace unityInventorySystem.Inventories
         }
 
 
-        public List<InventorySlot> FindSlotsWithType(ItemType itype)
+        internal List<InventorySlot> FindSlotsWithType(ItemType itype)
         {
             List<InventorySlot> list = new();
 
