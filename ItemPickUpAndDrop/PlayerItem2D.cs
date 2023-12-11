@@ -99,7 +99,7 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
 
 
     void Awake() {
-        equipmentObject.inventory.ClearAllEvents();
+        equipmentObject?.inventory?.ClearAllEvents();
     }
 
 
@@ -115,19 +115,19 @@ public class PlayerItem2D : MonoBehaviour, IAttributeModified
         // }
         #endregion
 
-        equipmentObject.inventory.SetSlotsBeforeUpdate(OnRemoveItem);
-        equipmentObject.inventory.SetSlotsAfterUpdate(OnAddItem);
+        equipmentObject?.inventory?.SetSlotsBeforeUpdate(OnRemoveItem);
+        equipmentObject?.inventory?.SetSlotsAfterUpdate(OnAddItem);
     }
 
     private void OnDisable()
     {
-        equipmentObject.inventory.ClearAllEvents();
+        equipmentObject?.inventory?.ClearAllEvents();
     }
 
     private void OnApplicationQuit()
     {
-        inventoryObject.Clear();
-        equipmentObject.Clear();
+        inventoryObject?.Clear();
+        equipmentObject?.Clear();
         // inventoryObject.Container.Clear(); 
         // inventoryObject.Container.Items = new InventorySlot[28];
 

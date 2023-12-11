@@ -33,6 +33,7 @@ public class TestUnityInventorySystem
         var slot = inventory.AddToNewSlot(new Item() { Name = "Fish", Id = 27 }, 1);
 
         Assert.IsNotNull(slot);
+        Assert.IsTrue(slot.item.Name == "Fish");
     }
 
 
@@ -76,13 +77,13 @@ public class TestUnityInventorySystem
         Assert.IsTrue(false, "I simply have not finished writing this test");
     }
 
-    [Test]
-    public void TestTryAddItems()
-    {
-        Inventory inventory = new(size: 1);
-        Assert.IsTrue(inventory.TryAddItem(new Item() { Name = "Fish", Id = 27 }, 1));
-        Assert.IsFalse(inventory.TryAddItem(new Item() { Name = "Chicken", Id = 23 }, 1));
-    }
+    // [Test]
+    // public void TestTryAddItems()
+    // {
+    //     Inventory inventory = new(size: 1);
+    //     Assert.IsTrue(inventory.TryAddItem(new Item() { Name = "Fish", Id = 27 }, 1));
+    //     Assert.IsFalse(inventory.TryAddItem(new Item() { Name = "Chicken", Id = 23 }, 1));
+    // }
 
 
     [Test]

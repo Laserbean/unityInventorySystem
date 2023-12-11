@@ -5,6 +5,10 @@ using UnityEngine;
 using System;
 
 using unityInventorySystem.Items;
+using System.Runtime.CompilerServices;
+using Laserbean.General;
+
+[assembly: InternalsVisibleTo("TestsUnityInventorySystem")]
 
 namespace unityInventorySystem.Inventories
 {
@@ -98,7 +102,7 @@ namespace unityInventorySystem.Inventories
                 int counter = 0;
                 for (int i = 0; i < Slots.Length; i++) {
                     // if (Slots[i].item.Id <= -1)
-                    if (Slots[i].IsEmpty()) {
+                    if (Slots[i].IsEmpty) {
                         counter++;
                     }
                 }
@@ -113,7 +117,57 @@ namespace unityInventorySystem.Inventories
             }
         }
 
-        public bool TryAddToExistingSlot(Item _item, int _amount)
+
+        public bool TryAddItem(Item _item, int _amount)
+        {
+            var itemObj = Database.GetItemObject(_item.Name);
+
+            if (itemObj == null || itemObj.stackable) {
+                return TryAddStackableItem(_item, _amount);
+            } else {
+                return TryAddNonStackableItem(_item, _amount);
+            }
+
+        }
+
+
+        bool TryAddStackableItem(Item _item, int _amount)
+        {
+            var slot = GetNonFullItemSlot(_item);
+
+            if (slot != null && !slot.IsFull) {
+                int spaceToAdd = Math.Min(slot.RemainingSpace, _amount);
+                slot.AddAmount(spaceToAdd);
+
+                if (spaceToAdd < _amount) {
+                    return TryAddStackableItem(_item, _amount - spaceToAdd);
+                }
+
+                return true;
+            } else {
+                var newSlot = GetEmptySlot();
+                if (newSlot == null) return false;
+                newSlot.UpdateSlot(_item, 0);
+
+                int spaceToAdd = Math.Min(newSlot.RemainingSpace, _amount);
+                newSlot.AddAmount(spaceToAdd);
+
+                if (spaceToAdd < _amount) {
+                    return TryAddStackableItem(_item, _amount - spaceToAdd);
+                }
+
+                return true;
+            }
+        }
+
+
+        bool TryAddNonStackableItem(Item _item, int _amount)
+        {
+            return AddToNewSlot(_item, _amount) != null;
+        }
+
+
+        internal bool TryAddToExistingSlot(Item _item, int _amount)
         {
             if (EmptySlotCount <= 0) return false;
 
@@ -125,20 +179,6 @@ namespace unityInventorySystem.Inventories
         }
 
 
-        public bool TryAddItem(Item _item, int _amount)
-        {
-            if (EmptySlotCount <= 0) return false;
-
-            InventorySlot slot = GetItemSlot(_item);
-            if (slot == null) //!database.ItemObjects[_item.Id].stackable ||
-            {
-                AddToNewSlot(_item, _amount);
-                return true;
-            }
-
-            slot.AddAmount(_amount);
-            return true;
-        }
 
         public bool RemoveItem(Item _item)
         {
@@ -146,17 +186,25 @@ namespace unityInventorySystem.Inventories
 
             InventorySlot slot = GetItemSlot(_item);
             if (!Database.GetItemObject(_item.Name).stackable || slot == null) {
-                // slot = new InventorySlot();
                 return true;
             }
             slot.RemoveAmount(1);
             return true;
         }
 
-        ///<summary>
-        /// Looks for the slot in the inventory that already contains the item. 
-        ///</summary>
-        public InventorySlot GetItemSlot(Item _item)
+
+        internal InventorySlot GetNonFullItemSlot(Item _item)
+        {
+            for (int i = 0; i < Slots.Length; i++) {
+                if (Slots[i].item.Id == _item.Id && !Slots[i].IsFull) {
+                    return Slots[i];
+                }
+            }
+            return null;
+        }
+
+
+        internal InventorySlot GetItemSlot(Item _item)
         {
             for (int i = 0; i < Slots.Length; i++) {
                 if (Slots[i].item.Id == _item.Id) {
@@ -166,15 +214,33 @@ namespace unityInventorySystem.Inventories
             return null;
         }
 
-        public InventorySlot AddToNewSlot(Item _item, int _amount)
+        internal List<InventorySlot> GetItemSlots(Item _item)
+        {
+            List<InventorySlot> slots = new(); 
+            for (int i = 0; i < Slots.Length; i++) {
+                if (Slots[i].item.Id == _item.Id) {
+                    slots.Add(Slots[i]);
+                }
+            }
+            return slots;
+        }
+
+        internal InventorySlot GetEmptySlot()
         {
             for (int i = 0; i < Slots.Length; i++) {
-                if (Slots[i].IsEmpty()) {
+                if (Slots[i].IsEmpty) return Slots[i];
+            }
+            return null;
+        }
+
+        internal InventorySlot AddToNewSlot(Item _item, int _amount)
+        {
+            for (int i = 0; i < Slots.Length; i++) {
+                if (Slots[i].IsEmpty) {
                     Slots[i].UpdateSlot(_item, _amount);
                     return Slots[i];
                 }
             }
-            // TODO: set up functionality for full inventory
             return null;
         }
 

@@ -21,8 +21,7 @@ namespace unityInventorySystem.Items
         //TODO add gameobject for it to be placed on the ground
 
         public bool stackable;
-        [HideInInspector]
-        public int stackSize; //idk how to use this now
+        public int stackSize; 
 
         public ItemType type;
         [TextArea(15, 20)]

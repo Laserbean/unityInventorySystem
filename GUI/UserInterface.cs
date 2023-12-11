@@ -70,7 +70,7 @@ public abstract class UserInterface : MonoBehaviour
     private void OnSlotUpdate(InventorySlot _slot)
     {
         EventManager.TriggerEvent(new SlotUpdatedEvent(_slot));
-        bool notEmpty = !_slot.IsEmpty();
+        bool notEmpty = !_slot.IsEmpty;
 
         _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = notEmpty ? _slot.ItemObject.uiDisplay : null;
         _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = notEmpty ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0);
@@ -156,7 +156,7 @@ public abstract class UserInterface : MonoBehaviour
     public GameObject CreateTempItem(GameObject obj)
     {
         GameObject tempItem = null;
-        if (!slotsOnInterface[obj].IsEmpty()) {
+        if (!slotsOnInterface[obj].IsEmpty) {
 
             tempItem = new GameObject("drag item");
             var rt = tempItem.AddComponent<RectTransform>();
@@ -195,7 +195,7 @@ public abstract class UserInterface : MonoBehaviour
         if (MouseData.slotHoveredOver) {
             InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
 
-            if (!islot.IsEmpty() && mouseHoverSlotData.CanPlaceInSlot(islot.ItemObject) && MouseData.slotHoveredOver.GetInstanceID() != islot.slotDisplay.GetInstanceID())
+            if (!islot.IsEmpty && mouseHoverSlotData.CanPlaceInSlot(islot.ItemObject) && MouseData.slotHoveredOver.GetInstanceID() != islot.slotDisplay.GetInstanceID())
                 inventoryObject.inventory.SwapItems(islot, mouseHoverSlotData);
         }
         Deselect();
@@ -236,7 +236,7 @@ public abstract class UserInterface : MonoBehaviour
     public void OnSubmit(GameObject obj)
     {
         if (!SelectedSlot.isSelecting) {
-            if (slotsOnInterface[obj].IsEmpty()) {
+            if (slotsOnInterface[obj].IsEmpty) {
                 OnSlotRelease.Invoke(null);
                 return; //clicked empty slot. do nothing.
             }

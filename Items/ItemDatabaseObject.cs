@@ -9,32 +9,35 @@ namespace unityInventorySystem.Items
     [CreateAssetMenu(fileName = "New Item Database", menuName = "unity Inventory System/Items/Database")]
     public class ItemDatabaseObject : ScriptableObject//, ISerializationCallbackReceiver
     {
-        [SerializeField] CustomDictionary<string, ItemObject> ItemDict = new(); 
+        [SerializeField] CustomDictionary<string, ItemObject> ItemDict = new();
 
-        public void Initialize() {
-            UpdateDictionary();            
+        public void Initialize()
+        {
+            UpdateDictionary();
         }
 
-        private void Start() {
-            UpdateDictionary(); 
+        private void Start()
+        {
+            UpdateDictionary();
         }
 
 
         [EasyButtons.Button]
-        public void UpdateDictionary() {
-            ItemDict.Clear(); 
+        public void UpdateDictionary()
+        {
+            ItemDict.Clear();
             var folderpath = UnityInventoryConfig.ItemsPath;
             // var folderpath = "dfs";
-            var list1 = Resources.LoadAll<ItemObject>(folderpath).ToList(); 
+            var list1 = Resources.LoadAll<ItemObject>(folderpath).ToList();
 
-            int ind = 0; 
+            int ind = 0;
 
-            foreach(var asset in list1) {
+            foreach (var asset in list1) {
                 if (asset is null) continue;
-                asset.item.Id = ind; 
+                asset.item.Id = ind;
                 ItemDict.Add(asset.item.Name, asset);
 
-                ind += 1; 
+                ind += 1;
             }
             // Debug.Log(folderpath); 
         }
@@ -45,8 +48,10 @@ namespace unityInventorySystem.Items
             UpdateDictionary();
         }
 
-        public ItemObject GetItemObject(string name) {
-            return ItemDict[name]; 
+        public ItemObject GetItemObject(string name)
+        {
+            if (ItemDict.ContainsKey(name)) return ItemDict[name];
+            return null;
         }
     }
 

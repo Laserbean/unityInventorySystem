@@ -48,7 +48,7 @@ public class SelectedItemInterface : MonoBehaviour
         slot = slotSelectedEvent.slot;
 
         itemNameTMP.text = slot.item.Name;
-        if (!slot.IsEmpty()) {
+        if (!slot.IsEmpty) {
             string description = itemDatabase.GetItemObject(slot.item.Name).description;
 
             foreach (var itemcomponents in slot.item.Components) {

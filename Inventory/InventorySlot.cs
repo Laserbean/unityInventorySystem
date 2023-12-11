@@ -38,7 +38,7 @@ namespace unityInventorySystem.Inventories
 
         public ItemObject ItemObject {
             get {
-                if (item.Id >= 0 && !IsEmpty())
+                if (item.Id >= 0 && !IsEmpty)
                     return Parent.inventoryObject.inventory.Database.GetItemObject(item.Name);
                 return null;
             }
@@ -90,9 +90,21 @@ namespace unityInventorySystem.Inventories
         public void Unlock() => Locked = false;
 
 
-        public bool IsEmpty()
-        {
-            return item.Id <= -1 || string.IsNullOrEmpty(item.Name);
+        // public bool IsEmpty()
+        // {
+        //     return item.Id <= -1 || string.IsNullOrEmpty(item.Name);
+        // }
+
+        public bool IsEmpty {
+            get => item.Id <= -1 || string.IsNullOrEmpty(item.Name);
+        }
+
+        public bool IsFull {
+            get => amount >= ItemObject.stackSize || (!ItemObject.stackable && amount >= 1);
+        }
+
+        public int RemainingSpace {
+            get => ItemObject.stackSize - amount;
         }
 
 
