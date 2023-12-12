@@ -216,7 +216,7 @@ namespace unityInventorySystem.Inventories
 
         internal List<InventorySlot> GetItemSlots(Item _item)
         {
-            List<InventorySlot> slots = new(); 
+            List<InventorySlot> slots = new();
             for (int i = 0; i < Slots.Length; i++) {
                 if (Slots[i].item.Id == _item.Id) {
                     slots.Add(Slots[i]);
@@ -297,6 +297,19 @@ namespace unityInventorySystem.Inventories
                 item1.UpdateSlot(temp.item, temp.amount);
             }
         }
+
+        public void SplitItems(InventorySlot initial_stack_slot, InventorySlot other_slot)
+        {
+            int amount_transfer = Mathf.RoundToInt(initial_stack_slot.amount / 2);
+
+            if (other_slot.CanPlaceInSlot(initial_stack_slot.ItemObject) && (other_slot.IsEmpty || (other_slot.RemainingSpace <= amount_transfer && other_slot.item.Name == initial_stack_slot.item.Name))) {
+                // int remaining = initial_stack.amount - amount_transfer; 
+
+                initial_stack_slot.UpdateSlot(initial_stack_slot.item, initial_stack_slot.amount - amount_transfer);
+                other_slot.UpdateSlot(initial_stack_slot.item, amount_transfer);
+            }
+        }
+
 
 
 

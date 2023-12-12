@@ -67,13 +67,19 @@ public abstract class UserInterface : MonoBehaviour
         inventoryObject.inventory.UpdateSlots();
     }
 
-    protected void AddEvent(GameObject obj, EventTriggerType type, UnityAction<BaseEventData> action)
+    protected void AddEvent(GameObject obj, EventTriggerType type, UnityAction<GameObject, BaseEventData> action)
     {
         EventTrigger trigger = obj.GetComponent<EventTrigger>();
         var eventTrigger = new EventTrigger.Entry {
             eventID = type
         };
-        eventTrigger.callback.AddListener(action);
+
+        // Adjust the UnityAction to include the additional parameter
+        UnityAction<BaseEventData> modifiedAction = (arg0) => {
+            action.Invoke(obj, arg0); // Invoke the original action with the additional parameter
+        };
+
+        eventTrigger.callback.AddListener(modifiedAction);
         trigger.triggers.Add(eventTrigger);
     }
 
@@ -104,10 +110,11 @@ public abstract class UserInterface : MonoBehaviour
     {
         AddEvent(obj, EventTriggerType.PointerEnter, delegate { OnPointerEnter(obj); });
         AddEvent(obj, EventTriggerType.PointerExit, delegate { OnPointerExit(obj); });
-        AddEvent(obj, EventTriggerType.BeginDrag, delegate { OnDragStart(obj); });
-        AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
 
-        AddEvent(obj, EventTriggerType.Drag, delegate (BaseEventData eventData) { OnDrag(obj, eventData); });
+        AddEvent(obj, EventTriggerType.BeginDrag, OnDragStart);
+        AddEvent(obj, EventTriggerType.EndDrag,  OnDragEnd);
+
+        AddEvent(obj, EventTriggerType.Drag, OnDrag);
 
         AddEvent(obj, EventTriggerType.PointerClick, delegate { OnCLickedSlot(obj); });
         AddEvent(obj, EventTriggerType.Select, delegate { OnSelect(obj); });
@@ -116,6 +123,13 @@ public abstract class UserInterface : MonoBehaviour
 
     }
 
+    // private void OnPointerClickTest(GameObject go, BaseEventData arg0)
+    // {
+    //     // if ((arg0 as PointerEventData).button == PointerEventData.InputButton.Right) {
+    //     //     Debug.Log("Right Mouse Button Clicked on: " + name);
+    //     // }
+
+    // }
 
     public abstract void CreateSlots();
 
@@ -142,11 +156,14 @@ public abstract class UserInterface : MonoBehaviour
         MouseData.slotHoveredOver = null;
     }
 
-    public void OnDragStart(GameObject obj)
+    public void OnDragStart(GameObject obj, BaseEventData eventdata = null)
     {
         var slot = slotsOnInterface[obj];
         if (interfaceState != UIState.Nothing || slot.IsEmpty)
             return;
+
+        bool isRight = eventdata != null && (eventdata as PointerEventData).button == PointerEventData.InputButton.Right;
+
 
         interfaceState = UIState.Dragging;
 
@@ -155,8 +172,9 @@ public abstract class UserInterface : MonoBehaviour
     }
 
 
-    public void OnDragEnd(GameObject obj)
+    public void OnDragEnd(GameObject obj, BaseEventData eventdata = null)
     {
+
         interfaceState = UIState.Nothing;
 
         MouseData.DestroyTempItem();
@@ -168,9 +186,14 @@ public abstract class UserInterface : MonoBehaviour
             return;
         }
 
+        bool isRight = eventdata != null && (eventdata as PointerEventData).button == PointerEventData.InputButton.Right;
+
         if (MouseData.slotHoveredOver) {
             InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
 
+            if (!islot.IsEmpty && mouseHoverSlotData.IsEmpty && isRight) {
+                inventoryObject.inventory.SplitItems(islot, mouseHoverSlotData); 
+            }
             if (!islot.IsEmpty && mouseHoverSlotData.CanPlaceInSlot(islot.ItemObject) && MouseData.slotHoveredOver.GetInstanceID() != islot.slotDisplay.GetInstanceID())
                 inventoryObject.inventory.SwapItems(islot, mouseHoverSlotData);
         }
@@ -179,6 +202,8 @@ public abstract class UserInterface : MonoBehaviour
 
     void DropItem(InventorySlot islot)
     {
+        interfaceState = UIState.Nothing;
+
         EventManager.TriggerEvent(new ItemDroppedEvent(islot.item, islot.amount));
         islot.RemoveItem();
 
@@ -204,6 +229,7 @@ public abstract class UserInterface : MonoBehaviour
 
     public void OnCLickedSlot(GameObject obj)
     {
+        ButtonSelectedData.sinterface = obj.GetComponentInParent<UserInterface>();
         OnSubmit(obj);
     }
 
@@ -216,6 +242,8 @@ public abstract class UserInterface : MonoBehaviour
 
     public void OnSubmit(GameObject obj)
     {
+        interfaceState = UIState.Nothing;
+
         if (!SelectedSlot.isSelecting) {
             if (slotsOnInterface[obj].IsEmpty) {
                 OnSlotRelease.Invoke(null);
@@ -229,6 +257,7 @@ public abstract class UserInterface : MonoBehaviour
 
             OnSlotSelect.Invoke(SelectedSlot.slot);
         } else {
+            //TODO: Inventory slot check for same item
 
             if (obj.GetInstanceID() == SelectedSlot.obj.GetInstanceID()) {
                 Debug.Log("Selected same slot");
@@ -341,3 +370,15 @@ public static class ButtonSelectedData
 }
 
 
+// // https://discussions.unity.com/t/how-would-i-detect-a-right-click-with-an-event-trigger/128238
+// public class MyRightClickClass : MonoBehaviour, IPointerClickHandler
+// {
+
+//     public void OnPointerClick(PointerEventData eventData)
+//     {
+//         if (eventData.button == PointerEventData.InputButton.Right) {
+//             Debug.Log("Right Mouse Button Clicked on: " + name);
+//         }
+//     }
+
+// }
