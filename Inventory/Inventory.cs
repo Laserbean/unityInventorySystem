@@ -90,8 +90,9 @@ namespace unityInventorySystem.Inventories
         public ItemDatabaseObject Database {
             get {
                 if (_database == null) {
-                    _database = InventoryStaticManager.GetDatabase(DatabaseName);
-                    _database.Initialize();
+                    // _database = InventoryStaticManager.GetDatabase(DatabaseName);
+                    // _database.Initialize();
+                    _database = InventorySystemManager.Instance.ItemDatabase; 
                 }
                 return _database;
             }
@@ -287,23 +288,25 @@ namespace unityInventorySystem.Inventories
             return list;
         }
 
-        public void SwapItems(InventorySlot item1, InventorySlot item2)
+        public static void SwapItems(InventorySlot item1, InventorySlot item2)
         {
             if (item2.CanPlaceInSlot(item1.ItemObject) && item1.CanPlaceInSlot(item2.ItemObject)) {
                 InventorySlot temp = new(item2.item, item2.amount);
-                // item2.parent = item1.parent; 
-                // item1.parent = temp.parent; 
+
                 item2.UpdateSlot(item1.item, item1.amount);
                 item1.UpdateSlot(temp.item, temp.amount);
             }
         }
 
-        public void SplitItems(InventorySlot initial_stack_slot, InventorySlot other_slot)
+        public static void SplitItems(InventorySlot initial_stack_slot, InventorySlot other_slot)
         {
             int amount_transfer = Mathf.RoundToInt(initial_stack_slot.amount / 2);
 
+            if (amount_transfer <= 0) {
+                SwapItems(initial_stack_slot, other_slot);
+            }
+
             if (other_slot.CanPlaceInSlot(initial_stack_slot.ItemObject) && (other_slot.IsEmpty || (other_slot.RemainingSpace <= amount_transfer && other_slot.item.Name == initial_stack_slot.item.Name))) {
-                // int remaining = initial_stack.amount - amount_transfer; 
 
                 initial_stack_slot.UpdateSlot(initial_stack_slot.item, initial_stack_slot.amount - amount_transfer);
                 other_slot.UpdateSlot(initial_stack_slot.item, amount_transfer);

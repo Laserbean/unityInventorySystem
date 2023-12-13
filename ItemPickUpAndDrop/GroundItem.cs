@@ -73,7 +73,7 @@ namespace unityInventorySystem.Items
         {
             _amount = amm;
             this_item = _item;
-            itemObject = InventoryStaticManager.GetDatabase(ItemDatabaseName).GetItemObject(_item.Name);
+            itemObject = InventorySystemManager.Instance.ItemDatabase.GetItemObject(_item.Name);
             gameObject.GetComponent<SpriteRenderer>().sprite = itemObject.characterDisplay2D;
         }
 

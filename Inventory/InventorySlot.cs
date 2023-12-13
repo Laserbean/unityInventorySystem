@@ -39,7 +39,7 @@ namespace unityInventorySystem.Inventories
         public ItemObject ItemObject {
             get {
                 if (item.Id >= 0 && !IsEmpty)
-                    return Parent.inventoryObject.inventory.Database.GetItemObject(item.Name);
+                    return InventorySystemManager.Instance.ItemDatabase.GetItemObject(item.Name);
                 return null;
             }
         }
@@ -107,6 +107,10 @@ namespace unityInventorySystem.Inventories
             get => ItemObject.stackSize - amount;
         }
 
+        public bool SameItem(InventorySlot slot2)
+        {
+            return (slot2.item.Name == item.Name) && ItemObject.stackable; 
+        }
 
         public void RemoveItem()
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -11,6 +12,7 @@ using UnityEngine.InputSystem;
 
 using unityInventorySystem.Inventories;
 using unityInventorySystem.GuiEvents;
+
 
 
 public abstract class UserInterface : MonoBehaviour
@@ -112,7 +114,7 @@ public abstract class UserInterface : MonoBehaviour
         AddEvent(obj, EventTriggerType.PointerExit, delegate { OnPointerExit(obj); });
 
         AddEvent(obj, EventTriggerType.BeginDrag, OnDragStart);
-        AddEvent(obj, EventTriggerType.EndDrag,  OnDragEnd);
+        AddEvent(obj, EventTriggerType.EndDrag, OnDragEnd);
 
         AddEvent(obj, EventTriggerType.Drag, OnDrag);
 
@@ -189,13 +191,17 @@ public abstract class UserInterface : MonoBehaviour
         bool isRight = eventdata != null && (eventdata as PointerEventData).button == PointerEventData.InputButton.Right;
 
         if (MouseData.slotHoveredOver) {
-            InventorySlot mouseHoverSlotData = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
+            InventorySlot curSlot = MouseData.interfaceMouseIsOver.slotsOnInterface[MouseData.slotHoveredOver];
 
-            if (!islot.IsEmpty && mouseHoverSlotData.IsEmpty && isRight) {
-                inventoryObject.inventory.SplitItems(islot, mouseHoverSlotData); 
+            if (!islot.IsEmpty && curSlot.IsEmpty && isRight) {
+                Inventory.SplitItems(islot, curSlot);
+            } else if (!islot.IsEmpty && !curSlot.SameItem(islot) && curSlot.CanPlaceInSlot(islot.ItemObject) && MouseData.slotHoveredOver.GetInstanceID() != islot.slotDisplay.GetInstanceID()) {
+                Inventory.SwapItems(islot, curSlot);
+            } else if (!curSlot.IsEmpty && curSlot.CanPlaceInSlot(islot.ItemObject)) {
+                var toadd = curSlot.RemainingSpace >= islot.amount ? islot.amount : curSlot.RemainingSpace;
+                curSlot.AddAmount(toadd);
+                islot.RemoveAmount(toadd);
             }
-            if (!islot.IsEmpty && mouseHoverSlotData.CanPlaceInSlot(islot.ItemObject) && MouseData.slotHoveredOver.GetInstanceID() != islot.slotDisplay.GetInstanceID())
-                inventoryObject.inventory.SwapItems(islot, mouseHoverSlotData);
         }
         Deselect();
     }
@@ -263,7 +269,7 @@ public abstract class UserInterface : MonoBehaviour
                 Debug.Log("Selected same slot");
             } else {
                 InventorySlot curIslot = ButtonSelectedData.sinterface.slotsOnInterface[ButtonSelectedData.slotGO];
-                inventoryObject.inventory.SwapItems(curIslot, SelectedSlot.slot);
+                Inventory.SwapItems(curIslot, SelectedSlot.slot);
             }
             obj.GetComponent<Button>().OnDeselect(null);
 
@@ -382,3 +388,5 @@ public static class ButtonSelectedData
 //     }
 
 // }
+
+
