@@ -16,9 +16,6 @@ namespace unityInventorySystem.Inventories
 
         void Awake()
         {
-            // inventory_i = inventoryDatabase.GetInventoryObject(UnityInventoryConfig.DEF_PLAYER_INV_NAME).CopyInventory();
-            // equipment_i = inventoryDatabase.GetInventoryObject(UnityInventoryConfig.DEF_PLAYER_EQUIP_NAME).CopyInventory();
-
             if (inventoryObject != null) inventory_i = inventoryObject.inventory;
             if (equipmentObject != null) equipment_i = equipmentObject.inventory;
         }

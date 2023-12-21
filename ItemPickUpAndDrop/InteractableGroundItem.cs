@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Laserbean.General.Interactables;
 namespace unityInventorySystem.Items
 {
     public class InteractableGroundItem : GroundItem, IInteractable
